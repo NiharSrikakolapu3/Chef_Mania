@@ -1,12 +1,12 @@
 package Chef_Mania.Website.Backend.Components;
 import java.util.Random;
 
-public class GameState extends MainPiece{
+public class GameState{
     boolean GameStatus;//Track Game Status
     boolean isAlive;//Track the chefs
     boolean player;//Track player status
     boolean theComputer;//Track AI status
-    private Static final Random  goesFirst= new Random();
+    private static final Random goesFirst= new Random();
     
     public GameState(){
         this.GameStatus=false;
