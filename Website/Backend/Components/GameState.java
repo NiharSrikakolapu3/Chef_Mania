@@ -1,20 +1,17 @@
 package Chef_Mania.Website.Backend.Components;
 import java.util.Random;
 
-public class GameState{
+public class GameState extends MainPiece{
     boolean GameStatus;//Track Game Status
-    boolean isChefAlive;//Track the chefs
-    boolean isMasterChefAlive;//Tracks the main chef status 
+    boolean isAlive;//Track the chefs
     boolean player;//Track player status
     boolean theComputer;//Track AI status
     private Static final Random  goesFirst= new Random();
     
     public GameState(){
         this.GameStatus=false;
-        this.MasterChef=true;
         this.player=true;
         this.theComputer=true;
-        this.ChefAlive=true;
     }
 
     public void startGame(){
@@ -24,15 +21,12 @@ public class GameState{
     public void endGame(){
         this.GameStatus=false;//Can be used as a resign feature
     }
-
-    public boolean ChefStatus(){
-        return isChefAlive;
+    public boolean AliveStatus(){
+        return isAlive;
     }
-
-    public boolean MasterChefStatus(){
-       return isMasterChefAlive;
+    public void setAlive(boolean alive) {
+        this.isAlive = alive;
     }
-    
     public String coinFlip(){
         if(goesFirst.nextBoolean()){
            return "Heads";
@@ -49,18 +43,11 @@ public class GameState{
         this.theComputer=false;
         endGame();
     }
-     public void updateMasterChefStatus(boolean status){
-        this.isMasterChefAlive=status;
-    }
-    public void updateChefStatus(boolean status){
-        this.isChefAlive=status;
-    }
     public void updatePlayerStatus(boolean status){
         this.player=status;
     }
     public void updateComputerStatus(boolean status){
         this.theComputer=status;
     }
-
 
 }
