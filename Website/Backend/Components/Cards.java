@@ -15,6 +15,11 @@ public class Cards {
     this.moves = moves;
   }
   
+  public String getNames() {
+    return name;
+    
+  }
+  
   /*
    * Allows you to see for a particular (x,y) piece location where it can move to based on the card
    * And player  
