@@ -1,9 +1,9 @@
 package Chef_Mania.Website.Backend.Components;
 
 public abstract class Piece {
-  boolean alive;
+  protected boolean alive;
   // Either Cook --> master or student or chef --> master or student
-  boolean isChef;
+  protected boolean isChef;
   Coordinates postion;
   
   public Piece(boolean isChef, Coordinates postion) {
