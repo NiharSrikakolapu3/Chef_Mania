@@ -22,6 +22,8 @@ class GameViewModel: ViewModel() {
     }
 
     fun resetGame(){
+        val movesets: List<MoveSet> = MoveSet.staticSelect5()
+
         val p1: Player = Player(
             pieces = listOf(
                 Piece(_uiState.value.squares[0][0]),
@@ -30,7 +32,8 @@ class GameViewModel: ViewModel() {
                 Piece(_uiState.value.squares[3][0]),
                 Piece(_uiState.value.squares[4][0]),
             ),
-            homeBase = Coordinate(2,0)
+            homeBase = Coordinate(2,0),
+            movesets = listOf(movesets[0],movesets[1]).toMutableList()
         )
         for(i in 0 until 5){
             _uiState.value.squares[i][0].occupant = Occupancy.Plyr
@@ -44,16 +47,18 @@ class GameViewModel: ViewModel() {
                 Piece(_uiState.value.squares[3][4]),
                 Piece(_uiState.value.squares[4][4])
             ),
-            homeBase = Coordinate(2,4)
+            homeBase = Coordinate(2,4),
+            movesets = listOf(movesets[2],movesets[3]).toMutableList()
         )
         for(i in 0 until 5){
             _uiState.value.squares[i][4].occupant = Occupancy.Comp
         }
 
         _uiState.value = GameUiState(
-            movesets = MoveSet.staticSelect5(),
+            movesets = movesets,
             players = listOf(p1,comp),
-            turn = p1
+            turn = p1,
+            standby = movesets[4]
         )
     }
 
@@ -61,12 +66,22 @@ class GameViewModel: ViewModel() {
         _uiState.update{
             GameUiState -> GameUiState.copy(currentSelectedPiece = piece)
         }
+        if(_uiState.value.currentSelectedMovSet != null){
+            highlightMoves()
+        }
     }
 
     fun selectMoveset(moveset:MoveSet){
         _uiState.update{
                 GameUiState -> GameUiState.copy(currentSelectedMovSet = moveset)
         }
+        if(_uiState.value.currentSelectedPiece != null){
+            highlightMoves()
+        }
+    }
+
+    fun highlightMoves(){
+
     }
 
 }

@@ -5,6 +5,7 @@ class Player (
     var pieces: List<Piece>,
     var won: Boolean = false,
     val homeBase: Coordinate,
-    val opp: Player? = null
+    val opp: Player? = null,
+    var movesets: MutableList<MoveSet> = emptyList<MoveSet>().toMutableList()
 ){
 }

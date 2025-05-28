@@ -9,6 +9,7 @@ data class GameUiState(
     val movesets: List<MoveSet>? = null,
     val players: List<Player>? = null,
     var winner: Player? = null,
+    var standby: MoveSet? = null,
     val squares: List<List<Coordinate>> = listOf(
         listOf(Coordinate(0,0),
             Coordinate(0,1),

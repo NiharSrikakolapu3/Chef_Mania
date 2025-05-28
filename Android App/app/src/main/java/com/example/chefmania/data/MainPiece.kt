@@ -5,14 +5,20 @@ class MainPiece(
     //override val player: Player
 ) : Piece(pos/*, player*/){
 
-    override fun move(newPos: Coordinate) {
-        super.move(newPos)
+    override fun move(newPos: Coordinate, owner:Player) {
+        super.move(newPos, owner)
         //check if new pos is opponent's home base
-        //if so trigger win the game
+        val oppHome: Coordinate? = owner.opp?.homeBase
+        if (oppHome != null) {
+            if(pos.x == oppHome.x && pos.y == oppHome.y){
+                //trigger win the game for owner
+            }
+
+        }
     }
 
-    override fun die() {
+    fun die(owner: Player) {
         super.die()
-        //trigger lose the game
+        //trigger lose the game for owner
     }
 }

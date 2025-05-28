@@ -6,8 +6,9 @@ open class Piece (
 ){
     open var alive: Boolean = true
 
-    open fun move(newPos: Coordinate){
+    open fun move(newPos: Coordinate, owner:Player){
         val temp: Occupancy = pos.occupant
+        pos.occupant = Occupancy.Vacant
         pos = newPos
         pos.occupant = temp
     }
