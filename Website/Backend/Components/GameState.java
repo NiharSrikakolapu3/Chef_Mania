@@ -40,8 +40,4 @@ public class GameState{
     public void updatePlayerStatus(boolean status){
         this.player=status;
     }
-    public void updateComputerStatus(boolean status){
-        this.theComputer=status;
-    }
-
 }

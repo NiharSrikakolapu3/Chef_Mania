@@ -1,18 +1,20 @@
 package Chef_Mania.Website.Backend.Components;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 public class Cards {
   private String name;
   //A List to see all moves position a card
-  private List<int[]> moves;
+  private List<[]> moves;
   
   
   public Cards(String name, List<int[]> moves) {
     super();
     this.name = name;
     this.moves = moves;
+  }
+
+  public void addMoves(int[]cardsMoves){
+    this.moves.add(cardsMoves);
   }
   
   public String getNames() {
@@ -27,10 +29,9 @@ public class Cards {
    * 
    * Returns where the piece can move
    */
-  public List<int[]> getAllValidMoves(int x, int y) {
-   List<int[]> validMoves = new ArrayList<>();
-   
-    return moves;
+  public List<int[]> getAllValidMoves() {
+    //return the moves
+    return this.moves;
   }
   
   
