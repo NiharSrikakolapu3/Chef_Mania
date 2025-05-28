@@ -1,10 +1,5 @@
-<<<<<<< HEAD:Website/Backend/Components/Board.java
-package Chef_Mania.Website.Backend.Components;
-=======
 package Website_App.Backend.Components;
 
-
->>>>>>> 6d3912cbeb9ee5ce93f3ac7abb23b65642d9c551:Website_App/Backend/Components/Board.java
 public class Board {
   private Piece[][] board = new Piece[5][5];
   
