@@ -7,6 +7,7 @@ import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
 import Website_App.Backend.Components.GameState;
 import Website_App.Backend.Components.Piece;
+import Website_App.Backend.Player;
 
 
 public class GameController {
