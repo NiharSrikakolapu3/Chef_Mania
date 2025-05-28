@@ -1,4 +1,4 @@
-package Chef_Mania.Website.Backend.Components;
+package Website_App.Backend.Components;;
 public class Coordinates{
   //Current piece coordinate in board
   private int x;

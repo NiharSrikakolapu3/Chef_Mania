@@ -2,7 +2,6 @@ import java.util.*;
 import package Chef_Mania.Website.Backend.Components;
 package Chef_Mania.Website.Backend;
 
-
 public class Player {
     private List<Cards> cards;
     private List<Cards> yourCards;

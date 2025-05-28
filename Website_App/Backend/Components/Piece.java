@@ -1,15 +1,15 @@
-package Chef_Mania.Website.Backend.Components;
+package Website_App.Backend.Components;
 
 public abstract class Piece {
   protected boolean alive;
   // Either Cook --> master or student or chef --> master or student
   protected boolean isChef;
-  Coordinates postion;
+  protected Coordinates position;
   
-  public Piece(boolean isChef, Coordinates postion) {
+  public Piece(boolean isChef, Coordinates position) {
     this.alive = true;
     this.isChef = isChef;
-    this.postion = postion;
+    this.position = position;
   }
 
   public boolean isAlive() {
@@ -25,11 +25,11 @@ public abstract class Piece {
   }
 
   public Coordinates getPostion() {
-    return postion;
+    return position;
   }
 
-  public void setPostion(Coordinates postion) {
-    this.postion = postion;
+  public void setPostion(Coordinates position) {
+    this.position = position;
   }
   
   
