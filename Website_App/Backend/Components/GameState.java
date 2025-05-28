@@ -1,4 +1,4 @@
-package Chef_Mania.Website.Backend;
+package Website_App.Backend.Components;
 import java.util.Random;
 
 public class GameState{

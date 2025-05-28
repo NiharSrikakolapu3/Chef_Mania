@@ -1,5 +1,4 @@
-package Chef_Mania.Website.Backend;
-import package Chef_Mania.Website.Backend.Components;
+package Website_App.Backend.Components;
 import java.util.*;
 
 public class Move {
@@ -122,9 +121,4 @@ public class Move {
         this.randomCards=toUse.subList(0,5);
         return randomCards;
     }
-    //get all possible moves for the card you are requesting
-   public List<int[]> getValidMoveset(Cards card) {
-      return card.getCardMoveList();
-    }
-
 }
