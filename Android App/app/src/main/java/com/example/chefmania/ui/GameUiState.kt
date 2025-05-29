@@ -5,7 +5,7 @@ import com.example.chefmania.data.*
 data class GameUiState(
     var currentSelectedPiece: Piece? = null,
     var currentSelectedMovSet: MoveSet? = null,
-    var turn: Player? = null,
+    var turn: Player = Player(name = "", pieces = emptyList(), homeBase =  Coordinate(0,0)),
     val movesets: List<MoveSet>? = null,
     val players: List<Player>? = null,
     var winner: Player? = null,

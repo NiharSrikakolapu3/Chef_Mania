@@ -6,9 +6,27 @@ class MoveSet(
 ) {
 
 
-    fun possibleMoves(piece: Piece, card: MoveSet): List<Coordinate>
+    fun possibleMoves(piece: Piece, board:List<List<Coordinate>>): List<Coordinate>
     {
-        val m:List<Coordinate> =  List<Coordinate>(moves.size){ index -> piece.pos.add(moves.get(index))}
+        val m:List<Coordinate> =  List<Coordinate>(moves.size){
+            index -> piece.pos.add(moves.get(index))
+        }
+        val iterator = m.toMutableList().iterator()
+        while(iterator.hasNext()){
+            val item = iterator.next()
+            if(item.x > 4 || item.x < 0){
+                iterator.remove()
+                continue;
+            }
+            if(item.y > 4 || item.y < 0){
+                iterator.remove()
+                continue;
+            }
+            if(board[item.x][item.y].occupant == piece.pos.occupant){
+                iterator.remove()
+                continue;
+            }
+        }
         return m
     }
 
