@@ -1,9 +1,9 @@
 package Website_App.Backend.Components;
 import java.util.*;
 
-public class Move {
-    private ArrayList<Cards> toUse= new ArrayList<>();
-    public Move(){
+public class MoveSet{
+    private static ArrayList<Cards> toUse= new ArrayList<>();
+    public MoveSet(){
         initializeAllCards();
     }
     public void initializeAllCards(){

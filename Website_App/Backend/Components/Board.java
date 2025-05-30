@@ -1,4 +1,5 @@
 package Website_App.Backend.Components;
+import  Website_App.Backend.Componenets.*;
 
 public class Board {
   private Piece[][] board = new Piece[5][5];
@@ -9,7 +10,7 @@ public class Board {
         board[0][i]= new MainPiece(true,new Coordinates(0,i));
       }
       else{
-      board[0][i]=new SecondaryPiece(true,new Coordinates(0,i));
+        board[0][i]=new SecondaryPiece(true,new Coordinates(0,i));
       }
     }
      for(int i=0;i<board.length;i++){
@@ -22,14 +23,12 @@ public class Board {
     }
   }
   
-
   public Piece getPiece(Coordinates position) {
     Piece piece = board[position.getX()][position.getY()];
     return piece;
   }
 
   public void movePiece(Piece piece, Coordinates newPostion) {
-
     int oldX = piece.getPostion().getX();
     int oldY = piece.getPostion().getY();
     int newX = newPostion.getX();

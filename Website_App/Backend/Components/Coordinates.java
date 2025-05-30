@@ -1,4 +1,5 @@
-package Website_App.Backend.Components;;
+//All Good
+package Website_App.Backend.Components;
 public class Coordinates{
   //Current piece coordinate in board
   private int x;

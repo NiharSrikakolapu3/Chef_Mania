@@ -5,6 +5,11 @@ public class GameState{
     boolean GameStatus;//Track Game Status
     boolean player;//Track player status
     boolean theComputer;//Track AI status
+    Board currentBoard;
+    Cards currentCards;
+    List<Player>currentPlayer;
+    
+
     private static final Random goesFirst= new Random();
     
     public GameState(){

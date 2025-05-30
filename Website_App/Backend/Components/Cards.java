@@ -18,6 +18,9 @@ public class Cards {
   public String getNames() {
     return name;
   }
+  public List<int[]> getCard(){
+    return.this.moves;
+  }
 
   /*
    * Allows you to see for a particular (x,y) piece location where it can move to based on the card
