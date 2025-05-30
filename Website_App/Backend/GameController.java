@@ -2,10 +2,10 @@ package Website_App.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import Website_App.Backend.Components.Board;
 import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
-import Website_App.Backend.Components.GameState;
 import Website_App.Backend.Components.MainPiece;
 import Website_App.Backend.Components.MoveSet;
 import Website_App.Backend.Components.Piece;
@@ -20,6 +20,8 @@ public class GameController {
   private Cards centerCard = null;
   private Player currentTurn = null;
   private Cards currentCard = null;
+  private static final Random goesFirst = new Random();
+
 
   public GameController() {
     this.board = new Board();
@@ -64,9 +66,9 @@ public class GameController {
     // All valid for currentPlayerTurn
     List<List<Coordinates>> validMoves = currentPlayerMoving.succ(board,
         currentPlayerMoving.getCards(), currentPlayerMoving.getPieces());
-    
-    // ADD COMPUTER LOGIC USING validMoves for current player pass that info to the computer class 
-    //somehow
+
+    // ADD COMPUTER LOGIC USING validMoves for current player pass that info to the computer class
+    // somehow
 
 
     Piece piece = board.getPiece(from);
@@ -76,7 +78,7 @@ public class GameController {
 
     List<Coordinates> validMovesForCard =
         cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
-    if(!validMovesForCard.contains(to)) {
+    if (!validMovesForCard.contains(to)) {
       throw new IllegalArgumentException("Invalid move!");
     }
 
@@ -92,70 +94,79 @@ public class GameController {
   private void checkVictoryConditions() {
     // if they kill opp mainPiece
     // if your main pieces is in the opp main base
-    
+
     Coordinates playerBase = new Coordinates(0, 2);
-    Coordinates computerBase= new Coordinates(4, 2);
-    
+    Coordinates computerBase = new Coordinates(4, 2);
+
     Piece playerMain = null;
     Piece computerMain = null;
-    for(Piece p: player.getPieces()) {
-      if(p instanceof MainPiece) {
+    for (Piece p : player.getPieces()) {
+      if (p instanceof MainPiece) {
         playerMain = p;
         break;
       }
     }
-    
-    for(Piece p: computer.getPieces()) {
-      if(p instanceof MainPiece) {
+
+    for (Piece p : computer.getPieces()) {
+      if (p instanceof MainPiece) {
         computerMain = p;
         break;
       }
     }
-    //Capture Main pieces
-    if(!playerMain.isAlive()) {
+    // Capture Main pieces
+    if (!playerMain.isAlive()) {
       System.out.print("Computer wins!");
       gameStatus = false;
       return;
     }
-    
-    if(!computerMain.isAlive()) {
+
+    if (!computerMain.isAlive()) {
       System.out.print("Player wins!");
       gameStatus = false;
       return;
     }
-    
-    //getting main to opp home base
-    if(playerMain.getPostion().equals(computerBase)) {
+
+    // getting main to opp home base
+    if (playerMain.getPostion().equals(computerBase)) {
       System.out.print("Player wins!");
       gameStatus = false;
       return;
     }
-    
-    if(computerMain.getPostion().equals(playerBase)) {
+
+    if (computerMain.getPostion().equals(playerBase)) {
       System.out.print("Computer wins!");
       gameStatus = false;
       return;
     }
   }
 
+  // USE IF NEEDED FOR PLAYER VS PLAYER
+  public String coinFlip() {
+    if (goesFirst.nextBoolean()) {
+      return "Heads";
+    } else {
+      return "Tails";
+    }
+  }
+
   public Player getCurrentTurn() {
     return currentTurn;
-}
+  }
 
-public Board getBoard() {
+  public Board getBoard() {
     return board;
-}
+  }
 
-public Cards getCenterCard() {
+  public Cards getCenterCard() {
     return centerCard;
-}
+  }
 
-public Player getPlayer() {
+  public Player getPlayer() {
     return player;
-}
+  }
 
-public Computer getComputer() {
+  public Computer getComputer() {
     return computer;
-}
+  }
 
 }
