@@ -6,108 +6,156 @@ import Website_App.Backend.Components.Board;
 import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
 import Website_App.Backend.Components.GameState;
+import Website_App.Backend.Components.MainPiece;
+import Website_App.Backend.Components.MoveSet;
 import Website_App.Backend.Components.Piece;
-import Website_App.Backend.Player;
 
 
 public class GameController {
-
-  private GameState gameState;
-  private Player chefPlayer;
-  private Player cookPlayer;
-  // Add computer logic later! TODO
-  private Board board;
-  private List<Cards> deck;
-  private Cards centerCard;
-  private Player currentPlayer;
+  private boolean gameStatus = false;
+  private Player player = null;
+  private Computer computer = null;
+  private Board board = null;
+  private List<Cards> deck = null;
+  private Cards centerCard = null;
+  private Player currentTurn = null;
+  private Cards currentCard = null;
 
   public GameController() {
-    this.gameState = new GameState();
     this.board = new Board();
-    this.deck = new ArrayList<>();
-    // put cards in deck TODO
-    // Setup cards --> shuffle the deck
-  }
-  
-  public static void main(String[] args) {
-    System.out.println("GameController started!");
-    //TEST BACKEND LOGIC!
-}
+    deck = MoveSet.getGameCards();
 
-  public void gameStart() {
-    gameState.startGame();
-    chefPlayer = new Player(true);
-    cookPlayer = new Player(false);
+    // Deal two cards to player and computer. the 5th card in middle
+    List<Cards> playerCards = new ArrayList<>();
+    List<Cards> computerCards = new ArrayList<>();
+    playerCards.add(deck.remove(0));
+    playerCards.add(deck.remove(0));
+    computerCards.add(deck.remove(0));
+    computerCards.add(deck.remove(0));
 
-    // Who goes first! --> CHEFS OR COOKS
-    currentPlayer = gameState.coinFlip().equals("Heads") ? chefPlayer : cookPlayer;
-
-    dealCards();
-  }
-
-  private void dealCards() {
-    // Each player side will get two cards
-    for (int i = 0; i < 2; i++) {
-      chefPlayer.drawCard(deck.remove(0));
-      cookPlayer.drawCard(deck.remove(0));
-    }
-    // Then draws a card from the center
     centerCard = deck.remove(0);
+
+    // player will get the bottom row -> cook
+    player = new Player(false, getPieces(0), playerCards);
+    computer = new Computer(true, getPieces(4), computerCards);
+
+    // player goes first
+    currentTurn = player;
+    gameStatus = true;
   }
 
-  public void makeMove(Coordinates from, Coordinates to, Cards cardUsed) {
-    Piece piece = board.getPiece(from);
 
-    if (piece == null || piece.isChef() != currentPlayer.isChef()) {
+  private List<Piece> getPieces(int row) {
+    List<Piece> pieces = new ArrayList<>();
+    for (int i = 0; i < 5; i++) {
+      Piece p = board.getPiece(new Coordinates(row, i));
+      pieces.add(p);
+    }
+    return pieces;
+
+  }
+
+  public void makeMove(Coordinates from, Coordinates to, Cards cardUsed,
+      Player currentPlayerMoving) {
+    if (gameStatus != true) {
+      throw new IllegalArgumentException("game is not active!");
+    }
+
+    // All valid for currentPlayerTurn
+    List<List<Coordinates>> validMoves = currentPlayerMoving.succ(board,
+        currentPlayerMoving.getCards(), currentPlayerMoving.getPieces());
+    
+    // ADD COMPUTER LOGIC USING validMoves for current player pass that info to the computer class 
+    //somehow
+
+
+    Piece piece = board.getPiece(from);
+    if (piece == null || piece.isChef() != currentPlayerMoving.isChef()) {
+      throw new IllegalArgumentException("Invalid piece selected!");
+    }
+
+    List<Coordinates> validMovesForCard =
+        cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
+    if(!validMovesForCard.contains(to)) {
       throw new IllegalArgumentException("Invalid move!");
     }
 
     board.movePiece(piece, to);
-    currentPlayer.exchangeCards(cardUsed, centerCard);
+    currentPlayerMoving.exchangeCards(cardUsed, centerCard);
     centerCard = cardUsed;
 
-    // Check if the move made them win or not!
-    victoryConditions();
+    checkVictoryConditions();
 
-    // switch turns --> check if current player is chef or cook then swap the current player role
-    // based on that
-    currentPlayer = (currentPlayer == chefPlayer ? cookPlayer : chefPlayer);
+    currentTurn = (currentTurn == player) ? computer : player;
   }
 
-  // Used for UI. When a player clicks a piece it will highlight where that piece can go!
-  public List<Coordinates> getValidMoves(Piece piece, Cards card) {
-    List<Coordinates> allValidMoves = card.getAllValidMoves(piece.getPostion(), piece.isChef());
-    return allValidMoves;
-
+  private void checkVictoryConditions() {
+    // if they kill opp mainPiece
+    // if your main pieces is in the opp main base
+    
+    Coordinates playerBase = new Coordinates(0, 2);
+    Coordinates computerBase= new Coordinates(4, 2);
+    
+    Piece playerMain = null;
+    Piece computerMain = null;
+    for(Piece p: player.getPieces()) {
+      if(p instanceof MainPiece) {
+        playerMain = p;
+        break;
+      }
+    }
+    
+    for(Piece p: computer.getPieces()) {
+      if(p instanceof MainPiece) {
+        computerMain = p;
+        break;
+      }
+    }
+    //Capture Main pieces
+    if(!playerMain.isAlive()) {
+      System.out.print("Computer wins!");
+      gameStatus = false;
+      return;
+    }
+    
+    if(!computerMain.isAlive()) {
+      System.out.print("Player wins!");
+      gameStatus = false;
+      return;
+    }
+    
+    //getting main to opp home base
+    if(playerMain.getPostion().equals(computerBase)) {
+      System.out.print("Player wins!");
+      gameStatus = false;
+      return;
+    }
+    
+    if(computerMain.getPostion().equals(playerBase)) {
+      System.out.print("Computer wins!");
+      gameStatus = false;
+      return;
+    }
   }
 
-  // TODO
-  private void victoryConditions() {
+  public Player getCurrentTurn() {
+    return currentTurn;
+}
 
-  }
-
-  public GameState getGameState() {
-    return gameState;
-  }
-
-  public Board getBoard() {
+public Board getBoard() {
     return board;
-  }
+}
 
-  public Cards getCenterCard() {
+public Cards getCenterCard() {
     return centerCard;
-  }
+}
 
-  public Player getCurrentPlayer() {
-    return currentPlayer;
-  }
+public Player getPlayer() {
+    return player;
+}
 
-  public Player getChefPlayer() {
-    return chefPlayer;
-  }
-
-  public Player getCookPlayer() {
-    return cookPlayer;
-  }
+public Computer getComputer() {
+    return computer;
+}
 
 }

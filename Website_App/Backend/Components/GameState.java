@@ -1,5 +1,7 @@
 package Website_App.Backend.Components;
+import java.util.List;
 import java.util.Random;
+import Website_App.Backend.Player;
 
 public class GameState{
     boolean GameStatus;//Track Game Status

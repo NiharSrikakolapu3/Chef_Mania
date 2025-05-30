@@ -1,24 +1,22 @@
 package Website_App.Backend;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
+import Website_App.Backend.Components.Board;
 import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
-import Website_App.Backend.Components.MainPiece;
-import Website_App.Backend.Components.Move;
+import Website_App.Backend.Components.MoveSet;
 import Website_App.Backend.Components.Piece;
-import Website_App.Backend.Components.SecondaryPiece;
 
 public class Player {
 //    private List<Cards> cards;
     private List<Cards> yourCards;
-//    ArrayList<Piece> sideChef = new ArrayList<>();
-//    Piece MainChef;
+    private List<Piece> piece;
     private boolean hasWon = false;
-    Move playerCards = new Move();
     private boolean isChef;
 
-    public Player(boolean isChef) {
-        this.yourCards = playerCards.getGameCards();
+    public Player(boolean isChef, List<Piece> pieces,List<Cards> yourCards ) {
+        this.yourCards =yourCards;
+        this.piece = pieces;
         this.isChef = isChef;
     }
 
@@ -36,7 +34,21 @@ public class Player {
 //    public Coordinates trackCurrentPosition() {
 //        return this.sideChef.get(0).getPosition(); 
 //    }
-
+    
+    public List<List<Coordinates>> succ(Board board, List<Cards> cards, List<Piece> pieces) {
+      List<List<Coordinates>> results = new ArrayList<>();
+      for (Cards card : cards) {
+          for (Piece piece : pieces) {
+              List<Coordinates> moves = card.getAllValidMoves(piece.getPostion(), this.isChef());
+              results.add(moves);
+          }
+      }
+      return results;
+  }
+    
+    public List<Piece> getPieces() {
+      return piece;
+    }
     public List<Cards> getCards() {
         return this.yourCards;
     }
@@ -62,6 +74,7 @@ public class Player {
         yourCards.remove(currentUsedCard);
         drawCard(newCardInMiddle);
     }
+
 
 //    public void setChefPosition(int x, int y) {
 //        Coordinates position = new Coordinates(x, y);

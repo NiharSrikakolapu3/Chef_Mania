@@ -19,7 +19,7 @@ public class Cards {
     return name;
   }
   public List<int[]> getCard(){
-    return.this.moves;
+    return this.moves;
   }
 
   /*

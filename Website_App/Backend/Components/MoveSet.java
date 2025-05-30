@@ -116,9 +116,9 @@ public class MoveSet{
     }
     //Return 5 cards that is going to be used for the game
     private static List<Cards>randomCards;
-    private static List<Cards> getGameCards(){
+    public static List<Cards> getGameCards(){
         Collections.shuffle(toUse);
-        this.randomCards=toUse.subList(0,5);
+        randomCards=toUse.subList(0,5);
         return randomCards;
     }
 }

@@ -1,10 +1,10 @@
 package Website_App.Backend.Components;
-import  Website_App.Backend.Componenets.*;
 
 public class Board {
   private Piece[][] board = new Piece[5][5];
   
   public Board(){
+    //COOK SIDE
     for(int i=0;i<board.length;i++){
        if(i==3){
         board[0][i]= new MainPiece(true,new Coordinates(0,i));
@@ -13,6 +13,7 @@ public class Board {
         board[0][i]=new SecondaryPiece(true,new Coordinates(0,i));
       }
     }
+    //CHEF SIDE
      for(int i=0;i<board.length;i++){
       if(i==3){
         board[4][i]= new MainPiece(false,new Coordinates(4,i));
@@ -50,5 +51,4 @@ public class Board {
     board[newX][newY] = piece;
 
   }
-
 }
