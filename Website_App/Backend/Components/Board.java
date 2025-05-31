@@ -6,7 +6,7 @@ public class Board {
   public Board(){
     //COOK SIDE
     for(int i=0;i<board.length;i++){
-       if(i==3){
+       if(i==2){
         board[0][i]= new MainPiece(true,new Coordinates(0,i));
       }
       else{
@@ -15,7 +15,7 @@ public class Board {
     }
     //CHEF SIDE
      for(int i=0;i<board.length;i++){
-      if(i==3){
+      if(i==2){
         board[4][i]= new MainPiece(false,new Coordinates(4,i));
       }
       else{
@@ -23,7 +23,6 @@ public class Board {
       }
     }
   }
-  
   public Piece getPiece(Coordinates position) {
     Piece piece = board[position.getX()][position.getY()];
     return piece;
