@@ -62,15 +62,7 @@ public class GameController {
     if (gameStatus != true) {
       throw new IllegalArgumentException("game is not active!");
     }
-
-    // All valid for currentPlayerTurn
-    List<List<Coordinates>> validMoves = currentPlayerMoving.succ(board,
-        currentPlayerMoving.getCards(), currentPlayerMoving.getPieces());
-
-    // ADD COMPUTER LOGIC USING validMoves for current player pass that info to the computer class
-    // somehow
-
-
+    
     Piece piece = board.getPiece(from);
     if (piece == null || piece.isChef() != currentPlayerMoving.isChef()) {
       throw new IllegalArgumentException("Invalid piece selected!");
@@ -89,7 +81,13 @@ public class GameController {
     checkVictoryConditions();
 
     currentTurn = (currentTurn == player) ? computer : player;
+    
+    //After every move either the player or computer update the AI database 
+    List<List<Coordinates>> computerMoves = computer.succ();
+    List<List<Coordinates>> playerMoves = player.succ();
+    computer.updateMoveKnowledgeForAI(board, computerMoves, playerMoves, from, to, piece, cardUsed);
   }
+
 
   private void checkVictoryConditions() {
     // if they kill opp mainPiece
