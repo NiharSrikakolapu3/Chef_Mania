@@ -21,4 +21,6 @@ class MainPiece(
         super.die()
         //trigger lose the game for owner
     }
+
+    constructor(other: MainPiece, board:List<List<Coordinate>>) : this(board[other.pos.x][other.pos.y])
 }

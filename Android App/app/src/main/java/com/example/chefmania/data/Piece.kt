@@ -17,4 +17,5 @@ open class Piece (
         alive = false
     }
 
+    constructor(other: Piece, board:List<List<Coordinate>>) : this(board[other.pos.x][other.pos.y])
 }

@@ -8,23 +8,23 @@ class MoveSet(
 
     fun possibleMoves(piece: Piece, board:List<List<Coordinate>>): List<Coordinate>
     {
-        val m:List<Coordinate> =  List<Coordinate>(moves.size){
+        val m:MutableList<Coordinate> =  List<Coordinate>(moves.size){
             index -> piece.pos.add(moves.get(index))
-        }
-        val iterator = m.toMutableList().iterator()
+        }.toMutableList()
+        val iterator = m.iterator()
         while(iterator.hasNext()){
             val item = iterator.next()
             if(item.x > 4 || item.x < 0){
                 iterator.remove()
-                continue;
+                continue
             }
             if(item.y > 4 || item.y < 0){
                 iterator.remove()
-                continue;
+                continue
             }
             if(board[item.x][item.y].occupant == piece.pos.occupant){
                 iterator.remove()
-                continue;
+                continue
             }
         }
         return m
@@ -87,3 +87,43 @@ class MoveSet(
 
     }
 }
+
+fun main(){
+    val squares: List<List<Coordinate>> = listOf(
+        listOf(Coordinate(0,0),
+            Coordinate(0,1),
+            Coordinate(0,2),
+            Coordinate(0,3),
+            Coordinate(0,4)),
+        listOf(Coordinate(1,0),
+            Coordinate(1,1),
+            Coordinate(1,2),
+            Coordinate(1,3),
+            Coordinate(1,4)),
+        listOf(Coordinate(2,0),
+            Coordinate(2,1),
+            Coordinate(2,2),
+            Coordinate(2,3),
+            Coordinate(2,4)),
+        listOf(Coordinate(3,0),
+            Coordinate(3,1),
+            Coordinate(3,2),
+            Coordinate(3,3),
+            Coordinate(3,4)),
+        listOf(Coordinate(4,0),
+            Coordinate(4,1),
+            Coordinate(4,2),
+            Coordinate(4,3),
+            Coordinate(4,4)),
+    )
+    var piece: Piece = Piece(squares[0][0])
+    piece.pos.occupant = Occupancy.Plyr
+    var card: MoveSet = MoveSet(name = "str", moves = listOf(Coordinate(-1,-1), Coordinate(1,1)))
+
+    var list = card.possibleMoves(piece,squares)
+    for(c in list){
+        print("" + c.x + ", " +c.y)
+        println()
+    }
+}
+
