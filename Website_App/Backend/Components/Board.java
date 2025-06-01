@@ -1,7 +1,7 @@
 package Website_App.Backend.Components;
 
-public class Board {
-  private Piece[][] board = new Piece[5][5];
+public class Board{
+  public Piece[][] board = new Piece[5][5];
   
   public Board(){
     //COOK SIDE
@@ -23,6 +23,9 @@ public class Board {
       }
     }
   }
+ 
+ 
+  
   public Piece getPiece(Coordinates position) {
     Piece piece = board[position.getX()][position.getY()];
     return piece;
@@ -49,5 +52,8 @@ public class Board {
     piece.setPostion(newPostion);
     board[newX][newY] = piece;
 
+  }
+  public Piece[][] returnBoard(){
+	  return this.board;
   }
 }

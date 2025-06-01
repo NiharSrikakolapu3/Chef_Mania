@@ -11,7 +11,7 @@ import Website_App.Backend.Components.MoveSet;
 import Website_App.Backend.Components.Piece;
 
 
-public class GameController {
+public class GameController implements Cloneable{
   private boolean gameStatus = false;
   private Player player = null;
   private Computer computer = null;
@@ -21,15 +21,16 @@ public class GameController {
   private Player currentTurn = null;
   private Cards currentCard = null;
   private static final Random goesFirst = new Random();
-
+  public  static List<Cards> computerCards=null;
+  public  static List<Cards> playerCards=null;
 
   public GameController() {
     this.board = new Board();
     deck = MoveSet.getGameCards();
 
     // Deal two cards to player and computer. the 5th card in middle
-    List<Cards> playerCards = new ArrayList<>();
-    List<Cards> computerCards = new ArrayList<>();
+    GameController.playerCards = new ArrayList<>();
+    GameController.computerCards = new ArrayList<>();
     playerCards.add(deck.remove(0));
     playerCards.add(deck.remove(0));
     computerCards.add(deck.remove(0));
@@ -45,6 +46,19 @@ public class GameController {
     currentTurn = player;
     gameStatus = true;
   }
+  public GameController(GameController state) {
+	    this.board = state.board;                     // Or deep copy if needed
+	    this.player = state.player;
+	    this.computer = state.computer;
+	    this.deck = state.deck;
+	    this.centerCard = state.centerCard;
+	    this.currentTurn = state.currentTurn;
+	    this.currentCard = state.currentCard;
+	    this.gameStatus = state.gameStatus;
+	    GameController.playerCards = state.playerCards;
+	    GameController.computerCards = state.computerCards;
+  }
+  
 
 
   private List<Piece> getPieces(int row) {
@@ -83,9 +97,10 @@ public class GameController {
     currentTurn = (currentTurn == player) ? computer : player;
     
     //After every move either the player or computer update the AI database 
-    List<List<Coordinates>> computerMoves = computer.succ();
-    List<List<Coordinates>> playerMoves = player.succ();
-    computer.updateMoveKnowledgeForAI(board, computerMoves, playerMoves, from, to, piece, cardUsed);
+    if(currentTurn==computer) {
+    List<GameController> computerMoves = computer.succ(this);
+    //computer.updateMoveKnowledgeForAI(board, computerMoves, from, to, piece, cardUsed);
+    }
   }
 
 
@@ -150,6 +165,9 @@ public class GameController {
   public Player getCurrentTurn() {
     return currentTurn;
   }
+  public void changeTurn() {
+	  this.currentTurn=(currentTurn == player) ? computer : player;
+	}
 
   public Board getBoard() {
     return board;

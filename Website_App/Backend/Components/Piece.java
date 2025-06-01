@@ -1,6 +1,6 @@
 package Website_App.Backend.Components;
 
-public abstract class Piece {
+public abstract class Piece implements Cloneable{
   protected boolean alive;
   // Either Cook --> master or student or chef --> master or student
   protected boolean isChef;
@@ -11,7 +11,7 @@ public abstract class Piece {
     this.isChef = isChef;
     this.position = position;
   }
-
+ 
   public boolean isAlive() {
     return alive;
   }
