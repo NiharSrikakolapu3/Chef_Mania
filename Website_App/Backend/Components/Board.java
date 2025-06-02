@@ -1,6 +1,6 @@
 package Website_App.Backend.Components;
 
-public class Board{
+public class Board implements Cloneable{
   public Piece[][] board = new Piece[5][5];
   
   public Board(){
@@ -23,10 +23,24 @@ public class Board{
       }
     }
   }
- 
- 
   
-  public Piece getPiece(Coordinates position) {
+  public Board(Board other) {
+      this.board = new Piece[other.board.length][other.board[0].length];
+      for (int i = 0; i < other.board.length; i++) {
+          for (int j = 0; j < other.board[0].length; j++) {
+              if (other.board[i][j] != null) {
+            	 if(other.board[i][j] instanceof SecondaryPiece) {
+                  this.board[i][j] = new SecondaryPiece(other.board[i][j].isChef(),other.board[i][j].position);
+            	 }
+                  else {
+                	  this.board[i][j] = new MainPiece(other.board[i][j].isChef(),other.board[i][j].position);
+                  }
+              }
+          }
+      }
+  }
+
+public Piece getPiece(Coordinates position) {
     Piece piece = board[position.getX()][position.getY()];
     return piece;
   }

@@ -3,7 +3,7 @@ package Website_App.Backend.Components;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cards {
+public class Cards{
   private String name;
   // A List to see all moves position a card
   private List<int[]> moves;
@@ -19,7 +19,11 @@ public class Cards {
     return name;
   }
   public List<int[]> getCard(){
-    return this.moves;
+	  List<int[]> copy = new ArrayList<>();
+	    for (int[] move : this.moves) {
+	        copy.add(new int[] { move[0], move[1] });
+	    }
+	    return copy;
   }
 
   /*
@@ -45,6 +49,7 @@ public class Cards {
           && newCord.getY() <= 4) {
         validMoves.add(newCord);
       }
+      
     }
     return validMoves;
   }

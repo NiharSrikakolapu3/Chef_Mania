@@ -11,7 +11,18 @@ public abstract class Piece implements Cloneable{
     this.isChef = isChef;
     this.position = position;
   }
- 
+  @Override
+  public Piece clone() {
+      try {
+          Piece clonedPiece = (Piece) super.clone();
+          clonedPiece.position = new Coordinates(position.getX(), position.getY());
+          return clonedPiece;
+      } catch (CloneNotSupportedException e) {
+          e.printStackTrace();
+          return null;
+      }
+  }
+
   public boolean isAlive() {
     return alive;
   }
@@ -35,5 +46,3 @@ public abstract class Piece implements Cloneable{
   
   
   
-
-}
