@@ -1,6 +1,6 @@
 //All Good
 package Website_App.Backend.Components;
-public class Coordinates{
+public class Coordinates implements Cloneable{
   //Current piece coordinate in board
   private int x;
   private int y;
@@ -17,5 +17,10 @@ public class Coordinates{
 
   public int getY() {
     return y;
+  }
+  @Override
+  public String toString() {
+      String toReturn = "Your X and Y coordinates are: "+this.x+"," +this.y;
+      return toReturn;
   }
 }

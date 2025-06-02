@@ -42,7 +42,15 @@ public abstract class Piece implements Cloneable{
   public void setPostion(Coordinates position) {
     this.position = position;
   }
+  @Override
+  public String toString() {
+	  String toReturn="";
+	  toReturn+=position.toString();
+	  return toReturn;
+  }
   
   
   
   
+
+}

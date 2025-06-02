@@ -85,10 +85,14 @@ public class Player {
         yourCards.remove(currentUsedCard);
         drawCard(newCardInMiddle);
     }
-
-
-//    public void setChefPosition(int x, int y) {
-//        Coordinates position = new Coordinates(x, y);
-//        this.sideChef.setPosition(position); 
-//    }
+    @Override
+    public String toString() {
+    	String result="";
+    	for(Piece p: piece) {
+    	 result="\n "+ p.toString();
+    		
+    	}
+    	return result;
+    }
 }
+

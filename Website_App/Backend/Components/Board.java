@@ -45,26 +45,39 @@ public Piece getPiece(Coordinates position) {
     return piece;
   }
 
-  public void movePiece(Piece piece, Coordinates newPostion) {
-    int oldX = piece.getPostion().getX();
+public boolean possibleMove(Piece piece, Coordinates newPosition) {
+	int oldX = piece.getPostion().getX();
     int oldY = piece.getPostion().getY();
-    int newX = newPostion.getX();
-    int newY = newPostion.getY();
+    int newX = newPosition.getX();
+    int newY = newPosition.getY();
     if (newX < 0 || newX >= 5 || newY < 0 || newY >= 5) {
-      throw new IllegalArgumentException("Move is out of bound!");
+      System.out.println("Move is out of bound!");
+      return false;
     }
-
-
-    // Check if there is a piece there --> opp or your own!
+ // Check if there is a piece there --> opp or your own!
     if (board[newX][newY] != null && board[newX][newY].isChef() != piece.isChef()) {
       board[newX][newY].setAlive(false);
     } else if (board[newX][newY] != null && board[newX][newY].isChef() == piece.isChef()) {
-      throw new IllegalArgumentException("Space occupied by your own piece");
+      System.out.println("Space occupied by your own piece");
+      return false;
     }
+    return true;
+}
 
+ public void movePiece(Piece piece, Coordinates newPosition){
+    boolean result= possibleMove(piece,newPosition);
+    if(result) {
+    	int oldX = piece.getPostion().getX();
+        int oldY = piece.getPostion().getY();
+        int newX = newPosition.getX();
+        int newY = newPosition.getY();
     board[oldX][oldY] = null;
-    piece.setPostion(newPostion);
+    piece.setPostion(newPosition);
     board[newX][newY] = piece;
+    }
+    else {
+    System.out.println("Cant move there");
+    }
 
   }
   public Piece[][] returnBoard(){

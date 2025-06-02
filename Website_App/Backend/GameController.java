@@ -3,6 +3,7 @@ package Website_App.Backend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import Website_App.Backend.Components.Board;
 import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
@@ -47,29 +48,43 @@ public class GameController implements Cloneable {
 	}
 
 	public GameController(GameController state) {
-		this.board = new Board(state.board); // assuming Board has a copy constructor
+	    this.board = new Board(state.board); // Deep copy Board
+	    this.player = new Player(state.player); // Deep copy Player
+	    this.computer=new Computer(state.computer);
+	    
+	    // Deep copy playerCards
+	    this.playerCards = new ArrayList<>();
+	    for (Cards c : state.playerCards) {
+	        List<int[]> copiedMoves = new ArrayList<>();
+	        for (int[] move : c.getCard()) {
+	            copiedMoves.add(new int[] { move[0], move[1] });
+	        }
+	        this.playerCards.add(new Cards(c.getNames(), copiedMoves));
+	    }
 
-		// Deep copy player and computer
-		this.player = new Player(state.player); // assumes Player has a copy constructor
-		// this.computer = new Computer(state.computer);
+	    // Deep copy computerCards
+	    this.computerCards = new ArrayList<>();
+	    for (Cards c : state.computerCards) {
+	        List<int[]> copiedMoves = new ArrayList<>();
+	        for (int[] move : c.getCard()) {
+	            copiedMoves.add(new int[] { move[0], move[1] });
+	        }
+	        this.computerCards.add(new Cards(c.getNames(), copiedMoves));
+	    }
 
-		// Deep copy card lists
-		this.playerCards = new ArrayList<>();
-		for (Cards c : state.playerCards) {
-			this.playerCards.add(new Cards(c.getNames(), c.getCard())); // assumes Cards has a copy constructor
-		}
+	    // Deep copy center card
+	    List<int[]> centerMoves = new ArrayList<>();
+	    for (int[] move : state.centerCard.getCard()) {
+	        centerMoves.add(new int[] { move[0], move[1] });
+	    }
+	    this.centerCard = new Cards(state.centerCard.getNames(), centerMoves);
 
-		this.computerCards = new ArrayList<>();
-		for (Cards c : state.computerCards) {
-			this.computerCards.add(new Cards(c.getNames(), c.getCard()));
-		}
-		// Deep copy center card
-		this.centerCard = new Cards(state.centerCard.getNames(), state.centerCard.getCard());
-		// Copy current turn and current card by identity
-		this.currentTurn = (state.currentTurn == state.player) ? this.player : this.computer;
-		// Status
-		this.gameStatus = state.gameStatus;
+	    // Set turn
+	    this.currentTurn = (state.currentTurn == state.player) ? this.player : this.computer;
+
+	    this.gameStatus = state.gameStatus;
 	}
+
 
 	public List<Piece> getPieces(boolean isChef) {
 		boolean value = isChef;
@@ -220,6 +235,25 @@ public class GameController implements Cloneable {
 
 	public void setWhoseTurn(Player turn) {
 		this.currentTurn = turn;
+	}
+/*	private boolean gameStatus = false;
+	private Player player = null;
+	private Computer computer = null;
+	private Board board = null;
+	private List<Cards> deck = null;
+	private Cards centerCard = null;
+	private Player currentTurn = null;
+	public List<Cards> computerCards = null;
+	public List<Cards> playerCards = null;
+	public List<Piece> playerPieces = null;*/
+	@Override
+	public String toString() {
+	  String toReturn="GameStatus: "+this.gameStatus+ "\nPlayer: "+ this.player+"\nComputer: "
+	  		+ " "+this.computer+
+			  "\board "+ this.board+ "\nCenterCard "+ this.centerCard.getNames()+"\nComputer Cards 1 Name"+
+	  		this.computerCards.get(0).getNames()+ "Computer Cards 1 moves"+ this.computerCards.get(0).getCard();
+	  return toReturn;
+		
 	}
 
 }
