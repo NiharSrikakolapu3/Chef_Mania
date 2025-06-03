@@ -35,11 +35,12 @@ public class Player {
     	this.piece = copiedPieces;
     	this.yourCards = new ArrayList<>();
     	for (Cards c : player.getCards()) {
-    	    List<int[]> copiedMoves = new ArrayList<>();
-    	    for (int[] move : c.getCard()) {
-    	        copiedMoves.add(new int[] { move[0], move[1] });
-    	    }
-    	    this.yourCards.add(new Cards(c.getNames(), copiedMoves));
+//    	    List<int[]> copiedMoves = new ArrayList<>();
+//    	    for (int[] move : c.getCard()) {
+//    	        copiedMoves.add(new int[] { move[0], move[1] });
+//    	    }
+//    	    this.yourCards.add(new Cards(c.getNames(), copiedMoves));
+    	  this.yourCards.add(c);
     	}
     	  this.isChef=player.isChef;
     	  this.hasWon=player.hasWon;

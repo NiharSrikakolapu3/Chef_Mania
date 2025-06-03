@@ -218,9 +218,10 @@ public class GameController implements Cloneable {
 		return this.gameStatus;
 	}
 
-	// public void setBoard(Piece[][]board) {
-	// this.boardForComputer = board;
-	// }
+	 public void setBoard(Board board) {
+	 this.board = board;
+	 }
+	
 	public void setCenterCard(Cards centerCard) {
 		this.centerCard = centerCard;
 	}
