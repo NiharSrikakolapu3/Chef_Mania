@@ -86,5 +86,4 @@ public class Board implements Cloneable {
   public Piece[][] returnBoard() {
     return this.board;
   }
-  
 }

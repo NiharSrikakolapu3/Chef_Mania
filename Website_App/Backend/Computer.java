@@ -1,14 +1,13 @@
 package Website_App.Backend;
 
-import java.util.*;
 import java.util.ArrayList;
 import java.util.List;
+
 import Website_App.Backend.Components.Board;
 import Website_App.Backend.Components.Cards;
 import Website_App.Backend.Components.Coordinates;
 import Website_App.Backend.Components.MainPiece;
 import Website_App.Backend.Components.Piece;
-import Website_App.Backend.Components.SecondaryPiece;
 
 public class Computer extends Player {
   private Board boardState = null;
@@ -167,7 +166,19 @@ public class Computer extends Player {
     }
     return results;
   }
-  
+
+
+
+  /*
+   * public void updateMoveKnowledgeForAI(Board boardState, List<List<Coordinates>> computerMoves,
+   * List<List<Coordinates>> playerMoves, Coordinates lastMoveFrom, Coordinates lastMoveTo, Piece
+   * lastMovedPiece, Cards lastCardUsed) { this.boardState = boardState; this.computerValidMoves =
+   * computerMoves; //this.playerValidMoves = playerMoves; this.lastMoveFrom = lastMoveFrom;
+   * this.lastMoveTo = lastMoveTo; this.lastMovedPiece = lastMovedPiece; this.lastCardUsed =
+   * lastCardUsed;
+   *
+   * }
+   */
   public int heuristic(GameController state, Player yourPlayer) {
     return 0;
   }
