@@ -80,7 +80,7 @@ public class GameController implements Cloneable {
 	    this.centerCard = new Cards(state.centerCard.getNames(), centerMoves);
 
 	    // Set turn
-	    this.currentTurn = (state.currentTurn == state.player) ? this.player : this.computer;
+	   // this.currentTurn = (state.currentTurn == state.player) ? this.player : this.computer;
 
 	    this.gameStatus = state.gameStatus;
 	}
@@ -218,11 +218,14 @@ public class GameController implements Cloneable {
 		return this.gameStatus;
 	}
 
-	// public void setBoard(Piece[][]board) {
-	// this.boardForComputer = board;
-	// }
-	public void setCenterCard(Cards centerCard) {
-		this.centerCard = centerCard;
+	 public void setBoard(Board board) {
+	 this.board = board;
+	 }
+	
+	public void setCenterCard(Cards usedCard) {
+		this.computerCards.remove(usedCard);
+		this.computerCards.add(centerCard);
+		this.centerCard=usedCard;
 	}
 
 	public void setGameStatus(boolean gameStatus) {
@@ -234,7 +237,7 @@ public class GameController implements Cloneable {
 	}
 
 	public void setWhoseTurn(Player turn) {
-		this.currentTurn = turn;
+		this.currentTurn=turn;
 	}
 /*	private boolean gameStatus = false;
 	private Player player = null;

@@ -14,7 +14,20 @@ public class Cards{
     this.name = name;
     this.moves = moves;
   }
-
+  
+ /* public static void main(String [] args) {
+    List<int[]> movesList14 = new ArrayList<>();
+    movesList14.add(new int[]{0,1});  
+    movesList14.add(new int[]{1,-1}); 
+    movesList14.add(new int[]{-1, -1});
+    Cards card14 = new Cards("Pizza", movesList14);
+    
+    List<Coordinates> moves = card14.getAllValidMoves(new Coordinates(2, 2), false);
+    for(Coordinates move : moves) {
+      System.out.println("The Move is: " + move);
+    }
+    
+  }*/
   public String getNames() {
     return name;
   }
@@ -41,6 +54,9 @@ public class Cards{
       // check if player is chef or cook
       if (!isChef) {
         x = -x;
+        
+      }
+      else {
         y = -y;
       }
       Coordinates newCord = new Coordinates(ofPiece.getX() + x, ofPiece.getY() + y);
@@ -52,5 +68,9 @@ public class Cards{
       
     }
     return validMoves;
+  }
+  public String toString() {
+	  String toReturn= " "+ this.getNames()+ " "+ this.getCard();
+	  return toReturn;
   }
 }
