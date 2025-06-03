@@ -3,7 +3,7 @@ package com.example.chefmania.data
 class MainPiece(
     override var pos: Coordinate,
     //override val player: Player
-) : Piece(pos/*, player*/){
+) : Piece(pos){
 
     override fun move(newPos: Coordinate, owner:Player) {
         super.move(newPos, owner)

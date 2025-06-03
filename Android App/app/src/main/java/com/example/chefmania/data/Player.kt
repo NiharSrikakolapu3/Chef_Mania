@@ -8,6 +8,6 @@ data class Player (
    // var opp: Player = Player(name = "", pieces = emptyList(), homeBase =  Coordinate(0,0)),
     var opp: Player? = null,
     var movesets: MutableList<MoveSet> = emptyList<MoveSet>().toMutableList(),
-    val main: MainPiece = MainPiece(Coordinate(0,0))
+    var main: MainPiece = MainPiece(Coordinate(0,0))
 ){
 }

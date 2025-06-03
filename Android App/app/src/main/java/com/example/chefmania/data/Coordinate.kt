@@ -8,4 +8,7 @@ data class Coordinate(
     fun add(other: Coordinate): Coordinate {
         return Coordinate(x+other.x, y+other.y)
     }
+    fun sub(other: Coordinate): Coordinate {
+        return Coordinate(x-other.x, y-other.y)
+    }
 }

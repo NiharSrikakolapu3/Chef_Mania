@@ -6,10 +6,15 @@ class MoveSet(
 ) {
 
 
-    fun possibleMoves(piece: Piece, board:List<List<Coordinate>>): List<Coordinate>
+    fun possibleMoves(piece: Piece, player:Player, board:List<List<Coordinate>>): List<Coordinate>
     {
-        val m:MutableList<Coordinate> =  List<Coordinate>(moves.size){
-            index -> piece.pos.add(moves.get(index))
+        val m:MutableList<Coordinate> =  List<Coordinate>(moves.size){index ->
+            if(player.homeBase.y == 0){
+                piece.pos.add(moves.get(index))
+            }
+            else{
+                piece.pos.sub(moves.get(index))
+            }
         }.toMutableList()
         val iterator = m.iterator()
         while(iterator.hasNext()){
@@ -88,7 +93,7 @@ class MoveSet(
     }
 }
 
-fun main(){
+/*fun main(){
     val squares: List<List<Coordinate>> = listOf(
         listOf(Coordinate(0,0),
             Coordinate(0,1),
@@ -120,10 +125,10 @@ fun main(){
     piece.pos.occupant = Occupancy.Plyr
     var card: MoveSet = MoveSet(name = "str", moves = listOf(Coordinate(-1,-1), Coordinate(1,1)))
 
-    var list = card.possibleMoves(piece,squares)
+    var list = card.possibleMoves(piece,squares,)
     for(c in list){
         print("" + c.x + ", " +c.y)
         println()
     }
-}
+}*/
 

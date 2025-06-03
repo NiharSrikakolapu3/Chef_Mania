@@ -15,7 +15,7 @@ class aiAlgo1 {
         if (currentPlayer != null) {
             for(i in 0..<currentPlayer.movesets.size){
                 for(j in 0..<currentPlayer.pieces.size){
-                    val possibleMoves = currentPlayer.movesets[i].possibleMoves(currentPlayer.pieces[j], board)
+                    val possibleMoves = currentPlayer.movesets[i].possibleMoves(currentPlayer.pieces[j], currentPlayer, board)
                     for(k in possibleMoves){
                         var list: MutableList<MutableList<Coordinate>> = emptyList<MutableList<Coordinate>>().toMutableList()
                         for( ci in 0 until 5){
@@ -26,7 +26,7 @@ class aiAlgo1 {
                         }
                         val temp = gameState.copy(
                             players = listOf(gameState.players?.get(0)!!.copy(),
-                                gameState.players[1].copy(), ),
+                                gameState.players[1].copy()),
                             squares = list)
                         if(gameState.turn == gameState.players[0]){
                             temp.turn = temp.players?.get(1)!!
@@ -34,13 +34,15 @@ class aiAlgo1 {
                         else{
                             temp.turn = temp.players?.get(0)!!
                         }
+
                         temp.players[0].opp = temp.players[1]
                         temp.players[1].opp = temp.players[0]
 
                         val plyr = temp.turn.opp!!
                         plyr.pieces = currentPlayer.pieces.map {
                             if(it is MainPiece){
-                                MainPiece(it,temp.squares)
+                                plyr.main =MainPiece(it,temp.squares)
+                                plyr.main
                             }
                             else{
                                 Piece(it, temp.squares)
@@ -54,9 +56,10 @@ class aiAlgo1 {
                             }}
                         plyr.movesets = listOf(currentPlayer.movesets[0], currentPlayer.movesets[1]).toMutableList()
 
+                        /*
                         temp.squares[k.x][k.y].occupant = plyr.pieces[j].pos.occupant
                         plyr.pieces[j].pos.occupant = Occupancy.Vacant
-                        plyr.pieces[j].pos = temp.squares[k.x][k.y]
+                        plyr.pieces[j].pos = temp.squares[k.x][k.y]*/
 
                         val usedMove = plyr.movesets[i]
                         plyr.movesets[i] = temp.standby?: MoveSet(emptyList(), "")
@@ -73,9 +76,15 @@ class aiAlgo1 {
                                     if (mutabletemp != null) {
                                         plyr.opp?.pieces = mutabletemp.toList()
                                     }
+                                    break
                                 }
                             }
                         }
+                        
+                        temp.squares[k.x][k.y].occupant = plyr.pieces[j].pos.occupant
+                        plyr.pieces[j].pos.occupant = Occupancy.Vacant
+                        plyr.pieces[j].pos = temp.squares[k.x][k.y]
+
                         succStates.add(temp)
                     }
                 }
@@ -168,15 +177,17 @@ fun main(){
             Piece(state.squares[0][0]),
             Piece(state.squares[1][0]),
             MainPiece(state.squares[2][0]),
-            Piece(state.squares[3][0]),
-            Piece(state.squares[4][0]),
+            Piece(state.squares[2][3]),
+            Piece(state.squares[3][2]),
         ),
         homeBase = Coordinate(2,0),
         movesets = listOf(movesets[0],movesets[1]).toMutableList()
     )
-    for(i in 0 until 5){
+    for(i in 0 until 3){
         state.squares[i][0].occupant = Occupancy.Plyr
     }
+    state.squares[2][3].occupant = Occupancy.Plyr
+    state.squares[3][2].occupant = Occupancy.Plyr
 
     val comp: Player = Player(name = "comp",
         pieces = listOf(

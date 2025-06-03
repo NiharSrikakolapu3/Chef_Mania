@@ -24,6 +24,7 @@ class GameViewModel: ViewModel() {
     fun resetGame(){
         val movesets: List<MoveSet> = MoveSet.staticSelect5()
 
+
         val p1: Player = Player(name = "p1",
             pieces = listOf(
                 Piece(_uiState.value.squares[0][0]),

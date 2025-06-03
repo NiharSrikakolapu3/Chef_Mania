@@ -6,8 +6,8 @@ data class GameUiState(
     var currentSelectedPiece: Piece? = null,
     var currentSelectedMovSet: MoveSet? = null,
     var turn: Player = Player(name = "", pieces = emptyList(), homeBase =  Coordinate(0,0)),
-    val movesets: List<MoveSet>? = null,
-    val players: List<Player>? = null,
+    val movesets: List<MoveSet> = emptyList(),
+    val players: List<Player> = emptyList(),
     var winner: Player? = null,
     var standby: MoveSet? = null,
     val squares: List<List<Coordinate>> = listOf(
