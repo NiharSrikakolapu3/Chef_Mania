@@ -39,21 +39,6 @@ public class Board implements Cloneable {
     }
   }
 
-  public void placePiece(Piece piece) {
-    Coordinates position = piece.getPostion();
-    if(position.getX() >= 0 && position.getX() <= 4 && position.getY() >= 0 && position.getY() <=4) {
-      board[position.getX()][position.getY()] = piece;
-    }
-    else {
-      System.out.print("Invalid place");
-    }
-  }
-  
-  public void removePiece(Coordinates coords) {
-    int x = coords.getX();
-    int y = coords.getY();
-    board[x][y] = null;
-}
 
 
 
