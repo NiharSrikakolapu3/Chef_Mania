@@ -24,6 +24,7 @@ public class GameController implements Cloneable {
 	public List<Piece> playerPieces = null;
 	// public Piece[][] boardForComputer = null;
 
+
 	public GameController() {
 		this.board = new Board();
 		MoveSet set = new MoveSet();

@@ -41,7 +41,7 @@ public class Computer extends Player {
       List<GameController> tempStorage = new ArrayList<>();
       for (Piece piece : passedStatus.getComputer().getPieces()) {
         for (Coordinates position : computerCard.getAllValidMoves(piece.getPostion(), true)) {
-          
+
           // Create new deep copy for this individual move
           GameController currentStatus = new GameController(passedStatus);
           List<Piece> computerPieces = currentStatus.getPieces(true);
@@ -56,35 +56,37 @@ public class Computer extends Player {
               break;
             }
           }
-          if (currentPiece == null) continue;
+          if (currentPiece == null)
+            continue;
 
           // Validate move
-          if (!currentBoard.possibleMove(currentPiece, position)) continue;
+          if (!currentBoard.possibleMove(currentPiece, position))
+            continue;
 
           // Execute move
           Piece opponentPiece = currentBoard.getPiece(position);
           if (opponentPiece != null) {
-            if (opponentPiece instanceof MainPiece) { 
-            	currentStatus.setGameStatus(false);
-            	playersPieces.remove(opponentPiece);
+            if (opponentPiece instanceof MainPiece) {
+              currentStatus.setGameStatus(false);
+              playersPieces.remove(opponentPiece);
             }
           }
           currentBoard.movePiece(currentPiece, position);
 
           // Update center card
-          System.out.println("Previous centerCard "+ currentStatus.getCenterCard().toString());
+          System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
           currentStatus.setCenterCard(computerCard);
-          //Set turn to Player
+          // Set turn to Player
           currentStatus.setWhoseTurn(currentStatus.getPlayer());
-          if(currentStatus.getCurrentTurn() instanceof Player) {
-        	  System.out.print("Yes");
+          if (currentStatus.getCurrentTurn() instanceof Player) {
+            System.out.print("Yes");
           }
-          //System.out.println("Current turn "+currentStatus.getCurrentTurn());
-          //Sets the current Players Pieces
+          // System.out.println("Current turn "+currentStatus.getCurrentTurn());
+          // Sets the current Players Pieces
           currentStatus.setPieces(playersPieces);
-          //Sets the current Computer Pieces
+          // Sets the current Computer Pieces
           currentStatus.setPieces(computerPieces);
-          System.out.println("Current centerCard "+ currentStatus.getCenterCard().toString());
+          System.out.println("Current centerCard " + currentStatus.getCenterCard().toString());
 
           // Store this move result
           tempStorage.add(currentStatus);
@@ -94,17 +96,7 @@ public class Computer extends Player {
     }
     return results;
   }
-  /*
-   * Step1:Board State and Cards that are with Computer Step2:Checks Movelist of computers card
-   * Step3:Checks each pieces possible movements based on movelist Step4:Call this every time
-   * Computer make a move Step5:Return the List Step6:Make a call from GameController every time we
-   * make a move
-   */
-  // Return all possible moves with one turn like return the entire GameState
-  /*
-   * CenterCard Board Status Whose turn All pieces Player cards
-   *
-   */
+
   public List<List<GameController>> succPlayer(GameController passedStatus) {
     List<List<GameController>> results = new ArrayList<>();
     System.out.println(passedStatus.playerCards);
@@ -113,7 +105,7 @@ public class Computer extends Player {
       List<GameController> tempStorage = new ArrayList<>();
       for (Piece piece : passedStatus.getPlayer().getPieces()) {
         for (Coordinates position : playerCard.getAllValidMoves(piece.getPostion(), false)) {
-          
+
           // Create new deep copy for this individual move
           GameController currentStatus = new GameController(passedStatus);
           List<Piece> computerPieces = currentStatus.getPieces(true);
@@ -128,35 +120,37 @@ public class Computer extends Player {
               break;
             }
           }
-          if (currentPiece == null) continue;
+          if (currentPiece == null)
+            continue;
 
           // Validate move
-          if (!currentBoard.possibleMove(currentPiece, position)) continue;
+          if (!currentBoard.possibleMove(currentPiece, position))
+            continue;
 
           // Execute move
           Piece opponentPiece = currentBoard.getPiece(position);
           if (opponentPiece != null) {
-            if (opponentPiece instanceof MainPiece) { 
-            	currentStatus.setGameStatus(false);
-            	computerPieces.remove(opponentPiece);
+            if (opponentPiece instanceof MainPiece) {
+              currentStatus.setGameStatus(false);
+              computerPieces.remove(opponentPiece);
             }
           }
           currentBoard.movePiece(currentPiece, position);
 
           // Update center card
-          System.out.println("Previous centerCard "+ currentStatus.getCenterCard().toString());
+          System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
           currentStatus.setCenterCard(playerCard);
-          //Set turn to Player
+          // Set turn to Player
           currentStatus.setWhoseTurn(currentStatus.getPlayer());
-          if(currentStatus.getCurrentTurn() instanceof Player) {
-        	  System.out.print("Yes");
+          if (currentStatus.getCurrentTurn() instanceof Player) {
+            System.out.print("Yes");
           }
-          //System.out.println("Current turn "+currentStatus.getCurrentTurn());
-          //Sets the current Players Pieces
+          // System.out.println("Current turn "+currentStatus.getCurrentTurn());
+          // Sets the current Players Pieces
           currentStatus.setPieces(playersPieces);
-          //Sets the current Computer Pieces
+          // Sets the current Computer Pieces
           currentStatus.setPieces(computerPieces);
-          System.out.println("Current centerCard "+ currentStatus.getCenterCard().toString());
+          System.out.println("Current centerCard " + currentStatus.getCenterCard().toString());
 
           // Store this move result
           tempStorage.add(currentStatus);
@@ -168,59 +162,53 @@ public class Computer extends Player {
   }
 
 
+  public double heuristic(GameController state) {
+    List<Piece> computerPiece = state.getComputer().getPieces();
+    double computerCount = computerPiece.size();
 
-  /*
-   * public void updateMoveKnowledgeForAI(Board boardState, List<List<Coordinates>> computerMoves,
-   * List<List<Coordinates>> playerMoves, Coordinates lastMoveFrom, Coordinates lastMoveTo, Piece
-   * lastMovedPiece, Cards lastCardUsed) { this.boardState = boardState; this.computerValidMoves =
-   * computerMoves; //this.playerValidMoves = playerMoves; this.lastMoveFrom = lastMoveFrom;
-   * this.lastMoveTo = lastMoveTo; this.lastMovedPiece = lastMovedPiece; this.lastCardUsed =
-   * lastCardUsed;
-   *
-   * }
-   */
-  public int heuristic(GameController state, Player yourPlayer) {
-    return 0;
+    List<Piece> playerPiece = state.getPlayer().getPieces();
+    double playerCount = playerPiece.size();
+
+    return (computerCount - playerCount) * 0.24;
   }
-  // public int maxValue(GameController state, int depth, Player yourPlayer, int alpha, int beta) {
-  // if (depth == maxDepth) {
-  // return heuristic(state, yourPlayer);
-  // }
-  // alpha = -2;
-  // List<List<Coordinates>> states = succ(state);
-  // for (List<Coordinates> x : states) {
-  // int value = minValue(x, yourPlayer, depth + 1, alpha, beta);
-  // if (value > alpha) {
-  // alpha = value;
-  // }
-  // if (alpha >= beta) {
-  // return beta;
-  // }
-  //
-  //
-  // }
-  // return alpha;
-  //
-  //
-  // }
-  //
-  // public int minValue(GameController state, int depth, Player yourPlayer, int alpha, int beta) {
-  // if (depth == maxDepth) {
-  // return heuristic(state, yourPlayer);
-  // }
-  // beta = 2;
-  // List<List<Coordinates>> states = succ(state);
-  // for (List<Coordinates> x : states) {
-  // int value = maxValue(x, yourPlayer, depth + 1);
-  // if (value < beta) {
-  // beta = value;
-  // }
-  // if (alpha >= beta) {
-  // return alpha;
-  // }
-  //
-  //
-  // }
-  // return beta;
-  // }
+
+  public double maxValue(GameController state, double depth, double alpha, double beta) {
+    if (depth == maxDepth) {
+      return heuristic(state);
+    }
+    List<List<GameController>> states = succComputer(state);
+    for (List<GameController> listState : states) {
+      for (GameController x : listState) {
+        double value = minValue(x, depth + 1, alpha, beta);
+        if (value > alpha) {
+          alpha = value;
+        }
+        if (alpha >= beta) {
+          return beta;
+        }
+      }
+    }
+    return alpha;
+  }
+
+  public double minValue(GameController state, double depth, double alpha, double beta) {
+    if (depth == maxDepth) {
+      return heuristic(state);
+    }
+    
+    List<List<GameController>> states = succPlayer(state);
+    for (List<GameController> listState: states) {
+      for(GameController x: listState) {
+        double value = maxValue(x, depth + 1, alpha, beta);
+        if (value < beta) {
+          beta = value;
+        }
+        if (alpha >= beta) {
+          return alpha;
+        }
+      }
+
+    }
+    return beta;
+  }
 }
