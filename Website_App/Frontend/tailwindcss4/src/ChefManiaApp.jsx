@@ -1,7 +1,9 @@
+import LaunchHomePage from "./Pages/LaunchHomePage";
+
 function ChefManiaApp() {
   return (
     <div>
-      <header className="text-red-600">Hello?</header>
+      <LaunchHomePage />
     </div>
   );
 }
