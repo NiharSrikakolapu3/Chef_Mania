@@ -22,16 +22,15 @@ function ChefManiaGame() {
     hover:scale-110 
     hover:text-blue-300 
     hover:bg-purple-800 
-    active:scale-95
   `;
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
+    <div className="relative h-screen w-full">
       <div
         className="fixed inset-0 bg-cover bg-center z-0"
         style={{
           backgroundImage: `url(${backgroundImg})`,
-          backgroundPosition: "center 40%",
+          backgroundPosition: "center 30%",
         }}
       />
 

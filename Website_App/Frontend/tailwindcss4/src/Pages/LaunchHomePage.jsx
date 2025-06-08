@@ -3,9 +3,8 @@ import Story from "../Components/Story";
 
 function LaunchHomePage() {
   return (
-    <div className="overflow-x-hidden">
+    <div>
       <Header />
-
       <Story />
     </div>
   );
