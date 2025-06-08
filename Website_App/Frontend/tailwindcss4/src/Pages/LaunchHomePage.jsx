@@ -1,7 +1,14 @@
-import NavBar from "../Components/NavBar";
+import Header from "../Components/Header";
+import Story from "../Components/Story";
 
 function LaunchHomePage() {
-  return <NavBar />;
+  return (
+    <div className="overflow-x-hidden">
+      <Header />
+
+      <Story />
+    </div>
+  );
 }
 
 export default LaunchHomePage;

@@ -1,9 +1,9 @@
-import LaunchHomePage from "./Pages/LaunchHomePage";
+import ChefManiaRouter from "./Components/Router/ChefManiaRouter";
 
 function ChefManiaApp() {
   return (
     <div>
-      <LaunchHomePage />
+      <ChefManiaRouter />
     </div>
   );
 }
