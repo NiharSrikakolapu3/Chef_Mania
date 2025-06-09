@@ -46,13 +46,13 @@ function ChefManiaGame() {
               <div className="flex-1 flex flex-col items-center justify-start mt-8 space-y-8">
                 <button
                   className={buttonStyle}
-                  onClick={() => content(setGameState("StartGame"))}
+                  onClick={() => setGameState("StartGame")}
                 >
                   START GAME
                 </button>
                 <button
                   className={buttonStyle}
-                  onClick={() => content(setGameState("Instructions"))}
+                  onClick={() => setGameState("Instructions")}
                 >
                   INSTRUCTIONS
                 </button>
