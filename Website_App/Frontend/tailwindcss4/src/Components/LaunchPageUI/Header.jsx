@@ -1,6 +1,6 @@
 import NavBar from "./NavBar";
-import backgroundImg from "../Assets/Chef_Mania_Background.png";
-import titleImg from "../Assets/Title.png";
+import backgroundImg from "../../Assets/Chef_Mania_Background.png";
+import titleImg from "../../Assets/Title.png";
 import { useNavigate } from "react-router-dom";
 
 function Header() {
@@ -30,7 +30,10 @@ function Header() {
             </div>
 
             <div className="flex-1 flex flex-col items-center justify-start mt-8 space-y-8">
-              <button className="bg-gradient-to-r from-yellow-400 to-red-500 text-white text-xl font-bold px-8 py-3 rounded-2xl shadow-lg hover:scale-105 hover:from-yellow-300 hover:to-red-400 transition-all duration-300">
+              <button
+                onClick={launchButton}
+                className="bg-gradient-to-r from-yellow-400 to-red-500 text-white text-xl font-bold px-8 py-3 rounded-2xl shadow-lg hover:scale-105 hover:from-yellow-300 hover:to-red-400 transition-all duration-300"
+              >
                 Launch Game
               </button>
             </div>

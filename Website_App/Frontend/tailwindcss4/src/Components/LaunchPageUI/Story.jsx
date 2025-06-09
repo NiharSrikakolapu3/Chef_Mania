@@ -1,5 +1,5 @@
-import StoryBackground from "../Assets/story_background.png";
-import Title2 from "../Assets/Title2.png";
+import StoryBackground from "../../Assets/story_background.png";
+import Title2 from "../../Assets/Title2.png";
 
 export default function Story() {
   return (

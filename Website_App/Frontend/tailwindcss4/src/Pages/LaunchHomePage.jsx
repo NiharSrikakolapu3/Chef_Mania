@@ -1,5 +1,5 @@
-import Header from "../Components/Header";
-import Story from "../Components/Story";
+import Header from "../Components/LaunchPageUI/Header";
+import Story from "../Components/LaunchPageUI/Story";
 
 function LaunchHomePage() {
   return (
