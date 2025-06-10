@@ -2,8 +2,6 @@ import { useNavigate } from "react-router-dom";
 import backgroundImg from "../Assets/Chef_Mania_Background.png";
 import Title from "../Assets/Title.png";
 import { useState } from "react";
-import GameScreen from "../Components/GameUi/GameScreen";
-import Instructions from "../Components/GameUi/Instructions";
 
 function ChefManiaGame() {
   const navigate = useNavigate();
@@ -12,17 +10,9 @@ function ChefManiaGame() {
   const content = () => {
     switch (gameState) {
       case "StartGame":
-        return (
-          <div>
-            <GameScreen />
-          </div>
-        );
+        return <div>{navigate("/game/modes")}</div>;
       case "Instructions":
-        return (
-          <div>
-            <Instructions />
-          </div>
-        );
+        return <div>{navigate("/game/instuctions")}</div>;
       default:
         return (
           <div className="relative h-screen w-full">

@@ -12,9 +12,9 @@ function Header() {
     <section id="Home">
       <div>
         <NavBar />
-        <header className="relative h-[85vh] w-full">
+        <header className="relative h-[100vh] w-full">
           <div
-            className="fixed inset-0 bg-cover bg-center z-0"
+            className="absolute inset-0 bg-cover z-0"
             style={{
               backgroundImage: `url(${backgroundImg})`,
               backgroundPosition: "center 30%",

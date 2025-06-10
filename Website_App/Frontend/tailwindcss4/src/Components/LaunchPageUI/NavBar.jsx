@@ -14,6 +14,12 @@ function NavBar() {
         Story
       </a>
       <a
+        href="#GameCard"
+        className="bg-white text-black px-5 py-2 font-semibold text-lg shadow-lg rounded-sm hover:bg-gradient-to-br hover:from-purple-300 hover:to-purple-500"
+      >
+        Game Card
+      </a>
+      <a
         href="#Media"
         className="bg-white text-black px-5 py-2 font-semibold text-lg  shadow-lg rounded-sm hover:bg-gradient-to-br hover:from-purple-300 hover:to-purple-500"
       >
