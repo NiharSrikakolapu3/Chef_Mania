@@ -84,7 +84,7 @@ function GameCards() {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 -0.5 24 24"
               shapeRendering="crispEdges"
-              className="w-50 h-33 scale-[1.7]"
+              className="w-50 h-33 scale-[1.6]"
             >
               <metadata>
                 Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
@@ -273,7 +273,7 @@ function GameCards() {
           </header>
         </div>
         {/*PIZZA */}
-        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92">
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-52">
           <header
             className="text-2xl tracking-wider italic text-transparent
              bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
@@ -351,7 +351,7 @@ function GameCards() {
           </header>
         </div>
         {/*STEAK */}
-        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 ">
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-52 ">
           <header
             className="text-2xl tracking-wider italic text-transparent
              bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
@@ -422,6 +422,293 @@ function GameCards() {
                 d="M7 7h3M7 8h3M7 9h3M7 11h3M7 12h3M7 13h3M11 15h3M11 16h3M11 17h3"
               />
               <path stroke="#4d7eab" d="M11 11h3M11 12h3M11 13h3" />
+            </svg>
+          </header>
+        </div>
+        {/* EGGS */}
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-52">
+          <header
+            className="text-2xl tracking-wider italic text-transparent
+             bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
+             font-['Press_Start_2P'] -mb-5 ml-3 "
+          >
+            Eggs
+          </header>
+
+          <header className="relative w-[360px] h-[190px] flex justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-5 scale-88 mt-2 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#ffffff"
+                d="M14 0h2M5 1h2M11 1h6M3 2h8M12 2h5M2 3h8M11 3h4M16 3h1M2 4h16M2 5h3M6 5h13M2 6h18M2 7h7M14 7h7M2 8h6M15 8h6M2 9h5M16 9h2M19 9h2M2 10h5M16 10h5M2 11h5M16 11h5M2 12h5M16 12h5M2 13h6M15 13h6M2 14h7M14 14h4M2 15h15M3 16h3M8 16h9M4 17h12M8 18h4M13 18h3M9 19h4M14 19h2M10 20h5M12 21h3"
+              />
+              <path
+                stroke="#d3d3d3"
+                d="M16 0h1M4 1h1M17 1h1M11 2h1M17 2h1M10 3h1M15 3h1M17 3h1M18 4h1M5 5h1M19 5h1M20 6h1M21 8h1M18 9h1M21 9h1M21 10h1M21 11h1M1 12h1M21 12h1M1 13h1M21 13h1M1 14h1M18 14h3M1 15h1M17 15h1M2 16h1M6 16h2M17 16h1M3 17h1M16 17h1M7 18h1M12 18h1M16 18h1M8 19h1M13 19h1M16 19h1M9 20h1M15 20h1M11 21h1M15 21h1"
+              />
+              <path
+                stroke="#fef708"
+                d="M9 7h5M8 8h7M7 9h9M7 10h9M7 11h9M7 12h9M8 13h7M9 14h5"
+              />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-50 -ml-8 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#2d2d2d"
+                d="M2 1h21M2 2h1M6 2h1M10 2h1M14 2h1M18 2h1M22 2h1M2 3h1M6 3h1M10 3h1M14 3h1M18 3h1M22 3h1M2 4h1M6 4h1M10 4h1M14 4h1M18 4h1M22 4h1M2 5h21M2 6h1M6 6h1M10 6h1M14 6h1M18 6h1M22 6h1M2 7h1M6 7h1M10 7h1M14 7h1M18 7h1M22 7h1M2 8h1M6 8h1M10 8h1M14 8h1M18 8h1M22 8h1M2 9h21M2 10h1M6 10h1M10 10h1M14 10h1M18 10h1M22 10h1M2 11h1M6 11h1M10 11h1M14 11h1M18 11h1M22 11h1M2 12h1M6 12h1M10 12h1M14 12h1M18 12h1M22 12h1M2 13h21M2 14h1M6 14h1M10 14h1M14 14h1M18 14h1M22 14h1M2 15h1M6 15h1M10 15h1M14 15h1M18 15h1M22 15h1M2 16h1M6 16h1M10 16h1M14 16h1M18 16h1M22 16h1M2 17h21M2 18h1M6 18h1M10 18h1M14 18h1M18 18h1M22 18h1M2 19h1M6 19h1M10 19h1M14 19h1M18 19h1M22 19h1M2 20h1M6 20h1M10 20h1M14 20h1M18 20h1M22 20h1M2 21h21"
+              />
+              <path
+                stroke="#e0d8bb"
+                d="M3 2h3M7 2h3M11 2h3M15 2h3M19 2h3M3 3h3M7 3h3M11 3h3M15 3h3M19 3h3M3 4h3M7 4h3M11 4h3M15 4h3M19 4h3M3 6h3M7 6h3M15 6h3M19 6h3M3 7h3M7 7h3M15 7h3M19 7h3M3 8h3M7 8h3M15 8h3M19 8h3M3 10h3M7 10h3M19 10h3M3 11h3M7 11h3M19 11h3M3 12h3M7 12h3M19 12h3M3 14h3M7 14h3M15 14h3M19 14h3M3 15h3M7 15h3M15 15h3M19 15h3M3 16h3M7 16h3M15 16h3M19 16h3M3 18h3M7 18h3M11 18h3M15 18h3M19 18h3M3 19h3M7 19h3M11 19h3M15 19h3M19 19h3M3 20h3M7 20h3M11 20h3M15 20h3M19 20h3"
+              />
+              <path
+                stroke="#6aab4d"
+                d="M11 6h3M11 7h3M11 8h3M15 10h3M15 11h3M15 12h3M11 14h3M11 15h3M11 16h3"
+              />
+              <path stroke="#4d7eab" d="M11 10h3M11 11h3M11 12h3" />
+            </svg>
+          </header>
+        </div>
+        {/* RICE */}
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-52">
+          <header
+            className="text-2xl tracking-wider italic text-transparent
+             bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
+             font-['Press_Start_2P'] -mb-5 ml-3 "
+          >
+            Rice
+          </header>
+
+          <header className="relative w-[360px] h-[190px] flex justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-5 scale-88 mt-2 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#ffffff"
+                d="M11 4h3M10 5h5M9 6h3M13 6h3M8 7h2M12 7h2M15 7h2M7 8h11M6 9h4M16 9h1M18 9h1M5 10h2M8 10h1M17 10h3M4 11h2M7 11h1M18 11h3M4 12h4M18 12h1M20 12h1M5 13h3M18 13h3M6 14h2M18 14h1"
+              />
+              <path
+                stroke="#d3d3d3"
+                d="M14 4h1M15 5h1M12 6h1M16 6h1M10 7h2M14 7h1M17 7h1M18 8h1M17 9h1M19 9h1M7 10h1M20 10h1M6 11h1M21 11h1M19 12h1M21 12h1M4 13h1M21 13h1M5 14h1M19 14h2M6 15h2M18 15h2"
+              />
+              <path
+                stroke="#006400"
+                d="M10 9h6M9 10h3M14 10h3M8 11h2M13 11h5M8 12h10M8 13h1M10 13h1M12 13h1M14 13h1M16 13h2M9 14h1M11 14h1M13 14h1M15 14h1M17 14h1"
+              />
+              <path stroke="#106b1b" d="M12 10h2M10 11h3" />
+              <path
+                stroke="#013220"
+                d="M9 13h1M11 13h1M13 13h1M15 13h1M8 14h1M10 14h1M12 14h1M14 14h1M16 14h1M8 15h10"
+              />
+              <path
+                stroke="rgba(255,255,255,0.09803921568627451)"
+                d="M3 15h1"
+              />
+              <path
+                stroke="rgba(255,255,255,0.07058823529411765)"
+                d="M4 15h1"
+              />
+              <path
+                stroke="rgba(255,255,255,0.03137254901960784)"
+                d="M5 15h1"
+              />
+              <path
+                stroke="rgba(255,255,255,0.00784313725490196)"
+                d="M21 15h1"
+              />
+              <path
+                stroke="rgba(255,255,255,0.03529411764705882)"
+                d="M22 15h1"
+              />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-50 -ml-8 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#2d2d2d"
+                d="M2 1h21M2 2h1M6 2h1M10 2h1M14 2h1M18 2h1M22 2h1M2 3h1M6 3h1M10 3h1M14 3h1M18 3h1M22 3h1M2 4h1M6 4h1M10 4h1M14 4h1M18 4h1M22 4h1M2 5h21M2 6h1M6 6h1M10 6h1M14 6h1M18 6h1M22 6h1M2 7h1M6 7h1M10 7h1M14 7h1M18 7h1M22 7h1M2 8h1M6 8h1M10 8h1M14 8h1M18 8h1M22 8h1M2 9h21M2 10h1M6 10h1M10 10h1M14 10h1M18 10h1M22 10h1M2 11h1M6 11h1M10 11h1M14 11h1M18 11h1M22 11h1M2 12h1M6 12h1M10 12h1M14 12h1M18 12h1M22 12h1M2 13h21M2 14h1M6 14h1M10 14h1M14 14h1M18 14h1M22 14h1M2 15h1M6 15h1M10 15h1M14 15h1M18 15h1M22 15h1M2 16h1M6 16h1M10 16h1M14 16h1M18 16h1M22 16h1M2 17h21M2 18h1M6 18h1M10 18h1M14 18h1M18 18h1M22 18h1M2 19h1M6 19h1M10 19h1M14 19h1M18 19h1M22 19h1M2 20h1M6 20h1M10 20h1M14 20h1M18 20h1M22 20h1M2 21h21"
+              />
+              <path
+                stroke="#e0d8bb"
+                d="M3 2h3M7 2h3M15 2h3M19 2h3M3 3h3M7 3h3M15 3h3M19 3h3M3 4h3M7 4h3M15 4h3M19 4h3M3 6h3M7 6h3M11 6h3M15 6h3M19 6h3M3 7h3M7 7h3M11 7h3M15 7h3M19 7h3M3 8h3M7 8h3M11 8h3M15 8h3M19 8h3M3 10h3M7 10h3M15 10h3M19 10h3M3 11h3M7 11h3M15 11h3M19 11h3M3 12h3M7 12h3M15 12h3M19 12h3M3 14h3M7 14h3M11 14h3M15 14h3M19 14h3M3 15h3M7 15h3M11 15h3M15 15h3M19 15h3M3 16h3M7 16h3M11 16h3M15 16h3M19 16h3M7 18h3M11 18h3M15 18h3M7 19h3M11 19h3M15 19h3M7 20h3M11 20h3M15 20h3"
+              />
+              <path
+                stroke="#106b1b"
+                d="M11 2h3M11 3h3M11 4h3M3 18h3M19 18h3M3 19h3M19 19h3M3 20h3M19 20h3"
+              />
+              <path stroke="#4d7eab" d="M11 10h3M11 11h3M11 12h3" />
+            </svg>
+          </header>
+        </div>
+        {/* ICE CREAM*/}
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-53">
+          <header
+            className="text-2xl tracking-wider italic text-transparent
+             bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
+             font-['Press_Start_2P'] -mb-5 ml-3 "
+          >
+            Ice Cream
+          </header>
+
+          <header className="relative w-[368px] h-[190px] flex justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-5 scale-88 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#d6addd"
+                d="M10 6h1M9 7h1M8 8h1M7 9h1M8 11h2M13 11h2"
+              />
+              <path
+                stroke="#ca91d3"
+                d="M11 6h2M10 7h3M9 8h5M8 9h7M7 10h9M6 11h2M10 11h3M15 11h2M6 12h4M11 12h4M8 13h1"
+              />
+              <path
+                stroke="#be84c7"
+                d="M13 6h1M13 7h2M14 8h2M15 9h2M16 10h1M10 12h1M15 12h1M7 13h1M9 13h1M11 13h2M14 13h1"
+              />
+              <path
+                stroke="#a96eb2"
+                d="M17 11h1M16 12h2M10 13h1M13 13h1M15 13h2M8 14h1M11 14h2M14 14h2"
+              />
+              <path stroke="#9c8b65" d="M7 14h1M7 15h2" />
+              <path stroke="#948055" d="M9 14h1M13 14h1M9 15h1M12 15h2" />
+              <path stroke="#9a875e" d="M10 14h1M10 15h2M14 15h1" />
+              <path stroke="#89764d" d="M16 14h1M15 15h2" />
+              <path
+                stroke="#cab894"
+                d="M8 16h1M8 17h1M10 17h1M9 18h2M9 19h1M10 20h1M10 21h1"
+              />
+              <path
+                stroke="#bdac89"
+                d="M9 16h1M11 16h2M14 16h2M15 17h1M14 19h1M13 20h1M12 21h2M11 22h2"
+              />
+              <path stroke="#b5a480" d="M10 16h1M9 17h1" />
+              <path stroke="#b19d72" d="M13 16h1M12 17h1M11 18h1M10 19h1" />
+              <path
+                stroke="#c7b48c"
+                d="M11 17h1M13 17h2M12 18h2M11 19h2M11 20h1"
+              />
+              <path stroke="#a38f65" d="M14 18h1M13 19h1M12 20h1M11 21h1" />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-8 mt-3"
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#2d2d2d"
+                d="M2 1h21M2 2h1M6 2h1M10 2h1M14 2h1M18 2h1M22 2h1M2 3h1M6 3h1M10 3h1M14 3h1M18 3h1M22 3h1M2 4h1M6 4h1M10 4h1M14 4h1M18 4h1M22 4h1M2 5h21M2 6h1M6 6h1M10 6h1M14 6h1M18 6h1M22 6h1M2 7h1M6 7h1M10 7h1M14 7h1M18 7h1M22 7h1M2 8h1M6 8h1M10 8h1M14 8h1M18 8h1M22 8h1M2 9h21M2 10h1M6 10h1M10 10h1M14 10h1M18 10h1M22 10h1M2 11h1M6 11h1M10 11h1M14 11h1M18 11h1M22 11h1M2 12h1M6 12h1M10 12h1M14 12h1M18 12h1M22 12h1M2 13h21M2 14h1M6 14h1M10 14h1M14 14h1M18 14h1M22 14h1M2 15h1M6 15h1M10 15h1M14 15h1M18 15h1M22 15h1M2 16h1M6 16h1M10 16h1M14 16h1M18 16h1M22 16h1M2 17h21M2 18h1M6 18h1M10 18h1M14 18h1M18 18h1M22 18h1M2 19h1M6 19h1M10 19h1M14 19h1M18 19h1M22 19h1M2 20h1M6 20h1M10 20h1M14 20h1M18 20h1M22 20h1M2 21h21"
+              />
+              <path
+                stroke="#e0d8bb"
+                d="M3 2h3M7 2h3M11 2h3M15 2h3M19 2h3M3 3h3M7 3h3M11 3h3M15 3h3M19 3h3M3 4h3M7 4h3M11 4h3M15 4h3M19 4h3M3 6h3M7 6h3M15 6h3M19 6h3M3 7h3M7 7h3M15 7h3M19 7h3M3 8h3M7 8h3M15 8h3M19 8h3M3 10h3M7 10h3M15 10h3M19 10h3M3 11h3M7 11h3M15 11h3M19 11h3M3 12h3M7 12h3M15 12h3M19 12h3M3 14h3M7 14h3M15 14h3M19 14h3M3 15h3M7 15h3M15 15h3M19 15h3M3 16h3M7 16h3M15 16h3M19 16h3M3 18h3M7 18h3M15 18h3M19 18h3M3 19h3M7 19h3M15 19h3M19 19h3M3 20h3M7 20h3M15 20h3M19 20h3"
+              />
+              <path
+                stroke="#6aab4d"
+                d="M11 6h3M11 7h3M11 8h3M11 14h3M11 15h3M11 16h3M11 18h3M11 19h3M11 20h3"
+              />
+              <path stroke="#4d7eab" d="M11 10h3M11 11h3M11 12h3" />
+            </svg>
+          </header>
+        </div>
+        {/* MAC 'N' CHEESE*/}
+        <div className="border-2 border-yellow-500 rounded-lg bg-[#e0d8bb] w-92 h-53">
+          <header
+            className="text-2xl tracking-wider italic text-transparent
+             bg-clip-text relative top-1 bg-gradient-to-r from-yellow-500 via-orange-400 to-red-500
+             font-['Press_Start_2P'] -mb-5 ml-3 "
+          >
+            Mac'n'Cheese
+          </header>
+
+          <header className="relative w-[368px] h-[190px] flex justify-center gap-2">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-5 scale-88 "
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="rgba(92,64,51,0.9882352941176471)"
+                d="M9 4h4M7 5h2M13 5h1M6 6h1M14 6h1M5 7h1M14 7h1M4 8h1M13 8h1M4 9h1M10 9h3M3 10h1M9 10h1M3 11h1M9 11h1M3 12h1M9 12h1M3 13h1M10 13h1M3 14h1M11 14h2M4 15h1M13 15h1M4 16h1M13 16h1M5 17h1M6 18h1M13 18h1M7 19h2M12 19h1M9 20h3"
+              />
+              <path stroke="rgba(89,67,55,0.09019607843137255)" d="M13 4h1" />
+              <path
+                stroke="#ffd700"
+                d="M9 5h4M7 6h5M7 7h5M6 8h4M5 9h4M5 10h3M5 11h3M5 12h3M5 13h4M5 14h6M5 15h7M6 16h5M7 17h4"
+              />
+              <path
+                stroke="#daa620"
+                d="M12 6h2M6 7h1M12 7h2M5 8h1M10 8h3M9 9h1M4 10h1M8 10h1M4 11h1M8 11h1M4 12h1M8 12h1M4 13h1M9 13h1M4 14h1M12 15h1M5 16h1M11 16h2M6 17h1M11 17h2M7 18h6M9 19h1M11 19h1"
+              />
+              <path stroke="#5c4033" d="M13 17h1" />
+              <path stroke="#daa520" d="M10 19h1" />
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 -0.5 24 24"
+              shape-rendering="crispEdges"
+              className="w-50 h-48 -ml-8 mt-3"
+            >
+              <metadata>
+                Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
+              </metadata>
+              <path
+                stroke="#2d2d2d"
+                d="M2 1h21M2 2h1M6 2h1M10 2h1M14 2h1M18 2h1M22 2h1M2 3h1M6 3h1M10 3h1M14 3h1M18 3h1M22 3h1M2 4h1M6 4h1M10 4h1M14 4h1M18 4h1M22 4h1M2 5h21M2 6h1M6 6h1M10 6h1M14 6h1M18 6h1M22 6h1M2 7h1M6 7h1M10 7h1M14 7h1M18 7h1M22 7h1M2 8h1M6 8h1M10 8h1M14 8h1M18 8h1M22 8h1M2 9h21M2 10h1M6 10h1M10 10h1M14 10h1M18 10h1M22 10h1M2 11h1M6 11h1M10 11h1M14 11h1M18 11h1M22 11h1M2 12h1M6 12h1M10 12h1M14 12h1M18 12h1M22 12h1M2 13h21M2 14h1M6 14h1M10 14h1M14 14h1M18 14h1M22 14h1M2 15h1M6 15h1M10 15h1M14 15h1M18 15h1M22 15h1M2 16h1M6 16h1M10 16h1M14 16h1M18 16h1M22 16h1M2 17h21M2 18h1M6 18h1M10 18h1M14 18h1M18 18h1M22 18h1M2 19h1M6 19h1M10 19h1M14 19h1M18 19h1M22 19h1M2 20h1M6 20h1M10 20h1M14 20h1M18 20h1M22 20h1M2 21h21"
+              />
+              <path
+                stroke="#e0d8bb"
+                d="M3 2h3M7 2h3M11 2h3M15 2h3M19 2h3M3 3h3M7 3h3M11 3h3M15 3h3M19 3h3M3 4h3M7 4h3M11 4h3M15 4h3M19 4h3M3 6h3M7 6h3M15 6h3M19 6h3M3 7h3M7 7h3M15 7h3M19 7h3M3 8h3M7 8h3M15 8h3M19 8h3M3 10h3M15 10h3M19 10h3M3 11h3M15 11h3M19 11h3M3 12h3M15 12h3M19 12h3M3 14h3M7 14h3M15 14h3M19 14h3M3 15h3M7 15h3M15 15h3M19 15h3M3 16h3M7 16h3M15 16h3M19 16h3M7 18h3M11 18h3M15 18h3M7 19h3M11 19h3M15 19h3M7 20h3M11 20h3M15 20h3"
+              />
+              <path
+                stroke="#6cac4f"
+                d="M11 6h3M11 7h3M11 8h3M7 10h3M7 11h3M7 12h3M11 14h3M11 15h3M11 16h3"
+              />
+              <path stroke="#4d7eab" d="M11 10h3M11 11h3M11 12h3" />
+              <path
+                stroke="#dfd7ba"
+                d="M3 18h3M19 18h3M3 19h3M19 19h3M3 20h3M19 20h3"
+              />
             </svg>
           </header>
         </div>

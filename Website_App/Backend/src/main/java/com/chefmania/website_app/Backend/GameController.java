@@ -9,7 +9,10 @@ import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.MoveSet;
 import com.chefmania.website_app.Backend.Components.Piece;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+@JsonIgnoreProperties({"currentTurn","playerPieces"})
 public class GameController implements Cloneable {
 	private boolean gameStatus = false;
 	private Player player = null;
@@ -17,11 +20,13 @@ public class GameController implements Cloneable {
 	private Board board = null;
 	private List<Cards> deck = null;
 	private Cards centerCard = null;
+	@JsonProperty("currentTurn")
 	private Player currentTurn = null;
+	private String currentTurnLabel = null;
 	public List<Cards> computerCards = null;
 	public List<Cards> playerCards = null;
+	@JsonProperty("playerPieces")
 	public List<Piece> playerPieces = null;
-	// public Piece[][] boardForComputer = null;
 
 
 	public GameController() {
@@ -43,10 +48,13 @@ public class GameController implements Cloneable {
 		computer = new Computer(true, getPieces(true), computerCards);
 		// player goes first
 		currentTurn = player;
+		currentTurnLabel =(currentTurn == player) ? "Player" : "Computer";
+		
 		gameStatus = true;
 		// this.boardForComputer = board.returnBoard();
 	}
 
+	//For Computer Logic
 	public GameController(GameController state) {
 	    this.board = new Board(state.board); // Deep copy Board
 	    this.player = new Player(state.player); // Deep copy Player
@@ -239,16 +247,10 @@ public class GameController implements Cloneable {
 	public void setWhoseTurn(Player turn) {
 		this.currentTurn=turn;
 	}
-/*	private boolean gameStatus = false;
-	private Player player = null;
-	private Computer computer = null;
-	private Board board = null;
-	private List<Cards> deck = null;
-	private Cards centerCard = null;
-	private Player currentTurn = null;
-	public List<Cards> computerCards = null;
-	public List<Cards> playerCards = null;
-	public List<Piece> playerPieces = null;*/
+	public String getCurrentTurnLabel() {
+	    return (currentTurn == player) ? "Player" : "Computer";
+	}
+
 	@Override
 	public String toString() {
 	  String toReturn="GameStatus: "+this.gameStatus+ "\nPlayer: "+ this.player+"\nComputer: "

@@ -2,11 +2,13 @@ package com.chefmania.website_app.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.Piece;
+
 
 public class Computer extends Player {
   private Board boardState = null;

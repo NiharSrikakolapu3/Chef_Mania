@@ -9,7 +9,6 @@ import com.chefmania.website_app.Backend.Components.Piece;
 import com.chefmania.website_app.Backend.Components.SecondaryPiece;
 
 public class Player {
-//    private List<Cards> cards;
     private List<Cards> yourCards;
     private List<Piece> piece;
     private boolean hasWon = false;
