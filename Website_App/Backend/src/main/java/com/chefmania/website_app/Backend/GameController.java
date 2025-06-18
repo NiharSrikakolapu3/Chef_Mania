@@ -3,13 +3,13 @@ package com.chefmania.website_app.Backend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.MoveSet;
 import com.chefmania.website_app.Backend.Components.Piece;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties({"currentTurn","playerPieces"})
@@ -126,6 +126,7 @@ public class GameController implements Cloneable {
 		if (piece == null || piece.isChef() != currentPlayerMoving.isChef()) {
 			throw new IllegalArgumentException("Invalid piece selected!");
 		}
+		
 		List<Coordinates> validMovesForCard = cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
 		if (!validMovesForCard.contains(to)) {
 			throw new IllegalArgumentException("Invalid move!");
@@ -135,13 +136,6 @@ public class GameController implements Cloneable {
 		centerCard = cardUsed;
 		checkVictoryConditions();
 		currentTurn = (currentTurn == player) ? computer : player;
-
-		// After every move either the player or computer update the AI database
-		if (currentTurn == computer) {
-//    List<GameController> computerMoves = computer.succ(this);
-			// computer.updateMoveKnowledgeForAI(board, computerMoves, from, to, piece,
-			// cardUsed);
-		}
 	}
 
 	private void checkVictoryConditions() {
