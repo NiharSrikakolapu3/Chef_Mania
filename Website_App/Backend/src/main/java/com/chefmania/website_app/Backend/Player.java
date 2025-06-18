@@ -1,22 +1,29 @@
 package com.chefmania.website_app.Backend;
 import java.util.ArrayList;
 import java.util.List;
+import org.springframework.stereotype.Component;
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.Piece;
 import com.chefmania.website_app.Backend.Components.SecondaryPiece;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Player {
     private List<Cards> yourCards;
-    private List<Piece> piece;
+    private List<Piece> pieces;
     private boolean hasWon = false;
+    @JsonProperty("chef")
     private boolean isChef;
+    
+    public Player() {
+      
+    }
 
     public Player(boolean isChef, List<Piece> pieces,List<Cards> yourCards ) {
         this.yourCards =yourCards;
-        this.piece = pieces;
+        this.pieces = pieces;
         this.isChef = isChef;
     }
     @SuppressWarnings("unchecked")
@@ -30,7 +37,7 @@ public class Player {
     			copiedPieces.add(new MainPiece(p.isChef(),p.getPostion()));	
     		}
     	}
-    	this.piece = copiedPieces;
+    	this.pieces = copiedPieces;
     	this.yourCards = new ArrayList<>();
     	for (Cards c : player.getCards()) {
 //    	    List<int[]> copiedMoves = new ArrayList<>();
@@ -54,30 +61,48 @@ public class Player {
       }
       return results;
   }
-    
-    public List<Piece> getPieces() {
-      return piece;
-    }
-    
-    public List<Cards> getCards() {
-        return this.yourCards;
-    }
+ 
+  public List<Piece> getPieces() {
+      return pieces;
+  }
+  
 
-    public boolean hasWon() {
-        return hasWon;
-    }
+  public void setPieces(List<Piece> pieces) {
+      this.pieces = pieces;
+  }
 
-    public void setWon(boolean hasWon) {
-        this.hasWon = hasWon;
-    }
+
+  public List<Cards> getCards() {
+      return yourCards;
+  }
+  
+ 
+  public void setYourCards(List<Cards> yourCards) {
+      this.yourCards = yourCards;
+  }
+  
+ 
+  public boolean isChef() {
+      return isChef;
+  }
+  
+  
+  public void setChef(boolean isChef) {
+      this.isChef = isChef;
+  }
+
+  public boolean hasWon() {
+      return hasWon;
+  }
+
+ 
+  public void setHasWon(boolean hasWon) {
+      this.hasWon = hasWon;
+  }
 
     public void drawCard(Cards yourCard) {
-        yourCards.add(yourCard);
-    }
-    
-    public boolean isChef() {
-      return isChef;
-    }
+      yourCards.add(yourCard);
+  }
 
     // Draw from the middle
     public void exchangeCards(Cards currentUsedCard, Cards newCardInMiddle) {
@@ -87,7 +112,7 @@ public class Player {
     @Override
     public String toString() {
     	String result="";
-    	for(Piece p: piece) {
+    	for(Piece p: pieces) {
     	 result="\n "+ p.toString();
     		
     	}
