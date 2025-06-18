@@ -3,7 +3,8 @@ package com.chefmania.website_app.Backend;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
+import org.apache.commons.logging.LogFactory;
+import org.slf4j.LoggerFactory;
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
@@ -12,6 +13,7 @@ import com.chefmania.website_app.Backend.Components.MoveSet;
 import com.chefmania.website_app.Backend.Components.Piece;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import ch.qos.logback.classic.Logger;
 @JsonIgnoreProperties({"currentTurn","playerPieces"})
 public class GameController implements Cloneable {
 	private boolean gameStatus = false;
@@ -27,8 +29,14 @@ public class GameController implements Cloneable {
 	public List<Cards> playerCards = null;
 	@JsonProperty("playerPieces")
 	public List<Piece> playerPieces = null;
+	
 
-
+	  public static void main(String args[]) {
+	    GameController game = new GameController();
+	    for(Cards card: game.playerCards) {
+	      System.out.println(card.toString());
+	    }
+	  }
 	public GameController() {
 		this.board = new Board();
 		MoveSet set = new MoveSet();
@@ -41,6 +49,7 @@ public class GameController implements Cloneable {
 		computerCards.add(deck.remove(0));
 		computerCards.add(deck.remove(0));
 		centerCard = deck.remove(0);
+		
 
 		// playerPieces = getPieces(0);
 		// player will get the bottom row -> cook
@@ -128,6 +137,7 @@ public class GameController implements Cloneable {
 		}
 		
 		List<Coordinates> validMovesForCard = cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
+		
 		if (!validMovesForCard.contains(to)) {
 			throw new IllegalArgumentException("Invalid move!");
 		}

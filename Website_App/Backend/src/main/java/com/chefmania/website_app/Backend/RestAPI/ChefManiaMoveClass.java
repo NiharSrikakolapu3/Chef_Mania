@@ -9,7 +9,7 @@ public class ChefManiaMoveClass {
 	  private Coordinates from;
 	  private Coordinates to;
 	  private Cards cardUsed;
-	  private Player currentPlayer;
+	  private boolean chef;
 	  
 	  public ChefManiaMoveClass() {
 		  
@@ -20,33 +20,30 @@ public class ChefManiaMoveClass {
 	  public void setFrom(Coordinates newFrom) {
 		  this.from=newFrom;
 	  }
+	  public Coordinates getFrom() {
+        return this.from;
+    }
 	  
 	  public void setTo(Coordinates newTo) {
 		  this.to=newTo;
 	  }
+	  public Coordinates getTo() {
+        return this.to;
+    }
 	  
 	  public void setCardUsed(Cards cardUsed) {
 		  this.cardUsed=cardUsed;
 	  }
-	  
-	  public void setCurrentPlayer(Player currentPlayer) {
-		  this.currentPlayer=currentPlayer;
-	  }
+	  public Cards getCardUsed() {
+	      return cardUsed;
+	    }
 
+    public void setChef(boolean chef) {
+      this.chef = chef;
+    }
 
-	  public Coordinates getFrom() {
-		  return this.from;
-	  }
-	  
-	  public Coordinates getTo() {
-		  return this.to;
-	  }
-	  
-	  public Player getCurrentPlayer() {
-		  return this.currentPlayer;
-	  }
-	  public Cards getCurrentCenterCard() {
-		  return this.cardUsed;
-	  }
+    public boolean isChef() {
+      return chef;
+    }
 
 }
