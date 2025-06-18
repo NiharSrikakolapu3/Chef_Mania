@@ -34,7 +34,7 @@ public class RestFulGameAPI {
   }
   
   //game game instance
-  @GetMapping()
+  @GetMapping("/gameRunning")
   public GameController getGameInstance() {
     return service.getGame();
   }
@@ -66,12 +66,19 @@ public class RestFulGameAPI {
   
   @PutMapping("/playerMove")
   public GameController makePlayerMove(@RequestBody ChefManiaMoveClass chefMania) {
-	  service.makeMove(chefMania.getFrom(), chefMania.getTo(), chefMania.getCurrentCenterCard() , chefMania.getCurrentPlayer());
+    Player current = null;
+    if(chefMania.isChef()) {
+      current= service.getGame().getComputer();
+    } else {
+     current = service.getGame().getPlayer();
+    }
+	  service.makeMove(chefMania.getFrom(), chefMania.getTo(), chefMania.getCardUsed() , current);
 	  return service.getGame();
   }
   @DeleteMapping("/reset")
   public void Concede() {
 	  service.quitGame();
   }
+
   
 }

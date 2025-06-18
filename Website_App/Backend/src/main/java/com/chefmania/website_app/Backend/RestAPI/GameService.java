@@ -35,15 +35,24 @@ public class GameService {
   public List<Cards> getComputerCards() {
 	  return this.game.getComputer().getCards();
 	}
-  public void makeMove(Coordinates from, Coordinates to, Cards cardUsed, Player currentPlayerMoving) {
-	  game.makeMove(from,to,cardUsed,currentPlayerMoving);
-  }
+  public void makeMove(Coordinates from, Coordinates to, Cards cardUsed, Player currentMovingPlayer) {
+   
+//    if (currentPlayerMoving == null) {
+//      if (game.getCurrentTurnLabel().equalsIgnoreCase("player")) {
+//          currentPlayerMoving = game.getPlayer();
+//      } else {
+//          currentPlayerMoving = game.getComputer();
+//      }
+//  }
+  game.makeMove(from, to, cardUsed, currentMovingPlayer);
+}
   public String getTurn() {
 	return game.getCurrentTurnLabel();
   }
   public boolean gameStatus(){
 	  return game.getGameStatus();
   }
+ 
   public void quitGame() {
 	  this.game=null;
   }

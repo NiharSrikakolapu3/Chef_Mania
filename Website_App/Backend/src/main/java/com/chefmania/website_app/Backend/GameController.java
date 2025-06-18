@@ -1,8 +1,10 @@
 package com.chefmania.website_app.Backend;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
@@ -27,19 +29,28 @@ public class GameController implements Cloneable {
 	public List<Cards> playerCards = null;
 	@JsonProperty("playerPieces")
 	public List<Piece> playerPieces = null;
-
+	private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
 	public GameController() {
 		this.board = new Board();
+		
 		MoveSet set = new MoveSet();
+		set.resetRandomCards();
 		deck = set.getGameCards();
+		
 		// Deal two cards to player and computer. the 5th card in middle
 		this.playerCards = new ArrayList<>();
 		this.computerCards = new ArrayList<>();
+//		logger.info(deck.toString());
 		playerCards.add(deck.remove(0));
+		logger.info("New Instace"+ set.toString());
+		//logger.info(deck.toString());
 		playerCards.add(deck.remove(0));
+		//logger.info(deck.toString());
 		computerCards.add(deck.remove(0));
+		//logger.info(deck.toString());
 		computerCards.add(deck.remove(0));
+		//logger.info(deck.toString());
 		centerCard = deck.remove(0);
 
 		// playerPieces = getPieces(0);
@@ -141,8 +152,8 @@ public class GameController implements Cloneable {
 	private void checkVictoryConditions() {
 		// if they kill opp mainPiece
 		// if your main pieces is in the opp main base
-		Coordinates playerBase = new Coordinates(0, 2);
-		Coordinates computerBase = new Coordinates(4, 2);
+		Coordinates playerBase = new Coordinates(4, 2);
+		Coordinates computerBase = new Coordinates(0, 2);
 		Piece playerMain = null;
 		Piece computerMain = null;
 		for (Piece p : player.getPieces()) {
@@ -159,22 +170,28 @@ public class GameController implements Cloneable {
 		}
 		// Capture Main pieces
 		if (!playerMain.isAlive()) {
+			logger.debug("Made it-1");
 			System.out.print("Computer wins!");
 			gameStatus = false;
 			return;
 		}
 		if (!computerMain.isAlive()) {
-			System.out.print("Player wins!");
+			logger.info("Made it-2");
+			System.out.print("Player wins!-1");
 			gameStatus = false;
 			return;
 		}
 		// getting main to opp home base
 		if (playerMain.getPostion().equals(computerBase)) {
-			System.out.print("Player wins!");
+			logger.info("Made it-3");
+			logger.info(playerMain.getPostion().toString());
+			logger.info(computerBase.toString());
+			System.out.print("Player wins-2!");
 			gameStatus = false;
 			return;
 		}
 		if (computerMain.getPostion().equals(playerBase)) {
+			logger.debug("Made it-4");
 			System.out.print("Computer wins!");
 			gameStatus = false;
 			return;
@@ -250,7 +267,9 @@ public class GameController implements Cloneable {
 	  String toReturn="GameStatus: "+this.gameStatus+ "\nPlayer: "+ this.player+"\nComputer: "
 	  		+ " "+this.computer+
 			  "\board "+ this.board+ "\nCenterCard "+ this.centerCard.getNames()+"\nComputer Cards 1 Name"+
-	  		this.computerCards.get(0).getNames()+ "Computer Cards 1 moves"+ this.computerCards.get(0).getCard();
+	  		this.computerCards.get(0).getNames()+ "Computer Cards 2 moves"+ this.computerCards.get(1).getCard()+
+	  		"\n Player cards 1"+ this.playerCards.get(0)+ "\n Player Cards 2"+ this.playerCards.get(1);
+	  
 	  return toReturn;
 		
 	}

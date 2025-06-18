@@ -1,8 +1,10 @@
 package com.chefmania.website_app.Backend.Components;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MoveSet{
-    private static ArrayList<Cards> toUse= new ArrayList<>();
+    private ArrayList<Cards> toUse= new ArrayList<>();
     public MoveSet(){
         initializeAllCards();
     }
@@ -53,7 +55,7 @@ public class MoveSet{
         List<int[]> movesList7 = new ArrayList<>();
         movesList7.add(new int[]{0, 1});  
         movesList7.add(new int[]{0, -1}); 
-        movesList7.add(new int[]{0,-1});
+        movesList7.add(new int[]{0,-2});
         Cards card7 = new Cards("Curry", movesList7);
         toUse.add(card7);
 
@@ -122,11 +124,28 @@ public class MoveSet{
 //       }
         
     }
-    //Return 5 cards that is going to be used for the game
-    private static List<Cards>randomCards;
-    public static List<Cards> getGameCards(){
-        Collections.shuffle(toUse);
-        randomCards=toUse.subList(0,5);
+  //Return 5 cards that is going to be used for the game
+    private List<Cards>randomCards;
+    public void resetRandomCards() {
+        randomCards = null;
+    }
+    public List<Cards> getGameCards(){
+    	if (toUse == null || toUse.size() < 5) {
+            throw new IllegalArgumentException("Not enough cards in toUse to get 5 game cards"+toUse.size());
+        }
+      if(randomCards==null) {
+       List<Cards> copy= new ArrayList<>(toUse);
+       Collections.shuffle(copy);
+       randomCards=new ArrayList<>(copy.subList(0, 5));
+      }
         return randomCards;
+        
+    }
+    public String toString() {
+    	String toTest="";
+    	for(Cards yourCard: toUse) {
+    		toTest+="\n"+ yourCard.toString();
+    	}
+    	return toTest;
     }
 }
