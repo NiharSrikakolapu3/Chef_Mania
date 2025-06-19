@@ -7,6 +7,7 @@ function Board(props) {
     return PiecesList.find((p) => p.name === cell.name);
   }
 
+
   const flippedRows = [...props.data].reverse();
 
   return (
