@@ -113,20 +113,29 @@ public class MoveSet{
         Cards card15 = new Cards("Ice cream", movesList15);
         toUse.add(card15);
         
-//       for(Cards card :toUse) {
-//         for(int[] x:card.getCard()) {
-//           int temp = x[0];
-//           x[0] = x[1];
-//           x[1] = temp;
-//         }
-//       }
+    }
         
+        private List<Cards>randomCards;
+        public void resetRandomCards() {
+            randomCards = null;
+        }
+        public List<Cards> getGameCards(){
+            if (toUse == null || toUse.size() < 5) {
+                throw new IllegalArgumentException("Not enough cards in toUse to get 5 game cards"+toUse.size());
+            }
+          if(randomCards==null) {
+           List<Cards> copy= new ArrayList<>(toUse);
+           Collections.shuffle(copy);
+           randomCards=new ArrayList<>(copy.subList(0, 5));
+          }
+            return randomCards;
+            
+        }
+        public String toString() {
+            String toTest="";
+            for(Cards yourCard: toUse) {
+                toTest+="\n"+ yourCard.toString();
+            }
+            return toTest;
+        }
     }
-    //Return 5 cards that is going to be used for the game
-    private static List<Cards>randomCards;
-    public static List<Cards> getGameCards(){
-        Collections.shuffle(toUse);
-        randomCards=toUse.subList(0,5);
-        return randomCards;
-    }
-}

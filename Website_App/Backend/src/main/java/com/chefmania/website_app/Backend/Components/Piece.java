@@ -5,11 +5,13 @@ public abstract class Piece implements Cloneable{
   // Either Cook --> master or student or chef --> master or student
   protected boolean isChef;
   protected Coordinates position;
+  protected String name;
   
-  public Piece(boolean isChef, Coordinates position) {
+  public Piece(boolean isChef, Coordinates position, String name) {
     this.alive = true;
     this.isChef = isChef;
     this.position = position;
+    this.name = name;
   }
   @Override
   public Piece clone() {
@@ -47,6 +49,12 @@ public abstract class Piece implements Cloneable{
 	  String toReturn="";
 	  toReturn+=position.toString();
 	  return toReturn;
+  }
+  public String getName() {
+    return name;
+  }
+  public void setName(String name) {
+    this.name = name;
   }
   
   

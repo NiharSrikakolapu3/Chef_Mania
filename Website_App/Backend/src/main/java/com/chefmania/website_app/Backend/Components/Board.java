@@ -7,17 +7,17 @@ public class Board implements Cloneable {
     // COOK SIDE
     for (int i = 0; i < board.length; i++) {
       if (i == 2) {
-        board[0][i] = new MainPiece(true, new Coordinates(0, i));
+        board[0][i] = new MainPiece(true, new Coordinates(0, i), "MasterBlue");
       } else {
-        board[0][i] = new SecondaryPiece(true, new Coordinates(0, i));
+        board[0][i] = new SecondaryPiece(true, new Coordinates(0, i),"StudentBlue");
       }
     }
     // CHEF SIDE
     for (int i = 0; i < board.length; i++) {
       if (i == 2) {
-        board[4][i] = new MainPiece(false, new Coordinates(4, i));
+        board[4][i] = new MainPiece(false, new Coordinates(4, i), "MasterRed");
       } else {
-        board[4][i] = new SecondaryPiece(false, new Coordinates(4, i));
+        board[4][i] = new SecondaryPiece(false, new Coordinates(4, i), "StudentRed");
       }
     }
   }
@@ -29,10 +29,10 @@ public class Board implements Cloneable {
         if (other.board[i][j] != null) {
           if (other.board[i][j] instanceof SecondaryPiece) {
             this.board[i][j] =
-                new SecondaryPiece(other.board[i][j].isChef(), other.board[i][j].position);
+                new SecondaryPiece(other.board[i][j].isChef(), other.board[i][j].position, other.board[i][j].name);
           } else {
             this.board[i][j] =
-                new MainPiece(other.board[i][j].isChef(), other.board[i][j].position);
+                new MainPiece(other.board[i][j].isChef(), other.board[i][j].position, other.board[i][j].name);
           }
         }
       }

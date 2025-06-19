@@ -34,7 +34,7 @@ public class RestFulGameAPI {
   }
   
   //game game instance
-  @GetMapping()
+  @GetMapping("/gameRunning")
   public GameController getGameInstance() {
     return service.getGame();
   }

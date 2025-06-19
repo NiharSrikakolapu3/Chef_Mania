@@ -31,10 +31,10 @@ public class Player {
     	List<Piece> copiedPieces = new ArrayList<>();
     	for (Piece p : player.getPieces()) {
     		if(p instanceof SecondaryPiece) {
-    	    copiedPieces.add(new SecondaryPiece(p.isChef(),p.getPostion()));
+    	    copiedPieces.add(new SecondaryPiece(p.isChef(),p.getPostion(), p.getName()));
     		}
     		else {
-    			copiedPieces.add(new MainPiece(p.isChef(),p.getPostion()));	
+    			copiedPieces.add(new MainPiece(p.isChef(),p.getPostion(), p.getName()));	
     		}
     	}
     	this.pieces = copiedPieces;

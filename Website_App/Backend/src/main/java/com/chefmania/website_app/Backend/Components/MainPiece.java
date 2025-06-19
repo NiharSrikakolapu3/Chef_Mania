@@ -5,8 +5,8 @@ package com.chefmania.website_app.Backend.Components;
  * Master Chef or Master Cook
  */
 public class MainPiece extends Piece{
-  public MainPiece(boolean isChef, Coordinates position) {
-    super(isChef, position);
+  public MainPiece(boolean isChef, Coordinates position, String name) {
+    super(isChef, position,name);
   }
   
   // --> did it reach the winning place of the opponent MainPiece
@@ -15,7 +15,7 @@ public class MainPiece extends Piece{
   }
   
   public MainPiece clone(){
-	  return new MainPiece(this.isChef,this.position);
+	  return new MainPiece(this.isChef,this.position, this.name);
 	}
 
 }

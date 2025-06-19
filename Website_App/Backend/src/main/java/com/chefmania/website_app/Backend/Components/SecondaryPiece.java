@@ -5,12 +5,12 @@ package com.chefmania.website_app.Backend.Components;
  */
 public class SecondaryPiece extends Piece{
 
-  public SecondaryPiece(boolean isChef, Coordinates position) {
-    super(isChef, position);
+  public SecondaryPiece(boolean isChef, Coordinates position, String name) {
+    super(isChef, position, name);
   }
   
   public SecondaryPiece clone(){
-	  return new SecondaryPiece(this.isChef,this.position);
+	  return new SecondaryPiece(this.isChef,this.position, this.name);
 	}
   
 }

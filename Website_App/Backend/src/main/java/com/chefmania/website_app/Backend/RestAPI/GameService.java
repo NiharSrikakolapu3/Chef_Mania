@@ -36,14 +36,7 @@ public class GameService {
 	  return this.game.getComputer().getCards();
 	}
   public void makeMove(Coordinates from, Coordinates to, Cards cardUsed, Player currentMovingPlayer) {
-   
-//    if (currentPlayerMoving == null) {
-//      if (game.getCurrentTurnLabel().equalsIgnoreCase("player")) {
-//          currentPlayerMoving = game.getPlayer();
-//      } else {
-//          currentPlayerMoving = game.getComputer();
-//      }
-//  }
+  
   game.makeMove(from, to, cardUsed, currentMovingPlayer);
 }
   public String getTurn() {

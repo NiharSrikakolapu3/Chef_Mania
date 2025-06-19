@@ -1,40 +1,64 @@
-
 package com.chefmania.website_app.Backend.Components;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.springframework.stereotype.Component;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 
 public class Cards {
     private String name;
     private List<int[]> moves;
 
-    
+
     public Cards() {
         this.moves = new ArrayList<>();
     }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cards)) return false;
 
-    
+        Cards other = (Cards) o;
+        if (!this.name.equals(other.name)) return false;
+
+        // Deep comparison of moves
+        if (this.moves.size() != other.moves.size()) return false;
+        for (int i = 0; i < this.moves.size(); i++) {
+            int[] thisMove = this.moves.get(i);
+            int[] otherMove = other.moves.get(i);
+            if (thisMove[0] != otherMove[0] || thisMove[1] != otherMove[1]) return false;
+        }
+
+        return true;
+    }
+
+//    @Override
+//    public int hashCode() {
+//        int result = name.hashCode();
+//        for (int[] move : moves) {
+//            result = 31 * result + move[0];
+//            result = 31 * result + move[1];
+//        }
+//        return result;
+//    }
+//
+
     public Cards(String name, List<int[]> moves) {
         this.name = name;
         this.moves = moves;
     }
 
-    
-    
+
+
     public String getNames() {
         return name;
     }
 
-   
+
     public void setNames(String name) {
         this.name = name;
     }
 
-    
+
     public List<int[]> getCard() {
         List<int[]> copy = new ArrayList<>();
         for (int[] move : this.moves) {
@@ -43,7 +67,7 @@ public class Cards {
         return copy;
     }
 
-  
+
     public void setCard(List<int[]> moves) {
         this.moves = moves;
     }
@@ -72,4 +96,3 @@ public class Cards {
         return " " + this.getNames() + " " + this.getCard();
     }
 }
-
