@@ -12,6 +12,7 @@ public class ChefManiaApplication {
   public static void main(String[] args) {
     SpringApplication.run(ChefManiaApplication.class, args);
   }
+  
   @Bean
   public WebMvcConfigurer corsConfigurer() {
     return new WebMvcConfigurer() {
