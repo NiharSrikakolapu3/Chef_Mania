@@ -1,5 +1,4 @@
-import { PiecesList } from "./Pieces";
-
+import { PiecesList } from "../GameUi/Pieces";
 function Board(props) {
   function getPiece(cell) {
     if (!cell || !cell.alive) return null;

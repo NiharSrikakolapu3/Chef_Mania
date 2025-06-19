@@ -3,7 +3,7 @@ const blueChef = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -0.5 128 128"
-      shape-rendering="crispEdges"
+      shapeRendering="crispEdges"
       className="transform -translate-x-21  -translate-y-17"
     >
       <metadata>
@@ -155,7 +155,7 @@ const redChef = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -0.5 128 128"
-      shape-rendering="crispEdges"
+      shapeRendering="crispEdges"
       className="transform -translate-x-21  -translate-y-17"
     >
       <metadata>
@@ -305,7 +305,7 @@ const studentBlue = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -0.5 128 128"
-      shape-rendering="crispEdges"
+      shapeRendering="crispEdges"
       className="transform -translate-x-26  -translate-y-15"
     >
       <metadata>
@@ -424,7 +424,7 @@ const studentRed = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -0.5 128 128"
-      shape-rendering="crispEdges"
+      shapeRendering="crispEdges"
       className="transform -translate-x-17  -translate-y-20"
     >
       <metadata>
@@ -492,7 +492,3 @@ export const PiecesList = [
   { name: "StudentBlue", img: studentBlue, chef: false },
   { name: "StudentRed", img: studentRed, chef: true },
 ];
-
-function Pieces() {
-  return <div></div>;
-}
