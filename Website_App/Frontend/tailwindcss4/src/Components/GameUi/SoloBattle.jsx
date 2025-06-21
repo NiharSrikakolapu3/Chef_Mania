@@ -89,7 +89,7 @@ export default function SoloBattle() {
             <Board data={board} />
             {centerCard && (
               <div className="absolute translate-x-160 translate-y-5 hover:scale-105 transition duration-300">
-                <div className="bg-[#3a3d40] p-3 rounded-xl shadow-2xl border-2 border-amber-400">
+                <div className="bg-[#373a3d] p-3 rounded-xl shadow-2xl border-2 border-amber-400">
                   {getCard(centerCard.names)}
                 </div>
               </div>
