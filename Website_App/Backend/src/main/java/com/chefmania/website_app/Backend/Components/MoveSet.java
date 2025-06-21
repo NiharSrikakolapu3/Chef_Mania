@@ -34,7 +34,7 @@ public class MoveSet{
         List<int[]> movesList4 = new ArrayList<>();
         movesList4.add(new int[]{0, 1});  
         movesList4.add(new int[]{0, -1}); 
-        movesList4.add(new int[]{0, 2});
+        movesList4.add(new int[]{1,2});
         Cards card4 = new Cards("Hotdog", movesList4);
         toUse.add(card4);
 
@@ -62,7 +62,7 @@ public class MoveSet{
         List<int[]> movesList8 = new ArrayList<>();
         movesList8.add(new int[]{0,1});  
         movesList8.add(new int[]{0,-1}); 
-        movesList8.add(new int[]{0,-2});
+        movesList8.add(new int[]{1,-2});
         Cards card8 = new Cards("Sushi", movesList8);
         toUse.add(card8);
 

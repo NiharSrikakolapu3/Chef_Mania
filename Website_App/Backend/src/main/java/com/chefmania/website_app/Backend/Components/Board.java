@@ -7,17 +7,17 @@ public class Board implements Cloneable {
     // COOK SIDE
     for (int i = 0; i < board.length; i++) {
       if (i == 2) {
-        board[0][i] = new MainPiece(true, new Coordinates(0, i), "MasterBlue");
+        board[4][i] = new MainPiece(false, new Coordinates(4, i), "MasterBlue");
       } else {
-        board[0][i] = new SecondaryPiece(true, new Coordinates(0, i),"StudentBlue");
+        board[4][i] = new SecondaryPiece(false, new Coordinates(4, i),"StudentBlue");
       }
     }
     // CHEF SIDE
     for (int i = 0; i < board.length; i++) {
       if (i == 2) {
-        board[4][i] = new MainPiece(false, new Coordinates(4, i), "MasterRed");
+        board[0][i] = new MainPiece(true, new Coordinates(0, i), "MasterRed");
       } else {
-        board[4][i] = new SecondaryPiece(false, new Coordinates(4, i), "StudentRed");
+        board[0][i] = new SecondaryPiece(true, new Coordinates(0, i), "StudentRed");
       }
     }
   }

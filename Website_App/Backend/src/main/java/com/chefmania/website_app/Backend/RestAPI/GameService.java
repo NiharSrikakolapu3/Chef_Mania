@@ -22,11 +22,16 @@ public class GameService {
   public GameController getGame() {
     return this.game;
   }
-  
+//Making this so the Api can call this and highlight all valid squares
+
+	public List<Coordinates> cardValidMoves(Cards yourCard, Coordinates yourPieces,boolean isChef){
+		return game.cardValidMoves(yourCard,yourPieces,isChef);
+	}
+
   public Board getBoard() {
 	  return this.game.getBoard();
   }
-  public Cards getCentedCard() {
+  public Cards getCenterCard() {
 	  return this.game.getCenterCard();
   }
   public List<Cards> getPlayerCards() {
@@ -36,8 +41,7 @@ public class GameService {
 	  return this.game.getComputer().getCards();
 	}
   public void makeMove(Coordinates from, Coordinates to, Cards cardUsed, Player currentMovingPlayer) {
-  
-  game.makeMove(from, to, cardUsed, currentMovingPlayer);
+	  game.makeMove(from, to, cardUsed, currentMovingPlayer);
 }
   public String getTurn() {
 	return game.getCurrentTurnLabel();
@@ -45,7 +49,10 @@ public class GameService {
   public boolean gameStatus(){
 	  return game.getGameStatus();
   }
- 
+  public String getCurrentTurnLabel() {
+	    return game.getCurrentTurnLabel();
+  	}
+
   public void quitGame() {
 	  this.game=null;
   }
