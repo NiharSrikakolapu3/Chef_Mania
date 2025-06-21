@@ -1,5 +1,4 @@
 package com.chefmania.website_app.Backend.RestAPI;
-
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 
