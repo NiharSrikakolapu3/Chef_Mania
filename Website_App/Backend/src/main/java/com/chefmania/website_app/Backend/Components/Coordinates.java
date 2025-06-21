@@ -4,7 +4,7 @@ package com.chefmania.website_app.Backend.Components;
 import org.springframework.stereotype.Component;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class Coordinates implements Cloneable{
+public class Coordinates {
   //Current piece coordinate in board
   private int x;
   private int y;
