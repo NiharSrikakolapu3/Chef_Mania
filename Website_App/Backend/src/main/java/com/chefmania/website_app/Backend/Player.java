@@ -11,7 +11,8 @@ import com.chefmania.website_app.Backend.Components.SecondaryPiece;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Player {
-    private List<Cards> yourCards;
+  @JsonProperty("cards")
+    private List<Cards> cards = new ArrayList<>();
     private List<Piece> pieces;
     private boolean hasWon = false;
     @JsonProperty("chef")
@@ -22,7 +23,7 @@ public class Player {
     }
 
     public Player(boolean isChef, List<Piece> pieces,List<Cards> yourCards ) {
-        this.yourCards =yourCards;
+        this.cards =yourCards;
         this.pieces = pieces;
         this.isChef = isChef;
     }
@@ -38,29 +39,19 @@ public class Player {
     		}
     	}
     	this.pieces = copiedPieces;
-    	this.yourCards = new ArrayList<>();
+    	this.cards = new ArrayList<>();
     	for (Cards c : player.getCards()) {
 //    	    List<int[]> copiedMoves = new ArrayList<>();
 //    	    for (int[] move : c.getCard()) {
 //    	        copiedMoves.add(new int[] { move[0], move[1] });
 //    	    }
 //    	    this.yourCards.add(new Cards(c.getNames(), copiedMoves));
-    	  this.yourCards.add(c);
+    	  this.cards.add(c);
     	}
     	  this.isChef=player.isChef;
     	  this.hasWon=player.hasWon;
     }
 
-  public List<List<Coordinates>> succ(Board board, List<Cards> cards, List<Piece> pieces) {
-      List<List<Coordinates>> results = new ArrayList<>();
-      for (Cards card : cards) {
-          for (Piece piece : pieces) {
-              List<Coordinates> moves = card.getAllValidMoves(piece.getPostion(), this.isChef());
-              results.add(moves);
-          }
-      }
-      return results;
-  }
  
   public List<Piece> getPieces() {
       return pieces;
@@ -73,12 +64,15 @@ public class Player {
 
 
   public List<Cards> getCards() {
-      return yourCards;
-  }
+    if (cards == null) {
+      cards = new ArrayList<>();
+    }
+    return cards;
+}
   
  
-  public void setYourCards(List<Cards> yourCards) {
-      this.yourCards = yourCards;
+  public void setCards(List<Cards> cards) {
+      this.cards = cards;
   }
   
  
@@ -101,12 +95,12 @@ public class Player {
   }
 
     public void drawCard(Cards yourCard) {
-      yourCards.add(yourCard);
+      cards.add(yourCard);
   }
 
     // Draw from the middle
     public void exchangeCards(Cards currentUsedCard, Cards newCardInMiddle) {
-        yourCards.remove(currentUsedCard);
+      cards.remove(currentUsedCard);
         drawCard(newCardInMiddle);
     }
     @Override

@@ -56,4 +56,9 @@ public class GameService {
   public void quitGame() {
 	  this.game=null;
   }
+  
+  public void setState(GameController state) {
+    this.game.setState(state);
+  }
+  
 }

@@ -148,6 +148,9 @@ public class GameController implements Cloneable {
         centerCard = cardUsed;
         checkVictoryConditions();
         currentTurn = (currentTurn == player) ? computer : player;
+        
+        // call computer method best move
+         // update the gameController (aka the new state after the AI moved) 
     }
 
     private void checkVictoryConditions() {
@@ -267,6 +270,19 @@ public class GameController implements Cloneable {
 
     public List<Coordinates> cardValidMoves(Cards yourCard, Coordinates yourPieces, boolean isChef) {
         return yourCard.getAllValidMoves(yourPieces, isChef);
+    }
+    
+    public void setState(GameController state) {
+      this.board = state.board;
+      this.centerCard = state.centerCard;
+      this.computer = state.computer;
+      this.player = state.player;
+      this.currentTurn = state.currentTurn;
+      this.gameStatus = state.gameStatus;
+      this.currentTurnLabel = state.currentTurnLabel;
+      this.playerCards = state.playerCards;
+      this.computerCards = state.computerCards;
+
     }
 
     @Override

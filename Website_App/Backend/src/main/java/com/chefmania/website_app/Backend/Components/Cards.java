@@ -2,16 +2,22 @@ package com.chefmania.website_app.Backend.Components;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.chefmania.website_app.Backend.Json.IntArrayListDeserializer;
 
 public class Cards {
+    @JsonProperty("names")
     private String name;
+    @JsonProperty("card")
+    @JsonDeserialize(using = IntArrayListDeserializer.class)
     private List<int[]> moves;
-
-
+    
     public Cards() {
         this.moves = new ArrayList<>();
     }
+  
+   
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -31,16 +37,6 @@ public class Cards {
         return true;
     }
 
-//    @Override
-//    public int hashCode() {
-//        int result = name.hashCode();
-//        for (int[] move : moves) {
-//            result = 31 * result + move[0];
-//            result = 31 * result + move[1];
-//        }
-//        return result;
-//    }
-//
 
     public Cards(String name, List<int[]> moves) {
         this.name = name;
