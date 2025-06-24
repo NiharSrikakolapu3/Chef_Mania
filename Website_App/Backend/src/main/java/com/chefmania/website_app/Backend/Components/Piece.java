@@ -1,5 +1,16 @@
 package com.chefmania.website_app.Backend.Components;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+    use = JsonTypeInfo.Id.NAME, 
+    include = JsonTypeInfo.As.PROPERTY, 
+    property = "type"
+)
+@JsonSubTypes({
+    @JsonSubTypes.Type(value = MainPiece.class, name = "main"),
+    @JsonSubTypes.Type(value = SecondaryPiece.class, name = "secondary")
+})
 public abstract class Piece implements Cloneable{
   protected boolean alive;
   // Either Cook --> master or student or chef --> master or student

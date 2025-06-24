@@ -2,7 +2,8 @@ package com.chefmania.website_app.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
@@ -11,9 +12,13 @@ import com.chefmania.website_app.Backend.Components.Piece;
 
 
 public class Computer extends Player {
-  private Board boardState = null;
   int maxDepth;
   int minDepth;
+  private static final Logger logger = LoggerFactory.getLogger(GameController.class);
+  
+  public Computer() {
+    
+  }
 
   public Computer(boolean isChef, List<Piece> pieces, List<Cards> yourCards) {
     super(isChef, pieces, yourCards);
@@ -35,6 +40,7 @@ public class Computer extends Player {
    *
    */
   public List<List<GameController>> succComputer(GameController passedStatus) {
+    logger.info("made it to succ");
     List<List<GameController>> results = new ArrayList<>();
     System.out.println(passedStatus.computerCards);
 
@@ -42,16 +48,21 @@ public class Computer extends Player {
       List<GameController> tempStorage = new ArrayList<>();
       for (Piece piece : passedStatus.getComputer().getPieces()) {
         for (Coordinates position : computerCard.getAllValidMoves(piece.getPostion(), true)) {
-
+         
           // Create new deep copy for this individual move
           GameController currentStatus = new GameController(passedStatus);
-          List<Piece> computerPieces = currentStatus.getPieces(true);
-          List<Piece> playersPieces = currentStatus.getPieces(false);
+          //logger.info("status: " + currentStatus.getBoard().toString());
+          List<Piece> computerPieces = currentStatus.getComputer().getPieces();
+         
+          List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
+        
           Board currentBoard = currentStatus.getBoard();
-
+         
           // Find the copied piece on the new board
           Piece currentPiece = null;
+          
           for (Piece computerP : computerPieces) {
+            
             if (piece.getPostion().equals(computerP.getPostion())) {
               currentPiece = computerP;
               break;
@@ -63,7 +74,7 @@ public class Computer extends Player {
           // Validate move
           if (!currentBoard.possibleMove(currentPiece, position))
             continue;
-
+         
           // Execute move
           Piece opponentPiece = currentBoard.getPiece(position);
           if (opponentPiece != null) {
@@ -73,12 +84,21 @@ public class Computer extends Player {
             }
           }
           currentBoard.movePiece(currentPiece, position);
+         
+          logger.info("Before exchange, computer cards count: {}", currentStatus.getComputer().getCards().size());
+          logger.info("Computer cards: {}", currentStatus.getComputer().getCards());
 
-          // Update center card
-          System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
-          currentStatus.setCenterCard(computerCard);
+          currentStatus.getComputer().exchangeCards(computerCard, currentStatus.getCenterCard());
+          logger.info("After exchange, computer cards count: {}", currentStatus.getComputer().getCards().size());
+          logger.info("Computer cards: {}", currentStatus.getComputer().getCards());
+
+
+
+
+         
+
           // Set turn to Player
-          currentStatus.setWhoseTurn(currentStatus.getPlayer());
+         
           if (currentStatus.getCurrentTurn() instanceof Player) {
             System.out.print("Yes");
           }
@@ -88,9 +108,10 @@ public class Computer extends Player {
           // Sets the current Computer Pieces
           currentStatus.setPieces(computerPieces);
           System.out.println("Current centerCard " + currentStatus.getCenterCard().toString());
-
+          
           // Store this move result
           tempStorage.add(currentStatus);
+          
         }
       }
       results.add(tempStorage);
@@ -109,8 +130,8 @@ public class Computer extends Player {
 
           // Create new deep copy for this individual move
           GameController currentStatus = new GameController(passedStatus);
-          List<Piece> computerPieces = currentStatus.getPieces(true);
-          List<Piece> playersPieces = currentStatus.getPieces(false);
+          List<Piece> computerPieces = currentStatus.getComputer().getPieces();
+          List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
           Board currentBoard = currentStatus.getBoard();
 
           // Find the copied piece on the new board
@@ -140,7 +161,10 @@ public class Computer extends Player {
 
           // Update center card
           System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
-          currentStatus.setCenterCard(playerCard);
+          currentStatus.getPlayer().exchangeCards(playerCard, currentStatus.getCenterCard());
+        
+         
+
           // Set turn to Player
           currentStatus.setWhoseTurn(currentStatus.getPlayer());
           if (currentStatus.getCurrentTurn() instanceof Player) {
@@ -171,6 +195,30 @@ public class Computer extends Player {
     double playerCount = playerPiece.size();
 
     return (computerCount - playerCount) * 0.24;
+  }
+  
+  public GameController bestMoveForComputer(GameController currentState, int maxDepth) {
+    // Computer turn rn
+    this.maxDepth = maxDepth;
+    //1. Get all possible moves computer can do --> from succComputerMethod
+    //2. use minValue to get players next moves for the computer 
+    // computer = high values(alpha), player = low value(beta)
+    
+    List<List<GameController>> allMoves = succComputer(currentState);
+    logger.info("All computer move " + allMoves);
+    GameController bestMove = null;
+    double alpha = -10000000;
+    double beta = 10000000;
+    for(List<GameController> movesList: allMoves) {
+      for(GameController move: movesList) {
+        double value = minValue(move, 1, alpha, beta );
+        if(value > alpha) {
+          alpha = value;
+          bestMove = move;
+        }
+      }
+    }
+    return bestMove;
   }
 
   public double maxValue(GameController state, double depth, double alpha, double beta) {
@@ -211,5 +259,21 @@ public class Computer extends Player {
 
     }
     return beta;
+  }
+
+  public int getMaxDepth() {
+    return maxDepth;
+  }
+
+  public int getMinDepth() {
+    return minDepth;
+  }
+
+  public void setMaxDepth(int maxDepth) {
+    this.maxDepth = maxDepth;
+  }
+
+  public void setMinDepth(int minDepth) {
+    this.minDepth = minDepth;
   }
 }

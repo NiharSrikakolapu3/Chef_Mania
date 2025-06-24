@@ -14,8 +14,10 @@ public class MainPiece extends Piece{
    return this.position.equals(opponenetMainPiecePostion);    
   }
   
-  public MainPiece clone(){
-	  return new MainPiece(this.isChef,this.position, this.name);
-	}
+  @Override
+  public MainPiece clone() {
+      return (MainPiece) super.clone();
+  }
+
 
 }

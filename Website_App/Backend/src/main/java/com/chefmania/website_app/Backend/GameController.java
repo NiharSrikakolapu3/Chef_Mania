@@ -2,7 +2,7 @@ package com.chefmania.website_app.Backend;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -130,25 +130,29 @@ public class GameController implements Cloneable {
     }
 
     public void makeMove(Coordinates from, Coordinates to, Cards cardUsed, Player currentPlayerMoving) {
-        if (gameStatus != true) {
-            throw new IllegalArgumentException("game is not active!");
-        }
+      if (!gameStatus) {
+          throw new IllegalArgumentException("game is not active!");
+      }
 
-        Piece piece = board.getPiece(from);
-        if (piece == null || piece.isChef() != currentPlayerMoving.isChef()) {
-            throw new IllegalArgumentException("Invalid piece selected! "+ piece.isChef()+"CurerentPlayerMoving"+ currentPlayerMoving.isChef());
-        }
+      Piece piece = board.getPiece(from);
+      if (piece == null || piece.isChef() != currentPlayerMoving.isChef()) {
+          throw new IllegalArgumentException("Invalid piece selected!");
+      }
 
-        List<Coordinates> validMovesForCard = cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
-        if (!validMovesForCard.contains(to)) {
-            throw new IllegalArgumentException("Invalid move! From is" + from + "To is " + to + "cardUsed is " + cardUsed + "currentPlayerMoving is " + currentPlayerMoving);
-        }
-        board.movePiece(piece, to);
-        currentPlayerMoving.exchangeCards(cardUsed, centerCard);
-        centerCard = cardUsed;
-        checkVictoryConditions();
-        currentTurn = (currentTurn == player) ? computer : player;
-    }
+      List<Coordinates> validMovesForCard = cardUsed.getAllValidMoves(from, currentPlayerMoving.isChef());
+      if (!validMovesForCard.contains(to)) {
+          throw new IllegalArgumentException("Invalid move!");
+      }
+
+      board.movePiece(piece, to); 
+      currentPlayerMoving.exchangeCards(cardUsed, centerCard);
+      centerCard = cardUsed;
+
+     
+      checkVictoryConditions();
+      changeTurn();
+  }
+
 
     private void checkVictoryConditions() {
         // if they kill opp mainPiece
@@ -171,44 +175,42 @@ public class GameController implements Cloneable {
         }
         // Capture Main pieces
         if (!playerMain.isAlive()) {
-            logger.debug("Made it-1");
+          
             System.out.print("Computer wins!");
             gameStatus = false;
             return;
         }
         if (!computerMain.isAlive()) {
-            logger.info("Made it-2");
+            
             System.out.print("Player wins!-1");
             gameStatus = false;
             return;
         }
         // getting main to opp home base
         if (playerMain.getPostion().equals(computerBase)) {
-            logger.info("Made it-3");
-            logger.info(playerMain.getPostion().toString());
-            logger.info(computerBase.toString());
+            
             System.out.print("Player wins-2!");
             gameStatus = false;
             return;
         }
         if (computerMain.getPostion().equals(playerBase)) {
-            logger.debug("Made it-4");
+           
             System.out.print("Computer wins!");
             gameStatus = false;
             return;
         }
     }
 
-    // USE IF NEEDED FOR PLAYER VS PLAYER
-    private static final Random goesFirst = new Random();
-
-    public String coinFlip() {
-        if (goesFirst.nextBoolean()) {
-            return "Heads";
-        } else {
-            return "Tails";
-        }
-    }
+//    // USE IF NEEDED FOR PLAYER VS PLAYER
+//    private static final Random goesFirst = new Random();
+//
+//    public String coinFlip() {
+//        if (goesFirst.nextBoolean()) {
+//            return "Heads";
+//        } else {
+//            return "Tails";
+//        }
+//    }
 
     public Player getCurrentTurn() {
         return currentTurn;
@@ -216,6 +218,7 @@ public class GameController implements Cloneable {
 
     public void changeTurn() {
         this.currentTurn = (currentTurn == player) ? computer : player;
+        currentTurnLabel = (currentTurn == player) ? "Player" : "Computer";
     }
 
     public Board getBoard() {
@@ -241,12 +244,7 @@ public class GameController implements Cloneable {
     public void setBoard(Board board) {
         this.board = board;
     }
-
-    public void setCenterCard(Cards usedCard) {
-        this.computerCards.remove(usedCard);
-        this.computerCards.add(centerCard);
-        this.centerCard = usedCard;
-    }
+    
 
     public void setGameStatus(boolean gameStatus) {
         this.gameStatus = gameStatus;
@@ -259,6 +257,8 @@ public class GameController implements Cloneable {
     public void setWhoseTurn(Player turn) {
         this.currentTurn = turn;
     }
+    
+   
 
     public String getCurrentTurnLabel() {
         return this.currentTurnLabel;
@@ -267,6 +267,19 @@ public class GameController implements Cloneable {
 
     public List<Coordinates> cardValidMoves(Cards yourCard, Coordinates yourPieces, boolean isChef) {
         return yourCard.getAllValidMoves(yourPieces, isChef);
+    }
+    
+    public void setState(GameController state) {
+      this.board = state.board;
+      this.centerCard = state.centerCard;
+      this.computer = state.computer;
+      this.player = state.player;
+      this.currentTurn = state.currentTurn;
+      this.gameStatus = state.gameStatus;
+      this.currentTurnLabel = state.currentTurnLabel;
+      this.playerCards = state.playerCards;
+      this.computerCards = state.computerCards;
+
     }
 
     @Override

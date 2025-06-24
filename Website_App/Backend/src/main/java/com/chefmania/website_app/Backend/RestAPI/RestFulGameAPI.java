@@ -2,7 +2,8 @@
 package com.chefmania.website_app.Backend.RestAPI;
 
 import java.util.List;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
+import com.chefmania.website_app.Backend.Computer;
 import com.chefmania.website_app.Backend.GameController;
 import com.chefmania.website_app.Backend.Player;
 
@@ -24,7 +26,7 @@ import com.chefmania.website_app.Backend.Player;
 @RestController
 @RequestMapping("/api/game")
 public class RestFulGameAPI {
-
+  private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final GameService service;
 
     public RestFulGameAPI(GameService service) {
@@ -95,6 +97,19 @@ public class RestFulGameAPI {
 
         return service.getGame();
     }
+    
+    @PostMapping("/computerMove")
+    public GameController makeComputerMove() {
+        GameController currentState = service.getGame(); 
+        Computer computer = currentState.getComputer();
+        GameController afterComputerMove = computer.bestMoveForComputer(currentState, 4);
+        afterComputerMove.changeTurn();
+        service.setState(afterComputerMove);
+        return service.getGame();  
+    }
+
+    
+    
 
     @DeleteMapping("/reset")
     public void concede() {

@@ -9,8 +9,10 @@ public class SecondaryPiece extends Piece{
     super(isChef, position, name);
   }
   
-  public SecondaryPiece clone(){
-	  return new SecondaryPiece(this.isChef,this.position, this.name);
-	}
+  @Override
+  public SecondaryPiece clone() {
+      return (SecondaryPiece) super.clone();
+  }
+
   
 }
