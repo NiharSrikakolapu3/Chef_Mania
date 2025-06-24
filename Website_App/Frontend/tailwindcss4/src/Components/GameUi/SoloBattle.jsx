@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import Board from "./Board";
 
-
 import {
   createNewGame,
   getBoard,
@@ -11,6 +10,8 @@ import {
   getCurrentTurn,
   putMovePiece,
   getValidMoves,
+  getGame,
+  getComputerMove,
 } from "../GameApi/GameApiService";
 
 import { gameCardsLists } from "../LaunchPageUI/GameCards";
@@ -23,10 +24,11 @@ export default function SoloBattle() {
   const [playerCards, setPlayerCards] = useState([]);
   const [computerCards, setComputerCards] = useState([]);
   const [centerCard, setCenterCard] = useState(null);
-  const [currentTurn, setCurrentTurn] = useState(null);
+  const [currentTurn, setCurrentTurn] = useState("");
   const [progress, setProgress] = useState(0);
   const [gameReady, setGameReady] = useState(false);
   const [validMoves, setValidMoves] = useState([]);
+  const [currentState, setCurrentState] = useState({});
 
   useEffect(() => {
     if (progress < 100) {
@@ -38,15 +40,20 @@ export default function SoloBattle() {
   }, [progress, gameReady]);
 
   useEffect(() => {
+    if (currentState !== null) {
+      console.log("State actually updated:", currentState);
+    }
+  }, [currentState]);
+
+  useEffect(() => {
     console.log("Selection updated:", {
       card: selectedCard?.names,
       piece: selectedPiece,
-      turn: currentTurn
+      turn: currentTurn,
     });
 
     if (selectedCard && selectedPiece && currentTurn === "Player") {
       if (selectedPiece.x === undefined || selectedPiece.y === undefined) {
-        console.error("Invalid piece coordinates:", selectedPiece);
         setError("Selected piece has invalid coordinates");
         return;
       }
@@ -57,39 +64,44 @@ export default function SoloBattle() {
   async function loadGameData() {
     try {
       setError(null);
-      await createNewGame();
-      const [boardRes, playerRes, compRes, centerRes, currentTurnRes] =
-        await Promise.all([
-          getBoard(),
-          getPlayerCards(),
-          getComputerCards(),
-          getCenterCard(),
-          getCurrentTurn(),
-        ]);
+      const theCurrentState = await createNewGame();
+      setCurrentState(theCurrentState);
+
+      // Now load all necessary data after new game creation
+      const [
+        boardData,
+        playerCardsData,
+        computerCardsData,
+        centerCardData,
+        currentTurnData,
+      ] = await Promise.all([
+        getBoard(),
+        getPlayerCards(),
+        getComputerCards(),
+        getCenterCard(),
+        getCurrentTurn(),
+      ]);
 
       console.log("Game initialized:", {
-        board: boardRes.data?.board,
-        playerCards: playerRes.data,
-        computerCards: compRes.data,
-        centerCard: centerRes.data,
-        turn: currentTurnRes.data
+        board: boardData.data.board,
+        playerCards: playerCardsData.data,
+        computerCards: computerCardsData.data,
+        centerCard: centerCardData.data,
+        turn: currentTurnData.data,
       });
 
-      setBoard(boardRes.data?.board);
-      setPlayerCards(playerRes.data);
-      setComputerCards(compRes.data);
-      setCenterCard(centerRes.data);
-      setCurrentTurn(currentTurnRes.data);
+      setBoard(boardData.data.board);
+      setPlayerCards(playerCardsData.data);
+      setComputerCards(computerCardsData.data);
+      setCenterCard(centerCardData.data);
+      setCurrentTurn(currentTurnData.data);
       setGameReady(true);
     } catch (error) {
-      console.error("Game initialization failed:", error);
       setError("Failed to initialize game: " + error.message);
     }
   }
 
-    async function makeMove(from, to, cardUsed) {
-    
-      console.log("Attempting move:", { from, to, cardUsed });
+  async function makeMove(from, to, cardUsed) {
     try {
       if (currentTurn !== "Player") {
         setError("It's not your turn!");
@@ -102,52 +114,80 @@ export default function SoloBattle() {
       }
 
       setError(null);
-     // alert("Made it here 0");
-     await putMovePiece(from, to, cardUsed);
-      //alert("Made it here 3");
-      await new Promise(resolve => setTimeout(resolve, 100)); 
-      // Refresh game state
-      const [boardRes, playerRes, compRes, centerRes, currentTurnRes] =
-        await Promise.all([
-          getBoard(),
-          getPlayerCards(),
-          getComputerCards(),
-          getCenterCard(),
-          getCurrentTurn(),
-        ]);
-      //alert("Made it here");
+      await putMovePiece(from, to, cardUsed);
+      await new Promise((resolve) => setTimeout(resolve, 100)); // small delay for server processing
 
-      setBoard(boardRes.data?.board);
-      setPlayerCards(playerRes.data);
-      setComputerCards(compRes.data);
-      setCenterCard(centerRes.data);
-      setCurrentTurn(currentTurnRes.data);
+      // Refresh game state after player move
+      const [
+        boardData,
+        playerCardsData,
+        computerCardsData,
+        centerCardData,
+        currentTurnData,
+      ] = await Promise.all([
+        getBoard(),
+        getPlayerCards(),
+        getComputerCards(),
+        getCenterCard(),
+        getCurrentTurn(),
+      ]);
+
+      setBoard(boardData.data.board);
+      setPlayerCards(playerCardsData.data);
+      setComputerCards(computerCardsData.data);
+      setCenterCard(centerCardData.data);
+      setCurrentTurn(currentTurnData.data);
       setSelectedPiece(null);
       setSelectedCard(null);
       setValidMoves([]);
-      //alert("Made it here 2");
 
+      // Get the latest game state before asking computer to move
+
+      console.log("What getting sent to computer", currentState);
+      const computerMoveResult = await getComputerMove();
+      console.log("After computer move", computerMoveResult);
+
+      const [
+        boardDataAfter,
+        playerCardsDataAfter,
+        computerCardsDataAfter,
+        centerCardDataAfter,
+        currentTurnDataAfter,
+      ] = await Promise.all([
+        getBoard(),
+        getPlayerCards(),
+        getComputerCards(),
+        getCenterCard(),
+        getCurrentTurn(),
+      ]);
+
+      setBoard(boardDataAfter.data.board);
+      setPlayerCards(playerCardsDataAfter.data);
+      setComputerCards(computerCardsDataAfter.data);
+      setCenterCard(centerCardDataAfter.data);
+      setCurrentTurn(currentTurnDataAfter.data);
+
+      setSelectedPiece(null);
+      setSelectedCard(null);
+      setValidMoves([]);
     } catch (error) {
-      console.error("Move failed:", error);
       setError("Move failed: " + error.message);
     }
   }
 
   async function fetchValidMoves(selectedCard, selectedPiece) {
-  try {
-    setValidMoves([]);
-    const response = await getValidMoves(selectedCard, {
-      x: selectedPiece.x,
-      y: selectedPiece.y
-    });
-    console.log("Valid moves received:", response.data);
-    setValidMoves(response.data);
-  } catch (error) {
-    console.error("Failed to fetch moves:", error);
-    setError("Couldn't get valid moves: " + error.message);
-  }
-}
+    try {
+      setValidMoves([]);
+      const validMovesData = await getValidMoves(selectedCard, {
+        x: selectedPiece.x,
+        y: selectedPiece.y,
+      });
 
+      setValidMoves(validMovesData.data);
+    } catch (error) {
+      setError("Couldn't get valid moves: " + error.message);
+    }
+  }
 
   function getCard(name) {
     const cardData = gameCardsLists.find((card) => card.name === name);
@@ -197,7 +237,7 @@ export default function SoloBattle() {
 
             {centerCard && (
               <div className="absolute translate-x-160 translate-y-5 hover:scale-105 transition duration-300">
-                <div className="bg-[#3a3d40] p-3 rounded-xl shadow-2xl border-2 border-amber-400">
+                <div className="bg-[#373a3d] p-3 rounded-xl shadow-2xl border-2 border-amber-400">
                   {getCard(centerCard.names)}
                 </div>
               </div>
@@ -215,12 +255,12 @@ export default function SoloBattle() {
                   }
                 }}
                 className={`cursor-pointer hover:scale-105 transform transition duration-300
-                  ${
-                    selectedCard?.names === card.names
-                      ? "border-4 border-green-400"
-                      : "border-2 border-blue-500 hover:border-blue-400"
-                  }
-                `}
+                    ${
+                      selectedCard?.names === card.names
+                        ? "border-4 border-green-400"
+                        : "border-2 border-blue-500 hover:border-blue-400"
+                    }
+                  `}
               >
                 <div className="bg-[#2c2f34] p-3 rounded-xl shadow-lg">
                   {getCard(card.names)}
@@ -234,13 +274,15 @@ export default function SoloBattle() {
             <h3 className="font-bold mb-2">Debug Info:</h3>
             <div>Selected Card: {selectedCard?.names || "None"}</div>
             <div>
-              Selected Piece: {selectedPiece ? 
-                `X:${selectedPiece.x}, Y:${selectedPiece.y}` : "None"}
+              Selected Piece:{" "}
+              {selectedPiece
+                ? `X:${selectedPiece.x}, Y:${selectedPiece.y}`
+                : "None"}
             </div>
             <div>Current Turn: {currentTurn}</div>
             <div>
-              Valid Moves: {validMoves.length > 0 ? 
-                JSON.stringify(validMoves) : "None"}
+              Valid Moves:{" "}
+              {validMoves.length > 0 ? JSON.stringify(validMoves) : "None"}
             </div>
             {error && <div className="text-red-400 mt-2">Error: {error}</div>}
           </div>
