@@ -16,6 +16,15 @@ public class Cards {
     public Cards() {
         this.moves = new ArrayList<>();
     }
+    
+    public Cards(Cards other) {
+      this.name = other.name;
+      this.moves = new ArrayList<>();
+      for (int[] move : other.moves) {
+          this.moves.add(new int[]{move[0], move[1]});
+      }
+  }
+
   
    
     @Override
@@ -35,6 +44,11 @@ public class Cards {
         }
 
         return true;
+    }
+    
+    @Override
+    public int hashCode() {
+        return getNames().hashCode();
     }
 
 

@@ -22,7 +22,7 @@ public class GameService {
   public GameController getGame() {
     return this.game;
   }
-//Making this so the Api can call this and highlight all valid squares
+ //Making this so the Api can call this and highlight all valid squares
 
 	public List<Coordinates> cardValidMoves(Cards yourCard, Coordinates yourPieces,boolean isChef){
 		return game.cardValidMoves(yourCard,yourPieces,isChef);

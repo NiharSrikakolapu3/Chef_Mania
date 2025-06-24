@@ -99,18 +99,15 @@ public class RestFulGameAPI {
     }
     
     @PostMapping("/computerMove")
-    public GameController makeComputerMove(@RequestBody GameController currentState) {
-      logger.info("Made it1!");
-      Computer computer = currentState.getComputer();
-      logger.info("Made it2!");
-      GameController afterComputerMove = computer.bestMoveForComputer(currentState, 4);
-      logger.info("Move3: "+ afterComputerMove);
-      service.setState(afterComputerMove);
-      
-      //Exchange not working, but card from computer moved to center but center not to computer
-      // move not right but it moves
-      return service.getGame();
+    public GameController makeComputerMove() {
+        GameController currentState = service.getGame(); 
+        Computer computer = currentState.getComputer();
+        GameController afterComputerMove = computer.bestMoveForComputer(currentState, 4);
+        afterComputerMove.changeTurn();
+        service.setState(afterComputerMove);
+        return service.getGame();  
     }
+
     
     
 

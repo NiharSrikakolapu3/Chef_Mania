@@ -48,21 +48,21 @@ public class Computer extends Player {
       List<GameController> tempStorage = new ArrayList<>();
       for (Piece piece : passedStatus.getComputer().getPieces()) {
         for (Coordinates position : computerCard.getAllValidMoves(piece.getPostion(), true)) {
-          logger.info("made it inside the for loop");
+         
           // Create new deep copy for this individual move
           GameController currentStatus = new GameController(passedStatus);
           //logger.info("status: " + currentStatus.getBoard().toString());
           List<Piece> computerPieces = currentStatus.getComputer().getPieces();
-          logger.info("computer pieces: " +computerPieces );
+         
           List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
         
           Board currentBoard = currentStatus.getBoard();
-          logger.info("got here1!");
+         
           // Find the copied piece on the new board
           Piece currentPiece = null;
-          logger.info("computer: " + computerPieces);
+          
           for (Piece computerP : computerPieces) {
-            logger.info("got here inside pieces!");
+            
             if (piece.getPostion().equals(computerP.getPostion())) {
               currentPiece = computerP;
               break;
@@ -74,7 +74,7 @@ public class Computer extends Player {
           // Validate move
           if (!currentBoard.possibleMove(currentPiece, position))
             continue;
-          logger.info("got here2!");
+         
           // Execute move
           Piece opponentPiece = currentBoard.getPiece(position);
           if (opponentPiece != null) {
@@ -84,12 +84,21 @@ public class Computer extends Player {
             }
           }
           currentBoard.movePiece(currentPiece, position);
-          logger.info("got here3!");
-          // Update center card
-          System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
-          currentStatus.setCenterCard(computerCard);
+         
+          logger.info("Before exchange, computer cards count: {}", currentStatus.getComputer().getCards().size());
+          logger.info("Computer cards: {}", currentStatus.getComputer().getCards());
+
+          currentStatus.getComputer().exchangeCards(computerCard, currentStatus.getCenterCard());
+          logger.info("After exchange, computer cards count: {}", currentStatus.getComputer().getCards().size());
+          logger.info("Computer cards: {}", currentStatus.getComputer().getCards());
+
+
+
+
+         
+
           // Set turn to Player
-          currentStatus.setWhoseTurn(currentStatus.getPlayer());
+         
           if (currentStatus.getCurrentTurn() instanceof Player) {
             System.out.print("Yes");
           }
@@ -99,10 +108,10 @@ public class Computer extends Player {
           // Sets the current Computer Pieces
           currentStatus.setPieces(computerPieces);
           System.out.println("Current centerCard " + currentStatus.getCenterCard().toString());
-           logger.info("Current state: "+currentStatus);
+          
           // Store this move result
           tempStorage.add(currentStatus);
-          logger.info("got here4!");
+          
         }
       }
       results.add(tempStorage);
@@ -152,7 +161,10 @@ public class Computer extends Player {
 
           // Update center card
           System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
-          currentStatus.setCenterCard(playerCard);
+          currentStatus.getPlayer().exchangeCards(playerCard, currentStatus.getCenterCard());
+        
+         
+
           // Set turn to Player
           currentStatus.setWhoseTurn(currentStatus.getPlayer());
           if (currentStatus.getCurrentTurn() instanceof Player) {
