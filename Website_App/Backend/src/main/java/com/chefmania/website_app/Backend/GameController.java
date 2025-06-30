@@ -3,7 +3,6 @@ package com.chefmania.website_app.Backend;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,7 +108,7 @@ public class GameController implements Cloneable {
     public List<Piece> getPieces(boolean isChef) {
         boolean value = isChef;
         List<Piece> computerPieces = new ArrayList<>();
-        List<Piece> playerPieces = new ArrayList<>();
+        List<Piece> copyplayerPieces = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 5; j++) {
                 Piece p = board.getPiece(new Coordinates(i, j));
@@ -117,13 +116,13 @@ public class GameController implements Cloneable {
                     if (p.isChef()) {
                         computerPieces.add(p);
                     } else {
-                        playerPieces.add(p);
+                        copyplayerPieces.add(p);
                     }
                 }
             }
         }
         if (!value) {
-            return playerPieces;
+            return copyplayerPieces;
         } else {
             return computerPieces;
         }
@@ -214,6 +213,9 @@ public class GameController implements Cloneable {
 
     public Player getCurrentTurn() {
         return currentTurn;
+    }
+    public void setCenterCard(Cards usedCard){
+        this.centerCard=usedCard;
     }
 
     public void changeTurn() {
