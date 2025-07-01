@@ -34,10 +34,10 @@ public class Coordinates {
       return x == that.x && y == that.y;
   }
 
-//  @Override
-//  public int hashCode() {
-//      return java.util.Objects.hash(x, y);
-//  }
+  @Override
+  public int hashCode() {
+      return java.util.Objects.hash(x, y);
+  }
 
   @Override
   public String toString() {

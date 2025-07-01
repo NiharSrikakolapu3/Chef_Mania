@@ -12,9 +12,11 @@ import {
   getValidMoves,
   getGame,
   getComputerMove,
+  gameOver,
 } from "../GameApi/GameApiService";
 
 import { gameCardsLists } from "../LaunchPageUI/GameCards";
+import { useNavigate } from "react-router-dom";
 
 export default function SoloBattle() {
   const [error, setError] = useState(null);
@@ -29,6 +31,12 @@ export default function SoloBattle() {
   const [gameReady, setGameReady] = useState(false);
   const [validMoves, setValidMoves] = useState([]);
   const [currentState, setCurrentState] = useState({});
+  const [showQuitModal, setShowQuitModal] = useState(false);
+  const [showGameOverMessage, setShowGameOverMessage] = useState(false);
+  const [turnMessage, setTurnMessage] = useState("");
+  const [winner, setWinner] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (progress < 100) {
@@ -40,18 +48,6 @@ export default function SoloBattle() {
   }, [progress, gameReady]);
 
   useEffect(() => {
-    if (currentState !== null) {
-      console.log("State actually updated:", currentState);
-    }
-  }, [currentState]);
-
-  useEffect(() => {
-    console.log("Selection updated:", {
-      card: selectedCard?.names,
-      piece: selectedPiece,
-      turn: currentTurn,
-    });
-
     if (selectedCard && selectedPiece && currentTurn === "Player") {
       if (selectedPiece.x === undefined || selectedPiece.y === undefined) {
         setError("Selected piece has invalid coordinates");
@@ -61,13 +57,22 @@ export default function SoloBattle() {
     }
   }, [selectedCard, selectedPiece, currentTurn]);
 
+  function showTurnSequence(turn) {
+    setTurnMessage("Ready...");
+    setTimeout(() => setTurnMessage("Set..."), 1000);
+    setTimeout(() => setTurnMessage("Go!"), 2000);
+    setTimeout(() => {
+      setTurnMessage(turn === "Player" ? "Your Turn" : "Computer's Turn");
+    }, 3000);
+    setTimeout(() => setTurnMessage(""), 4500);
+  }
+
   async function loadGameData() {
     try {
       setError(null);
       const theCurrentState = await createNewGame();
       setCurrentState(theCurrentState);
 
-      // Now load all necessary data after new game creation
       const [
         boardData,
         playerCardsData,
@@ -82,20 +87,13 @@ export default function SoloBattle() {
         getCurrentTurn(),
       ]);
 
-      console.log("Game initialized:", {
-        board: boardData.data.board,
-        playerCards: playerCardsData.data,
-        computerCards: computerCardsData.data,
-        centerCard: centerCardData.data,
-        turn: currentTurnData.data,
-      });
-
       setBoard(boardData.data.board);
       setPlayerCards(playerCardsData.data);
       setComputerCards(computerCardsData.data);
       setCenterCard(centerCardData.data);
       setCurrentTurn(currentTurnData.data);
       setGameReady(true);
+      showTurnSequence(currentTurnData.data);
     } catch (error) {
       setError("Failed to initialize game: " + error.message);
     }
@@ -115,63 +113,58 @@ export default function SoloBattle() {
 
       setError(null);
       await putMovePiece(from, to, cardUsed);
-      await new Promise((resolve) => setTimeout(resolve, 100)); // small delay for server processing
 
-      // Refresh game state after player move
-      const [
-        boardData,
-        playerCardsData,
-        computerCardsData,
-        centerCardData,
-        currentTurnData,
-      ] = await Promise.all([
-        getBoard(),
-        getPlayerCards(),
-        getComputerCards(),
-        getCenterCard(),
-        getCurrentTurn(),
-      ]);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await refreshGameState();
 
-      setBoard(boardData.data.board);
-      setPlayerCards(playerCardsData.data);
-      setComputerCards(computerCardsData.data);
-      setCenterCard(centerCardData.data);
-      setCurrentTurn(currentTurnData.data);
-      setSelectedPiece(null);
-      setSelectedCard(null);
-      setValidMoves([]);
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await getComputerMove();
 
-      // Get the latest game state before asking computer to move
-
-      console.log("What getting sent to computer", currentState);
-      const computerMoveResult = await getComputerMove();
-      console.log("After computer move", computerMoveResult);
-
-      const [
-        boardDataAfter,
-        playerCardsDataAfter,
-        computerCardsDataAfter,
-        centerCardDataAfter,
-        currentTurnDataAfter,
-      ] = await Promise.all([
-        getBoard(),
-        getPlayerCards(),
-        getComputerCards(),
-        getCenterCard(),
-        getCurrentTurn(),
-      ]);
-
-      setBoard(boardDataAfter.data.board);
-      setPlayerCards(playerCardsDataAfter.data);
-      setComputerCards(computerCardsDataAfter.data);
-      setCenterCard(centerCardDataAfter.data);
-      setCurrentTurn(currentTurnDataAfter.data);
-
-      setSelectedPiece(null);
-      setSelectedCard(null);
-      setValidMoves([]);
+      await refreshGameState();
     } catch (error) {
       setError("Move failed: " + error.message);
+    }
+  }
+
+  async function refreshGameState() {
+    const [
+      boardData,
+      playerCardsData,
+      computerCardsData,
+      centerCardData,
+      currentTurnData,
+    ] = await Promise.all([
+      getBoard(),
+      getPlayerCards(),
+      getComputerCards(),
+      getCenterCard(),
+      getCurrentTurn(),
+    ]);
+
+    setBoard(boardData.data.board);
+    setPlayerCards(playerCardsData.data);
+    setComputerCards(computerCardsData.data);
+    setCenterCard(centerCardData.data);
+    setCurrentTurn(currentTurnData.data);
+    setSelectedPiece(null);
+    setSelectedCard(null);
+    setValidMoves([]);
+
+    setTurnMessage(
+      currentTurnData.data === "Player" ? "Your Turn" : "Computer's Turn"
+    );
+
+    setTimeout(() => setTurnMessage(""), 2500);
+
+    const latestState = await getGame();
+    setCurrentState(latestState.data);
+    console.log("game state after move: ", latestState);
+    if (latestState.data.player.hasWon === true) {
+      setWinner("Player");
+    }
+
+    if (latestState.data.computer.hasWon === true) {
+      setWinner("Computer");
     }
   }
 
@@ -186,6 +179,28 @@ export default function SoloBattle() {
       setValidMoves(validMovesData.data);
     } catch (error) {
       setError("Couldn't get valid moves: " + error.message);
+    }
+  }
+
+  async function quitGame() {
+    const response = await gameOver();
+    if (response.data === "") {
+      setGameReady(false);
+      setBoard([]);
+      setPlayerCards([]);
+      setComputerCards([]);
+      setCenterCard(null);
+      setCurrentTurn(null);
+      setSelectedPiece(null);
+      setSelectedCard(null);
+      setValidMoves([]);
+      setShowQuitModal(false);
+      setShowGameOverMessage(true);
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      navigate("/game/modes");
+      nav;
+    } else {
+      console.log("something went wrong");
     }
   }
 
@@ -210,7 +225,15 @@ export default function SoloBattle() {
           <p className="mt-3 text-lg text-amber-200 font-medium">{progress}%</p>
         </div>
       ) : (
-        <div className="max-w-screen-xl mx-auto space-y-12">
+        <div className="relative max-w-screen-xl mx-auto space-y-12">
+          {turnMessage && (
+            <div className="fixed inset-0 flex items-center justify-center z-50">
+              <div className="text-5xl text-center font-extrabold text-yellow-300 tracking-wider bg-black bg-opacity-50 px-6 py-4 rounded-2xl shadow-2xl">
+                {turnMessage}
+              </div>
+            </div>
+          )}
+
           <div className="flex justify-center space-x-6 mt-8">
             {computerCards.map((card, index) => (
               <div
@@ -244,6 +267,15 @@ export default function SoloBattle() {
             )}
           </div>
 
+          <div className="absolute -left-10 top-235 hover:scale-105 transition duration-300 z-10">
+            <button
+              onClick={() => setShowQuitModal(true)}
+              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400"
+            >
+              Quit Game
+            </button>
+          </div>
+
           <div className="flex justify-center space-x-6 mb-12">
             {playerCards.map((card, index) => (
               <div
@@ -269,7 +301,6 @@ export default function SoloBattle() {
             ))}
           </div>
 
-          {/* Debug Panel */}
           <div className="fixed bottom-4 left-4 bg-gray-800 p-4 rounded-lg text-xs max-w-xs">
             <h3 className="font-bold mb-2">Debug Info:</h3>
             <div>Selected Card: {selectedCard?.names || "None"}</div>
@@ -285,6 +316,61 @@ export default function SoloBattle() {
               {validMoves.length > 0 ? JSON.stringify(validMoves) : "None"}
             </div>
             {error && <div className="text-red-400 mt-2">Error: {error}</div>}
+          </div>
+        </div>
+      )}
+
+      {showQuitModal && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex items-center justify-center z-50">
+          <div className="bg-gray-800 border-2 border-yellow-400 p-6 rounded-xl shadow-2xl text-white w-96">
+            <h2 className="text-xl font-bold mb-4 text-yellow-300">
+              Confirm Quit
+            </h2>
+            <p className="mb-6">Are you sure you want to quit the game?</p>
+            <div className="flex justify-between">
+              <button
+                className="bg-red-500 hover:bg-red-600 px-4 py-2 rounded-lg text-white"
+                onClick={quitGame}
+              >
+                Quit
+              </button>
+              <button
+                className="bg-gray-600 hover:bg-gray-700 px-4 py-2 rounded-lg text-white"
+                onClick={() => setShowQuitModal(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showGameOverMessage && (
+        <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+          <div className="text-center">
+            <h1 className="text-5xl font-bold text-red-500 mb-4">Game Over</h1>
+            <p className="text-lg text-white">Returning to main menu...</p>
+          </div>
+        </div>
+      )}
+
+      {winner && (
+        <div className="fixed inset-0 backdrop-blur-sm bg-transparent flex items-center justify-center z-50">
+          <div className="text-center bg-gray-900 p-10 rounded-xl border-4 border-yellow-400 shadow-2xl">
+            <h1 className="text-5xl font-bold text-green-400 mb-4">
+              {winner === "Player" ? "You Win!" : "Computer Wins!"}
+            </h1>
+            <button
+              onClick={async () => {
+                setWinner(null);
+                setShowGameOverMessage(true);
+                await new Promise((resolve) => setTimeout(resolve, 1500));
+                navigate("/game/modes");
+              }}
+              className="mt-4 px-6 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+            >
+              Return to Menu
+            </button>
           </div>
         </div>
       )}

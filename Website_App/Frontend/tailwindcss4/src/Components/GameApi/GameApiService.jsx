@@ -37,4 +37,6 @@ export const getComputerMove = (currentState) =>
     currentState,
   });
 export const getGame = () => GameApiClient.get("/api/game/gameRunning");
+
+export const gameOver = () => GameApiClient.delete("/api/game/reset");
 //work on delete

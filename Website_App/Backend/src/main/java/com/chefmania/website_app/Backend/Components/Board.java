@@ -81,7 +81,7 @@ public class Board implements Cloneable {
                 //         System.out.println("Not equal: " + p + " vs " + pieceAtPosition);
                 //     }
                 // }
-                board[newX][newY].setAlive(false);
+               
                 opponentPlayer.getPieces().remove(pieceAtPosition);
                 //System.out.println(currentPlayer.getPieces().toString());
             }

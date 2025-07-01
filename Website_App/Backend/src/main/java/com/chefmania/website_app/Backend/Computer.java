@@ -14,15 +14,25 @@ import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.Piece;
 import com.chefmania.website_app.Backend.Components.SecondaryPiece;
+import com.fasterxml.jackson.annotation.JsonProperty;
 //hi
 public class Computer extends Player {
 
     int maxDepth;
     int minDepth;
     private static final Logger logger = LoggerFactory.getLogger(GameController.class);
-
+    @JsonProperty("hasWon")
+    private boolean hasWon = false;
     public Computer() {
 
+    }
+
+    public boolean isHasWon() {
+      return hasWon;
+    }
+
+    public void setHasWon(boolean hasWon) {
+      this.hasWon = hasWon;
     }
 
     public Computer(boolean isChef, List<Piece> pieces, List<Cards> yourCards) {
@@ -31,6 +41,7 @@ public class Computer extends Player {
 
     public Computer(Computer computer) {
         super(computer.isChef(), computer.getPieces(), computer.getCards());
+        this.hasWon = computer.hasWon;
     }
 
     /*
@@ -86,6 +97,7 @@ public class Computer extends Player {
                     if (opponentPiece != null) {
                         if (opponentPiece instanceof MainPiece) {
                             currentStatus.setGameStatus(false);
+                            currentStatus.getComputer().setHasWon(true);
                             playersPieces.remove(opponentPiece);
                         }
                         if(opponentPiece instanceof SecondaryPiece){
@@ -165,6 +177,7 @@ public class Computer extends Player {
                     if (opponentPiece != null) {
                         if (opponentPiece instanceof MainPiece) {
                             currentStatus.setGameStatus(false);
+                            currentStatus.getComputer().setHasWon(true);
                             computerPieces.remove(opponentPiece);
                         }
                         if(opponentPiece instanceof SecondaryPiece){

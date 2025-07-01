@@ -12,6 +12,7 @@ public class Player {
     @JsonProperty("cards")
     private List<Cards> cards = new ArrayList<>();
     private List<Piece> pieces;
+    @JsonProperty("hasWon")
     private boolean hasWon = false;
     @JsonProperty("chef")
     private boolean isChef;

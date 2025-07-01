@@ -12,6 +12,7 @@ import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.MoveSet;
 import com.chefmania.website_app.Backend.Components.Piece;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -27,7 +28,9 @@ public class GameController implements Cloneable {
     @JsonProperty("currentTurn")
     private Player currentTurn = null;
     private String currentTurnLabel = null;
+    @JsonIgnore
     public List<Cards> computerCards = null;
+    @JsonIgnore
     public List<Cards> playerCards = null;
     @JsonProperty("playerPieces")
     public List<Piece> playerPieces = null;
@@ -161,42 +164,45 @@ public class GameController implements Cloneable {
         Coordinates computerBase = new Coordinates(0, 2);
         Piece playerMain = null;
         Piece computerMain = null;
-        for (Piece p : player.getPieces()) {
-            if (p instanceof MainPiece) {
-                playerMain = p;
-                break;
+
+        Piece[][] gameBoard = board.returnBoard();
+        for (int row = 0; row < gameBoard.length; row++) {
+            for (int col = 0; col < gameBoard[row].length; col++) {
+                Piece p = gameBoard[row][col];
+                if (p != null) 
+                    if (p instanceof MainPiece) {
+                        if (p.isChef()) {
+                            computerMain = p;
+                        } else {
+                            playerMain = p;
+                        }
+                    }
+                }
             }
-        }
-        for (Piece p : computer.getPieces()) {
-            if (p instanceof MainPiece) {
-                computerMain = p;
-                break;
-            }
-        }
-        // Capture Main pieces
-        if (playerMain==null) {
-          
-            System.out.print("Computer wins!");
-            gameStatus = false;
-            return;
-        }
+     
+        //THIS WORKS 
         if (computerMain==null) {
-            
+ 
             System.out.print("Player wins!-1");
             gameStatus = false;
+            player.setHasWon(true);
             return;
         }
-        // getting main to opp home base
+        // getting main to opp home base THESE ARE NOT GETTING SET
+        //THIS WORK
         if (playerMain.getPostion().equals(computerBase)) {
             
             System.out.print("Player wins-2!");
             gameStatus = false;
+            player.setHasWon(true);
             return;
         }
+        //STILL NEED TO CHECK THIS
         if (computerMain.getPostion().equals(playerBase)) {
            
             System.out.print("Computer wins!");
             gameStatus = false;
+            computer.setHasWon(true);
             return;
         }
     }
