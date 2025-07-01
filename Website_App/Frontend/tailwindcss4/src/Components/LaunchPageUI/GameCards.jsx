@@ -520,8 +520,7 @@ const riceCard = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 -0.5 24 24"
-        shapeRendering="crispEdges"
-        className="w-50 h-50 -ml-8 "
+        shape-rendering="crispEdges"
       >
         <metadata>
           Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
@@ -535,7 +534,7 @@ const riceCard = (
           d="M3 2h3M7 2h3M15 2h3M19 2h3M3 3h3M7 3h3M15 3h3M19 3h3M3 4h3M7 4h3M15 4h3M19 4h3M3 6h3M7 6h3M11 6h3M15 6h3M19 6h3M3 7h3M7 7h3M11 7h3M15 7h3M19 7h3M3 8h3M7 8h3M11 8h3M15 8h3M19 8h3M3 10h3M7 10h3M15 10h3M19 10h3M3 11h3M7 11h3M15 11h3M19 11h3M3 12h3M7 12h3M15 12h3M19 12h3M3 14h3M7 14h3M11 14h3M15 14h3M19 14h3M3 15h3M7 15h3M11 15h3M15 15h3M19 15h3M3 16h3M7 16h3M11 16h3M15 16h3M19 16h3M7 18h3M11 18h3M15 18h3M7 19h3M11 19h3M15 19h3M7 20h3M11 20h3M15 20h3"
         />
         <path
-          stroke="#106b1b"
+          stroke="#6cac4f"
           d="M11 2h3M11 3h3M11 4h3M3 18h3M19 18h3M3 19h3M19 19h3M3 20h3M19 20h3"
         />
         <path stroke="#4d7eab" d="M11 10h3M11 11h3M11 12h3" />
@@ -875,8 +874,7 @@ const sushiCard = (
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 -0.5 24 24"
-        shapeRendering="crispEdges"
-        className="w-50 h-50 -ml-8 "
+        shape-rendering="crispEdges"
       >
         <metadata>
           Made with Pixels to Svg https://codepen.io/shshaw/pen/XbxvNj
@@ -887,11 +885,11 @@ const sushiCard = (
         />
         <path
           stroke="#e0d8bb"
-          d="M3 2h3M7 2h3M11 2h3M15 2h3M19 2h3M3 3h3M7 3h3M11 3h3M15 3h3M19 3h3M3 4h3M7 4h3M11 4h3M15 4h3M19 4h3M3 6h3M15 6h3M19 6h3M3 7h3M15 7h3M19 7h3M3 8h3M15 8h3M19 8h3M3 10h3M19 10h3M3 11h3M19 11h3M3 12h3M19 12h3M3 14h3M7 14h3M15 14h3M19 14h3M3 15h3M7 15h3M15 15h3M19 15h3M3 16h3M7 16h3M15 16h3M19 16h3M3 18h3M7 18h3M11 18h3M15 18h3M19 18h3M3 19h3M7 19h3M11 19h3M15 19h3M19 19h3M3 20h3M7 20h3M11 20h3M15 20h3M19 20h3"
+          d="M3 2h3M7 2h3M11 2h3M15 2h3M19 2h3M3 3h3M7 3h3M11 3h3M15 3h3M19 3h3M3 4h3M7 4h3M11 4h3M15 4h3M19 4h3M7 6h3M15 6h3M19 6h3M7 7h3M15 7h3M19 7h3M7 8h3M15 8h3M19 8h3M3 10h3M19 10h3M3 11h3M19 11h3M3 12h3M19 12h3M3 14h3M7 14h3M15 14h3M19 14h3M3 15h3M7 15h3M15 15h3M19 15h3M3 16h3M7 16h3M15 16h3M19 16h3M3 18h3M7 18h3M11 18h3M15 18h3M19 18h3M3 19h3M7 19h3M11 19h3M15 19h3M19 19h3M3 20h3M7 20h3M11 20h3M15 20h3M19 20h3"
         />
         <path
           stroke="#6cac4f"
-          d="M7 6h3M7 7h3M7 8h3M7 10h1M9 10h1M7 11h3M7 12h3"
+          d="M3 6h3M3 7h3M3 8h3M7 10h1M9 10h1M7 11h3M7 12h3"
         />
         <path
           stroke="#dfd8ba"

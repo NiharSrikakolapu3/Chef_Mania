@@ -44,32 +44,20 @@ public class Computer extends Player {
         this.hasWon = computer.hasWon;
     }
 
-    /*
-   * Step1:Board State and Cards that are with Computer Step2:Checks Movelist of computers card
-   * Step3:Checks each pieces possible movements based on movelist Step4:Call this every time
-   * Computer make a move Step5:Return the List Step6:Make a call from GameController every time we
-   * make a move
-     */
-    // Return all possible moves with one turn like return the entire GameState
-    /*
-   * CenterCard Board Status Whose turn All pieces Player cards
-   *
-     */
+  
     public List<List<GameController>> succComputer(GameController passedStatus) {
        // logger.info("made it to succ");
         List<List<GameController>> results = new ArrayList<>();
         for (Cards computerCard : passedStatus.getComputer().getCards()) {
             List<GameController> tempStorage = new ArrayList<>();
-            for (Piece piece : passedStatus.getComputer().getPieces()) {
-                //Could get the board and if the piece is false could set to null here
-                //but I belive most convinent way is to pass it in to the method, and remove it
-                //from the board Move Method
+            for (Piece piece : passedStatus.getPieces(true)) {
+              
                 for (Coordinates position : computerCard.getAllValidMoves(piece.getPostion(), true)) {
 
                     GameController currentStatus = new GameController(passedStatus);
-                    List<Piece> computerPieces = currentStatus.getComputer().getPieces();
+                    List<Piece> computerPieces = currentStatus.getPieces(true);
 
-                    List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
+                    List<Piece> playersPieces = currentStatus.getPieces(false);
 
                     Board currentBoard = currentStatus.getBoard();
 
@@ -77,7 +65,6 @@ public class Computer extends Player {
                     Piece currentPiece = null;
 
                     for (Piece computerP : computerPieces) {
-
                         if (piece.getPostion().equals(computerP.getPostion())) {
                             currentPiece = computerP;
                             break;
@@ -86,12 +73,10 @@ public class Computer extends Player {
                     if (currentPiece == null) {
                         continue;
                     }
-
                     // Validate move
                     if (!currentBoard.possibleMove(currentPiece, position)) {
                         continue;
                     }
-
                     // Execute move
                     Piece opponentPiece = currentBoard.getPiece(position);
                     if (opponentPiece != null) {
@@ -146,13 +131,13 @@ public class Computer extends Player {
 
         for (Cards playerCard : passedStatus.getPlayer().getCards()) {
             List<GameController> tempStorage = new ArrayList<>();
-            for (Piece piece : passedStatus.getPlayer().getPieces()) {
+            for (Piece piece : passedStatus.getPieces(false)) {
                 for (Coordinates position : playerCard.getAllValidMoves(piece.getPostion(), false)) {
 
                     // Create new deep copy for this individual move
                     GameController currentStatus = new GameController(passedStatus);
-                    List<Piece> computerPieces = currentStatus.getComputer().getPieces();
-                    List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
+                    List<Piece> computerPieces = currentStatus.getPieces(true);
+                    List<Piece> playersPieces = currentStatus.getPieces(false);
                     Board currentBoard = currentStatus.getBoard();
 
                     // Find the copied piece on the new board
@@ -221,29 +206,24 @@ public class Computer extends Player {
     }
 
     public double heuristic(GameController state) {
-        List<Piece> computerPiece = state.getComputer().getPieces();
+        List<Piece> computerPiece = state.getPieces(true);
         double computerCount = computerPiece.size();
-
-        List<Piece> playerPiece = state.getPlayer().getPieces();
+        
+        List<Piece> playerPiece = state.getPieces(false);
         double playerCount = playerPiece.size();
-
+      
         return (computerCount - playerCount) * 0.24;
     }
+    
+  
 
     public GameController bestMoveForComputer(GameController currentState, int maxDepth) {
         try{
-            // System.out.println("Currently in the Best Move for computer Method");
-            // System.out.println("*********************************************");
-            // System.out.println("Player Pieces "+ currentState.getPlayer().getPieces().toString());
-            // System.out.println("Computer Pieces "+ currentState.getComputer().getPieces().toString());
-            // System.out.println(currentState.getBoard().toString());
-            // System.out.println("*********************************************");
+           
             Thread.sleep(2000);
-            // Computer turn rn
+            
             this.maxDepth = maxDepth;
-            //1. Get all possible moves computer can do --> from succComputerMethod
-            //2. use minValue to get players next moves for the computer 
-            // computer = high values(alpha), player = low value(beta)
+        
 
             List<List<GameController>> allMoves = succComputer(currentState);
 

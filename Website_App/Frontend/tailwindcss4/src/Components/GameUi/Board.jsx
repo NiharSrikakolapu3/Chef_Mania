@@ -22,9 +22,8 @@ function Board(props) {
     const clickedPiece = getPiece(clickedCell, actualRow, colIndex);
 
     const isValidMove = filteredMoves.some(
-    (move) => move.x === actualRow && move.y === colIndex
-  );
-
+      (move) => move.x === actualRow && move.y === colIndex
+    );
 
     // Deselect if clicking the same piece
     if (
@@ -60,7 +59,9 @@ function Board(props) {
         props.makeMove(from, to, props.selectedCard);
         props.setSelectedPiece(null);
       } else {
-        alert("Make sure that you selected a card and moved to a square highlighed by green and that its your turn");
+        alert(
+          "Make sure that you selected a card and moved to a square highlighed by green and that its your turn"
+        );
       }
     }
   }
@@ -77,13 +78,13 @@ function Board(props) {
       }));
   }, [props.validMoves, props.data]);
 
- // const flippedRows = [...props.data].reverse();
+  // const flippedRows = [...props.data].reverse();
 
   return (
-    <div className="grid grid-cols-5 gap-1 w-189 h-134 bg-black p-1 rounded-lg shadow-lg">
+    <div className="grid grid-cols-5 gap-1 w-189 h-150 bg-black p-1 rounded-lg shadow-lg">
       {...props.data.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
-          const actualRow = rowIndex
+          const actualRow = rowIndex;
 
           const isSelected =
             props.selectedPiece &&

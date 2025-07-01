@@ -117,7 +117,7 @@ export default function SoloBattle() {
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await refreshGameState();
 
-      await new Promise((resolve) => setTimeout(resolve, 4000));
+      await new Promise((resolve) => setTimeout(resolve, 2500));
       await getComputerMove();
 
       await refreshGameState();

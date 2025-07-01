@@ -55,7 +55,7 @@ public class MoveSet{
         List<int[]> movesList7 = new ArrayList<>();
         movesList7.add(new int[]{0, 1});  
         movesList7.add(new int[]{0, -1}); 
-        movesList7.add(new int[]{0,-2});
+        movesList7.add(new int[]{-1, 0 });
         Cards card7 = new Cards("Curry", movesList7);
         toUse.add(card7);
 

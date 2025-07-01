@@ -146,7 +146,7 @@ public class GameController implements Cloneable {
           throw new IllegalArgumentException("Invalid move!");
       }
 //************************************ */
-     Player opponentPlayer = (currentPlayerMoving == player) ? computer : player;
+      Player opponentPlayer = (currentPlayerMoving == player) ? computer : player;
       board.movePiece(piece, to, currentPlayerMoving,opponentPlayer); 
       currentPlayerMoving.exchangeCards(cardUsed, centerCard);
       centerCard = cardUsed;
