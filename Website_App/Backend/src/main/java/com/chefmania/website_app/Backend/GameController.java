@@ -142,8 +142,9 @@ public class GameController implements Cloneable {
       if (!validMovesForCard.contains(to)) {
           throw new IllegalArgumentException("Invalid move!");
       }
-
-      board.movePiece(piece, to); 
+//************************************ */
+     Player opponentPlayer = (currentPlayerMoving == player) ? computer : player;
+      board.movePiece(piece, to, currentPlayerMoving,opponentPlayer); 
       currentPlayerMoving.exchangeCards(cardUsed, centerCard);
       centerCard = cardUsed;
 
@@ -173,13 +174,13 @@ public class GameController implements Cloneable {
             }
         }
         // Capture Main pieces
-        if (!playerMain.isAlive()) {
+        if (playerMain==null) {
           
             System.out.print("Computer wins!");
             gameStatus = false;
             return;
         }
-        if (!computerMain.isAlive()) {
+        if (computerMain==null) {
             
             System.out.print("Player wins!-1");
             gameStatus = false;

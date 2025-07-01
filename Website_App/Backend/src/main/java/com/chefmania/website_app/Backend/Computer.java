@@ -13,6 +13,7 @@ import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.Piece;
+import com.chefmania.website_app.Backend.Components.SecondaryPiece;
 //hi
 public class Computer extends Player {
 
@@ -46,20 +47,15 @@ public class Computer extends Player {
     public List<List<GameController>> succComputer(GameController passedStatus) {
        // logger.info("made it to succ");
         List<List<GameController>> results = new ArrayList<>();
-     //   System.out.println("Before Moving these are my current Cards" + passedStatus.computerCards);
-        System.out.println("In Computer Succ Method");
-        System.out.println("Computer Cards"+ passedStatus.computerCards);
-        System.out.println("Computer Cards 2 "+ passedStatus.getComputer().getCards());
         for (Cards computerCard : passedStatus.getComputer().getCards()) {
             List<GameController> tempStorage = new ArrayList<>();
             for (Piece piece : passedStatus.getComputer().getPieces()) {
+                //Could get the board and if the piece is false could set to null here
+                //but I belive most convinent way is to pass it in to the method, and remove it
+                //from the board Move Method
                 for (Coordinates position : computerCard.getAllValidMoves(piece.getPostion(), true)) {
-                   // System.out.println("In Second loop");
-                    // Create new deep copy for this individual move
+
                     GameController currentStatus = new GameController(passedStatus);
-                    // System.out.println("CurrentComputerCards" + currentStatus.getComputer().getCards().toString());
-                    // System.out.println("CurrentCenterCard" + currentStatus.getCenterCard().toString());
-                    //logger.info("status: " + currentStatus.getBoard().toString());
                     List<Piece> computerPieces = currentStatus.getComputer().getPieces();
 
                     List<Piece> playersPieces = currentStatus.getPlayer().getPieces();
@@ -92,17 +88,15 @@ public class Computer extends Player {
                             currentStatus.setGameStatus(false);
                             playersPieces.remove(opponentPiece);
                         }
+                        if(opponentPiece instanceof SecondaryPiece){
+                            playersPieces.remove(opponentPiece);
+
+                        }
                     }
-                    currentBoard.movePiece(currentPiece, position);
+                    currentBoard.movePiece(currentPiece, position,currentStatus.getComputer(),currentStatus.getPlayer());
                     Cards usedCard = computerCard;
                     Cards centerCard = currentStatus.getCenterCard();
 
-                    // System.out.println("CurrentComputerCards" + currentStatus.getComputer().getCards().toString());
-                    // System.out.println("CurrentCenterCard" + currentStatus.getCenterCard().toString());
-                    // System.out.println("Current used Card"+ usedCard.toString());
-                    // System.out.println("Current Player Cards"+ currentStatus.getPlayer().getCards().toString());
-
-                    // Remove used card from computer's cards
                     currentStatus.getComputer().getCards().remove(usedCard);
 
 // Add the center card to computer's cards
@@ -111,9 +105,9 @@ public class Computer extends Player {
 // Set the used card as the new center card
                     currentStatus.setCenterCard(usedCard); 
          
-                    if (currentStatus.getCurrentTurn() instanceof Player) {
-                        System.out.print("Yes");
-                    }
+                    // if (currentStatus.getCurrentTurn() instanceof Player) {
+                    //     System.out.print("Yes");
+                    // }
                     // System.out.println("Current turn "+currentStatus.getCurrentTurn());
                     // Sets the current Players Pieces
                     currentStatus.setPieces(playersPieces);
@@ -134,9 +128,9 @@ public class Computer extends Player {
 
     public List<List<GameController>> succPlayer(GameController passedStatus) {
         List<List<GameController>> results = new ArrayList<>();
-        System.out.println("In the Succ Player Method");
-         System.out.println("Player Cards "+ passedStatus.getPlayer().getCards());
-        System.out.println("Player Cards 2"+ passedStatus.playerCards.toString());
+        // System.out.println("In the Succ Player Method");
+        //  System.out.println("Player Cards "+ passedStatus.getPlayer().getCards());
+        // System.out.println("Player Cards 2"+ passedStatus.playerCards.toString());
 
         for (Cards playerCard : passedStatus.getPlayer().getCards()) {
             List<GameController> tempStorage = new ArrayList<>();
@@ -173,8 +167,12 @@ public class Computer extends Player {
                             currentStatus.setGameStatus(false);
                             computerPieces.remove(opponentPiece);
                         }
+                        if(opponentPiece instanceof SecondaryPiece){
+                            computerPieces.remove(opponentPiece);
+
+                        }
                     }
-                    currentBoard.movePiece(currentPiece, position);
+                    currentBoard.movePiece(currentPiece, position,currentStatus.getPlayer(),currentStatus.getComputer());
 
                     // Update center card
                    // System.out.println("Previous centerCard " + currentStatus.getCenterCard().toString());
@@ -190,9 +188,9 @@ public class Computer extends Player {
 
                     // Set turn to Player
                     currentStatus.setWhoseTurn(currentStatus.getPlayer());
-                    if (currentStatus.getCurrentTurn() instanceof Player) {
-                        System.out.print("Yes");
-                    }
+                    // if (currentStatus.getCurrentTurn() instanceof Player) {
+                    //     System.out.print("Yes");
+                    // }
                     // System.out.println("Current turn "+currentStatus.getCurrentTurn());
                     // Sets the current Players Pieces
                     currentStatus.setPieces(playersPieces);
@@ -220,41 +218,42 @@ public class Computer extends Player {
     }
 
     public GameController bestMoveForComputer(GameController currentState, int maxDepth) {
-        // Computer turn rn
-        this.maxDepth = maxDepth;
-        //1. Get all possible moves computer can do --> from succComputerMethod
-        //2. use minValue to get players next moves for the computer 
-        // computer = high values(alpha), player = low value(beta)
+        try{
+            // System.out.println("Currently in the Best Move for computer Method");
+            // System.out.println("*********************************************");
+            // System.out.println("Player Pieces "+ currentState.getPlayer().getPieces().toString());
+            // System.out.println("Computer Pieces "+ currentState.getComputer().getPieces().toString());
+            // System.out.println(currentState.getBoard().toString());
+            // System.out.println("*********************************************");
+            Thread.sleep(2000);
+            // Computer turn rn
+            this.maxDepth = maxDepth;
+            //1. Get all possible moves computer can do --> from succComputerMethod
+            //2. use minValue to get players next moves for the computer 
+            // computer = high values(alpha), player = low value(beta)
 
-        System.out.println("Currently in the Best Move for computer Method");
-        List<List<GameController>> allMoves = succComputer(currentState);
-        System.out.println("---------------------------------------------------");
-        System.out.println("CurrentComputerCards " + currentState.getComputer().getCards().toString());
-        System.out.println("CurrentCenterCard " + currentState.getCenterCard().toString());
-        //System.out.println("Current used Card"+ currentState.toString());
-        System.out.println("Current Player Cards "+ currentState.getPlayer().getCards().toString());
-        System.out.println("---------------------------------------------------");
+            List<List<GameController>> allMoves = succComputer(currentState);
 
-        GameController bestMove = null;
-        double alpha = -10000000;
-        double beta = 10000000;
-        for (List<GameController> movesList : allMoves) {
-            for (GameController move : movesList) {
-                double value = minValue(move, 1, alpha, beta);
-                if (value > alpha) {
-                    alpha = value;
-                    bestMove = move;
+            GameController bestMove = null;
+            double alpha = -10000000;
+            double beta = 10000000;
+            for (List<GameController> movesList : allMoves) {
+                for (GameController move : movesList) {
+                    double value = minValue(move, 1, alpha, beta);
+                    if (value > alpha) {
+                        alpha = value;
+                        bestMove = move;
+                    }
                 }
             }
+            return bestMove;
         }
-        System.out.println("---------------------------------------------------");
-        System.out.println("CurrentComputerCards bestMove " + bestMove.getComputer().getCards().toString());
-        System.out.println("CurrentCenterCard after getting best Move " + bestMove.getCenterCard().toString());
-       // System.out.println("Current used Card after getter best usedCard"+ bestMove.toString());
-        System.out.println("CurrentPlayerCards bestMove "+ bestMove.getPlayer().getCards().toString());
-         System.out.println("---------------------------------------------------");
-        return bestMove;
+        catch(Exception e){
+            System.out.println("There was an Exception when running your Code"+ e.getMessage());
+            return null;
+        }
     }
+
 
     public double maxValue(GameController state, double depth, double alpha, double beta) {
         if (depth == maxDepth) {
