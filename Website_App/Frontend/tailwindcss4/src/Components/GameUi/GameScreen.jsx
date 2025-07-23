@@ -5,8 +5,8 @@ function GameScreen() {
   function goBack() {
     navigate("/game");
   }
-  function soloBattle() {
-    navigate("/game/solo");
+  function DifficultySelection() {
+    navigate("/game/difficultySelection");
   }
   return (
     <div>
@@ -35,7 +35,7 @@ function GameScreen() {
             Story Mode
           </button>
           <button
-            onClick={soloBattle}
+            onClick={DifficultySelection}
             className="text-black  bg-blue-600 rounded-4xl p-3 mb-2  hover:bg-gradient-to-br hover:from-blue-300 hover:to-blue-500 cursor-pointer"
           >
             Solo Battle

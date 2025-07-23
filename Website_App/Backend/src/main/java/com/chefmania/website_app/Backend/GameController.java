@@ -145,7 +145,7 @@ public class GameController implements Cloneable {
       if (!validMovesForCard.contains(to)) {
           throw new IllegalArgumentException("Invalid move!");
       }
-//************************************ */
+
       Player opponentPlayer = (currentPlayerMoving == player) ? computer : player;
       board.movePiece(piece, to, currentPlayerMoving,opponentPlayer); 
       currentPlayerMoving.exchangeCards(cardUsed, centerCard);
@@ -183,16 +183,23 @@ public class GameController implements Cloneable {
         //THIS WORKS 
         if (computerMain==null) {
  
-            System.out.print("Player wins!-1");
+            logger.info("Player wins!-1");
             gameStatus = false;
             player.setHasWon(true);
             return;
+        }
+        
+        if(playerMain == null) {
+          logger.info("Computer win!");
+          gameStatus = false;
+          computer.setHasWon(true);
+          return;
         }
         // getting main to opp home base THESE ARE NOT GETTING SET
         //THIS WORK
         if (playerMain.getPostion().equals(computerBase)) {
             
-            System.out.print("Player wins-2!");
+            logger.info("Player wins-2!");
             gameStatus = false;
             player.setHasWon(true);
             return;
@@ -200,7 +207,7 @@ public class GameController implements Cloneable {
         //STILL NEED TO CHECK THIS
         if (computerMain.getPostion().equals(playerBase)) {
            
-            System.out.print("Computer wins!");
+            logger.info("Computer wins!");
             gameStatus = false;
             computer.setHasWon(true);
             return;

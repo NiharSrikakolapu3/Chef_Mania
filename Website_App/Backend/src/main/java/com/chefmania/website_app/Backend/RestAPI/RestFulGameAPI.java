@@ -16,6 +16,8 @@ import com.chefmania.website_app.Backend.Components.Board;
 import com.chefmania.website_app.Backend.Components.Cards;
 import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Computer;
+import com.chefmania.website_app.Backend.ComputerHard;
+import com.chefmania.website_app.Backend.ComputerNormal;
 import com.chefmania.website_app.Backend.GameController;
 import com.chefmania.website_app.Backend.Player;
 
@@ -107,10 +109,44 @@ public class RestFulGameAPI {
         service.setState(afterComputerMove);
         return service.getGame();  
     }
-
+    
+    @PostMapping("/computerMoveNormal")
+    public GameController makeComputerMoveNormal() {
+        GameController currentState = service.getGame(); 
+        ComputerNormal computer = new ComputerNormal(currentState.getComputer());
+        GameController afterComputerMove = computer.bestMoveForComputer(currentState, 6);
+        afterComputerMove.changeTurn();
+        service.setState(afterComputerMove);
+        return service.getGame();  
+    }
     
     
+    @PostMapping("/computerMoveHard")
+    public GameController makeComputerMoveHard() {
+        GameController currentState = service.getGame(); 
+        ComputerHard computer = new ComputerHard(currentState.getComputer());
+        GameController afterComputerMove = computer.bestMoveForComputer(currentState, 6);
+        afterComputerMove.changeTurn();
+        service.setState(afterComputerMove);
+        return service.getGame();  
+    }
+    
+//    public int helperMethodToCalculateDepth(GameController state) {
+//      int totalPieces = state.getPieces(true).size() + state.getPieces(false).size();
+//      
+//      if(totalPieces>= 8) {
+//        return 2;
+//      }
+//      else if(totalPieces >= 4) {
+//       return 3;
+//      }
+//      else {
+//        return 4;
+//      }
+//      
+//    }
 
+ 
     @DeleteMapping("/reset")
     public void concede() {
         service.quitGame();

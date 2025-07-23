@@ -96,10 +96,10 @@ public class Computer extends Player {
 
                     currentStatus.getComputer().getCards().remove(usedCard);
 
-// Add the center card to computer's cards
+                    // Add the center card to computer's cards
                     currentStatus.getComputer().getCards().add(centerCard);
 
-// Set the used card as the new center card
+                    // Set the used card as the new center card
                     currentStatus.setCenterCard(usedCard); 
          
                     // if (currentStatus.getCurrentTurn() instanceof Player) {

@@ -32,10 +32,13 @@ export const getValidMoves = (yourCard, yourPiece) =>
     yourCard,
     yourPieces: yourPiece,
   });
-export const getComputerMove = (currentState) =>
-  GameApiClient.post("/api/game/computerMove", {
-    currentState,
-  });
+export const getComputerMove = () =>
+  GameApiClient.post("/api/game/computerMove", {});
+export const getComputerMoveNormal = () =>
+  GameApiClient.post("/api/game/computerMoveNormal", {});
+
+export const getComputerMoveHard = () =>
+  GameApiClient.post("/api/game/computerMoveHard", {});
 export const getGame = () => GameApiClient.get("/api/game/gameRunning");
 
 export const gameOver = () => GameApiClient.delete("/api/game/reset");

@@ -13,10 +13,12 @@ import {
   getGame,
   getComputerMove,
   gameOver,
+  getComputerMoveNormal,
+  getComputerMoveHard,
 } from "../GameApi/GameApiService";
 
 import { gameCardsLists } from "../LaunchPageUI/GameCards";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function SoloBattle() {
   const [error, setError] = useState(null);
@@ -37,6 +39,8 @@ export default function SoloBattle() {
   const [winner, setWinner] = useState(null);
 
   const navigate = useNavigate();
+
+  const { difficulty } = useParams();
 
   useEffect(() => {
     if (progress < 100) {
@@ -118,7 +122,14 @@ export default function SoloBattle() {
       await refreshGameState();
 
       await new Promise((resolve) => setTimeout(resolve, 2500));
-      await getComputerMove();
+
+      if (difficulty == "easy") {
+        await getComputerMove();
+      } else if (difficulty == "normal") {
+        await getComputerMoveNormal();
+      } else if (difficulty == "hard") {
+        await getComputerMoveHard();
+      }
 
       await refreshGameState();
     } catch (error) {
@@ -240,7 +251,7 @@ export default function SoloBattle() {
                 key={index}
                 className="hover:scale-105 transform transition duration-300"
               >
-                <div className="bg-[#2c2f34] p-3 rounded-xl shadow-lg border-2 border-red-700">
+                <div className="bg-[#2c2f34] p-3 rounded-xl shadow-lg border-2 border-red-700 rotate-180">
                   {getCard(card.names)}
                 </div>
               </div>
