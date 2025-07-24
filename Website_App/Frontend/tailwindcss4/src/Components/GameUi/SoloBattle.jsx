@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import Board from "./Board";
+import { setItem, getItem } from "../../Utilities/localStorage";
 
 import {
   createNewGame,
@@ -42,14 +43,63 @@ export default function SoloBattle() {
 
   const { difficulty } = useParams();
 
+  function saveGameState() {
+    const gameState = {
+      board,
+      selectedPiece,
+      selectedCard,
+      playerCards,
+      computerCards,
+      centerCard,
+      currentTurn,
+      validMoves,
+    };
+    setItem("soloGame", gameState);
+  }
+
+  function clearGameState() {
+    localStorage.removeItem("soloGame");
+  }
   useEffect(() => {
     if (progress < 100) {
       const timer = setTimeout(() => setProgress((prev) => prev + 5), 200);
       return () => clearTimeout(timer);
     } else if (!gameReady) {
-      loadGameData();
+      const saved = getItem("soloGame");
+      if (saved) {
+        setBoard(saved.board);
+        setSelectedPiece(saved.selectedPiece);
+        setSelectedCard(saved.selectedCard);
+        setPlayerCards(saved.playerCards);
+        setComputerCards(saved.computerCards);
+        setCenterCard(saved.centerCard);
+        setCurrentTurn(saved.currentTurn);
+        setValidMoves(saved.validMoves);
+        setGameReady(true);
+        setProgress(100);
+        setTurnMessage(
+          saved.currentTurn === "Player" ? "Your Turn" : "Computer's Turn"
+        );
+        setTimeout(() => setTurnMessage(""), 2500);
+      } else {
+        loadGameData();
+      }
     }
   }, [progress, gameReady]);
+  useEffect(() => {
+    if (gameReady) {
+      saveGameState();
+    }
+  }, [
+    board,
+    selectedPiece,
+    selectedCard,
+    playerCards,
+    computerCards,
+    centerCard,
+    currentTurn,
+    validMoves,
+  ]);
 
   useEffect(() => {
     if (selectedCard && selectedPiece && currentTurn === "Player") {
@@ -69,6 +119,10 @@ export default function SoloBattle() {
       setTurnMessage(turn === "Player" ? "Your Turn" : "Computer's Turn");
     }, 3000);
     setTimeout(() => setTurnMessage(""), 4500);
+  }
+  function resetGame() {
+    clearGameState();
+    loadGameData();
   }
 
   async function loadGameData() {
@@ -208,6 +262,7 @@ export default function SoloBattle() {
       setShowQuitModal(false);
       setShowGameOverMessage(true);
       await new Promise((resolve) => setTimeout(resolve, 1000));
+      clearGameState();
       navigate("/game/modes");
       nav;
     } else {
@@ -278,15 +333,21 @@ export default function SoloBattle() {
             )}
           </div>
 
-          <div className="absolute -left-10 top-235 hover:scale-105 transition duration-300 z-10">
+          <div className="fixed top-4 right-4 z-50 flex gap-3">
+            <button
+              onClick={() => resetGame()}
+              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300"
+            >
+              Reset Game
+            </button>
             <button
               onClick={() => setShowQuitModal(true)}
-              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400"
+              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300"
             >
               Quit Game
             </button>
           </div>
-
+          
           <div className="flex justify-center space-x-6 mb-12">
             {playerCards.map((card, index) => (
               <div
@@ -373,6 +434,7 @@ export default function SoloBattle() {
             </h1>
             <button
               onClick={async () => {
+                clearGameState();
                 setWinner(null);
                 setShowGameOverMessage(true);
                 await new Promise((resolve) => setTimeout(resolve, 1500));
