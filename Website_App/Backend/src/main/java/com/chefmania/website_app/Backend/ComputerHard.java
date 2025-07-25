@@ -1,4 +1,4 @@
- package com.chefmania.website_app.Backend;
+package com.chefmania.website_app.Backend;
 
 import java.util.List;
 
@@ -10,105 +10,96 @@ import com.chefmania.website_app.Backend.Components.Coordinates;
 import com.chefmania.website_app.Backend.Components.MainPiece;
 import com.chefmania.website_app.Backend.Components.Piece;
 
-public class ComputerHard extends ComputerNormal  {
-  private static final Logger logger = LoggerFactory.getLogger(GameController.class);
-  
-  public ComputerHard(Computer computer) {
-    super(computer);
-  }
-  
-  @Override
-  public double heuristic(GameController state) {
-    logger.info("Hard DIFF: GOT TO heuristic");
-    List<Piece> computerPiece = state.getPieces(true);
-    List<Piece> playerPiece = state.getPieces(false);
+public class ComputerHard extends Computer {
 
-    Coordinates playerBase = new Coordinates(4, 2);
-    Coordinates computerBase = new Coordinates(0, 2);
-    double score = 0;
+    private static final Logger logger = LoggerFactory.getLogger(GameController.class);
 
-    Piece computerMain=null;
-    Piece playerMain=null;
-    
-    for(Piece p: computerPiece ){
-      if(p instanceof MainPiece){
-        computerMain=p;
-        break;
-      }
+      
+      public ComputerHard(Computer Computer) {
+        super(Computer);
     }
-     for(Piece p: playerPiece){
-      if(p instanceof MainPiece){
-        playerMain=p;
-        break;
-      }
-    }
-    for(Piece p : computerPiece) {
-      if(p instanceof MainPiece) {
-        score += 5;
-        
-        int distanceToPlayerBase = Math.abs(p.getPostion().getX() - playerBase.getX()) 
-            + Math.abs(p.getPostion().getY() - playerBase.getY());
-        
-         score += (5 - distanceToPlayerBase) * 0.5;
+  
 
-        if (danger(state)) {
-          logger.info("Main piece in danger");
-          score -= 30;
+    @Override
+    public double heuristic(GameController state) {
+        logger.info("HARD DIFF: GOT TO heuristic");
 
-          if (distanceToPlayerBase < 3) {
-            score += 20;
-          }
-        } else {
-          if (distanceToPlayerBase > 2) {
-            score -= 5;
-          }
-        }
+        List<Piece> computerPieces = state.getPieces(true);
+        List<Piece> playerPieces = state.getPieces(false);
+        double score = 0;
 
-      } else {
-        score += 1; // Other pieces contribute small value
-      }
+        Coordinates playerBase = new Coordinates(4, 2);
+        Coordinates computerBase = new Coordinates(0, 2);
 
-      if (playerMain != null) {
-        for (Cards card : state.computerCards) {
-          List<Coordinates> attackMoves = card.getAllValidMoves(p.getPostion(), true);
-          for (Coordinates move : attackMoves) {
-            if (move.equals(playerMain.getPostion())) {
-              logger.info("Can capture player MainPiece!");
-              score += 50; // Big bonus for capture opportunity
+        for (Piece p : computerPieces) {
+            Coordinates pos = p.getPostion();
+
+            // Distance to center
+            int distToCenter = Math.abs(pos.getX() - 2) + Math.abs(pos.getY() - 2);
+            double centerBonus = (6 - distToCenter) * 0.05;
+
+            if (p instanceof MainPiece) {
+                // Reduce early push for MainPiece
+                score += 0.1;
+
+                int distToPlayerBase = Math.abs(pos.getX() - playerBase.getX())
+                        + Math.abs(pos.getY() - playerBase.getY());
+
+                // Reduce aggressive push
+                score += (6 - distToPlayerBase) * 0.05;
+
+                // Reward nearby support pieces
+                for (Piece ally : computerPieces) {
+                    if (ally == p) continue;
+                    int dist = Math.abs(pos.getX() - ally.getPostion().getX())
+                             + Math.abs(pos.getY() - ally.getPostion().getY());
+                    if (dist <= 2) {
+                        score += 0.02;
+                    }
+                }
+            } else {
+                // Encourage normal pieces to be active
+                score += 0.1;
+                score += centerBonus;
+
+                // Reward being near the MainPiece
+                for (Piece ally : computerPieces) {
+                    if (ally instanceof MainPiece) {
+                        int dist = Math.abs(pos.getX() - ally.getPostion().getX())
+                                 + Math.abs(pos.getY() - ally.getPostion().getY());
+                        if (dist <= 3) {
+                            score += 0.03;
+                        }
+                    }
+                }
             }
-          }
         }
-      }
 
+        for (Piece p : playerPieces) {
+            if (p instanceof MainPiece) {
+                score -= 0.3; // Larger penalty for opponent MainPiece alive
+            } else {
+                score -= 0.05;
+            }
 
-      //being at center --> better board control(2 x 2)
-      //More closer = less penalty on score
-      int centerScore = Math.abs(p.getPostion().getX() - 2) + Math.abs(p.getPostion().getY() - 2);
-      score -= centerScore * 0.1;
+            int playerBaseScore = Math.abs(p.getPostion().getX() - 2) + Math.abs(p.getPostion().getY() - 4);
+            score -= playerBaseScore * 0.005;
+        }
 
+        // Incentivize approaching opponent MainPiece more heavily
+        for (Piece myPiece : computerPieces) {
+            for (Piece enemy : playerPieces) {
+                if (enemy instanceof MainPiece) {
+                    int dist = Math.abs(myPiece.getPostion().getX() - enemy.getPostion().getX())
+                            + Math.abs(myPiece.getPostion().getY() - enemy.getPostion().getY());
+                    score += (6 - dist) * 0.04; // Stronger incentive
+                }
+            }
+        }
+
+        return score;
     }
-    
-    for(Piece p : playerPiece) {
-      if(p instanceof MainPiece) {
-        score-= 5;
-        int distanceToComputerBase = Math.abs(p.getPostion().getX() - computerBase.getX()) 
-            + Math.abs(p.getPostion().getY() - computerBase.getY());
-        
-        score -= distanceToComputerBase * 0.1;
-      }
-      else {
-        score -=1;
-      }
-      int centerScore = Math.abs(p.getPostion().getX() - 2) + Math.abs(p.getPostion().getY() - 2);
-      score += centerScore * 0.1;
-    }
-    return score;
-    
-  }
-  
-  
-
-public boolean danger(GameController currentState) {
+    public boolean danger(GameController currentState) {
     Piece computerMain = null;
     for (Piece p : currentState.getPieces(true)) {
       if (p instanceof MainPiece) {

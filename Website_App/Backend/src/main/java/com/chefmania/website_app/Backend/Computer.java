@@ -43,9 +43,44 @@ public class Computer extends Player {
         super(computer.isChef(), computer.getPieces(), computer.getCards());
         this.hasWon = computer.hasWon;
     }
+    public int gameValue(GameController passedStatus){
+     List<Piece>computerPieces=passedStatus.getPieces(true);
+     List<Piece>playerPieces=passedStatus.getPieces(false);
+     Piece computerMain=null;
+     Piece playerMain=null;
+    Coordinates playerBase = new Coordinates(4, 2);
+    Coordinates computerBase = new Coordinates(0, 2);
+    for(Piece p: computerPieces ){
+      if(p instanceof MainPiece){
+        computerMain=p;
+        break;
+      }
+    }
+     for(Piece p: playerPieces){
+      if(p instanceof MainPiece){
+        playerMain=p;
+        break;
+      }
+    }
+    if(computerMain==null){
+        return -1;
+    }
+    if(playerMain==null){
+        return 1;
+    }
+    if(playerMain.getPostion()==computerBase){
+        return -1;
+    }
+    if(computerMain.getPostion()==playerBase){
+        return 1;
+    }
+    else{
+        return 0;
+    }
+}
 
-  
     public List<List<GameController>> succComputer(GameController passedStatus) {
+        
        // logger.info("made it to succ");
         List<List<GameController>> results = new ArrayList<>();
         for (Cards computerCard : passedStatus.getComputer().getCards()) {
@@ -249,6 +284,9 @@ public class Computer extends Player {
 
 
     public double maxValue(GameController state, double depth, double alpha, double beta) {
+        if(gameValue(state)!=0){
+            return  scoreTerminal(state,depth);
+        }        
         if (depth == maxDepth) {
             return heuristic(state);
         }
@@ -266,8 +304,20 @@ public class Computer extends Player {
         }
         return alpha;
     }
+    public double scoreTerminal(GameController passedStatus, double depth){
+        switch(gameValue(passedStatus)){
+            case 1:
+                return 1.0 -depth * 0.00001;
+            case -1:
+                return -1.0 -depth * 0.00001;
+        }
+        return 0.0;
+    }
 
     public double minValue(GameController state, double depth, double alpha, double beta) {
+        if(gameValue(state)!=0){
+               return scoreTerminal(state,depth);
+        }    
         if (depth == maxDepth) {
             return heuristic(state);
         }
