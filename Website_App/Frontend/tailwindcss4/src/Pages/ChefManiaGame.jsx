@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import backgroundImg from "../Assets/Chef_Mania_Background.png";
 import Title from "../Assets/Title.png";
 import { useState } from "react";
+import { motion } from "framer-motion";
 
 function ChefManiaGame() {
   const navigate = useNavigate();
@@ -34,47 +35,42 @@ function ChefManiaGame() {
               </div>
 
               <div className="flex-1 flex flex-col items-center justify-start mt-8 space-y-8">
-                <button
-                  className={buttonStyle}
-                  onClick={() => setGameState("StartGame")}
-                >
+                <MotionButton onClick={() => setGameState("StartGame")}>
                   START GAME
-                </button>
-                <button
-                  className={buttonStyle}
-                  onClick={() => setGameState("Instructions")}
-                >
+                </MotionButton>
+                <MotionButton onClick={() => setGameState("Instructions")}>
                   INSTRUCTIONS
-                </button>
-                <button onClick={quitGame} className={buttonStyle}>
-                  QUIT
-                </button>
+                </MotionButton>
+                <MotionButton onClick={() => navigate("/")}>QUIT</MotionButton>
               </div>
             </div>
           </div>
         );
     }
   };
-  function quitGame() {
-    navigate("/");
-  }
-
-  const buttonStyle = `
-    relative px-8 py-4 
-    text-3xl font-bold 
-    text-yellow-300 
-    bg-purple-600 
-    border-4 border-yellow-500 
-    rounded-lg 
-    shadow-lg 
-    transition-all 
-    duration-200 
-    hover:scale-110 
-    hover:text-blue-300 
-    hover:bg-purple-800 
-  `;
 
   return <div>{content()}</div>;
 }
+
+const MotionButton = ({ onClick, children }) => (
+  <motion.button
+    onClick={onClick}
+    whileHover={{ scale: 1.1, boxShadow: "0 0 20px #facc15" }}
+    whileTap={{ scale: 0.95 }}
+    className={`
+      relative px-10 py-5 
+      text-3xl font-extrabold tracking-wide
+      text-yellow-300 
+      bg-gradient-to-b from-purple-700 to-purple-900 
+      border-4 border-yellow-400 
+      rounded-2xl 
+      shadow-2xl 
+      transition-all duration-300
+      hover:text-blue-300 
+    `}
+  >
+    {children}
+  </motion.button>
+);
 
 export default ChefManiaGame;

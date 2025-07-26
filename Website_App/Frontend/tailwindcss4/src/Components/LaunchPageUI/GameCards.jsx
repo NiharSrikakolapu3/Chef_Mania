@@ -1201,28 +1201,34 @@ export const gameCardsLists = [
 
 export default function GameCards() {
   return (
-    <section id="GameCard" className="flex flex-col items-center">
-      <div className="text-center mb-6">
-        <header className="text-blue-400 font-semibold mb-4 hover:underline">
-          Display Cards
-        </header>
-      </div>
-      <div className="grid grid-cols-4 gap-6">
-        {curryCard}
-        {tacoCard}
-        {hotdogCard}
-        {wingCard}
-        {pizzaCard}
-        {steakCard}
-        {eggCard}
-        {riceCard}
-        {iceCreamCard}
-        {macAndCheeseCard}
-        {cakeCard}
-        {sushiCard}
-        {spaghettiCard}
-        {burgerCard}
-        {saladCard}
+    <section id="GameCard" className="py-20 bg-white">
+      <div className="container mx-auto px-4">
+        <div className="text-center mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-orange-500 mb-4">
+            Culinary Collection
+          </h2>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            Discover delicious dishes you'll master in Chef Mania. Each recipe
+            brings unique challenges and rewards!
+          </p>
+        </div>
+        <div className="grid grid-cols-4 gap-6">
+          {curryCard}
+          {tacoCard}
+          {hotdogCard}
+          {wingCard}
+          {pizzaCard}
+          {steakCard}
+          {eggCard}
+          {riceCard}
+          {iceCreamCard}
+          {macAndCheeseCard}
+          {cakeCard}
+          {sushiCard}
+          {spaghettiCard}
+          {burgerCard}
+          {saladCard}
+        </div>
       </div>
     </section>
   );
