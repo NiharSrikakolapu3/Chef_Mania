@@ -1,3 +1,6 @@
+import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+
 const sections = [
   {
     title: "Game Pieces",
@@ -34,11 +37,22 @@ Use cards strategically as they rotate each round.`,
 ];
 
 export default function Instructions() {
+  const navigate = useNavigate();
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-blue-100 p-8 font-sans">
       <h1 className="text-5xl font-extrabold text-center text-blue-900 mb-12 drop-shadow-md">
         How to Play Chef Mania
       </h1>
+      <motion.button
+        onClick={() => navigate("/game")}
+        className="fixed top-6 left-6 bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center"
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <span className="mr-2 text-xl">←</span>
+        <span>Back to Menu</span>
+      </motion.button>
 
       <div className="max-w-4xl mx-auto space-y-10">
         {sections.map(({ title, icon, content }, idx) => (
