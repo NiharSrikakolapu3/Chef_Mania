@@ -1,45 +1,13 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import diffBackgroudScreen from "../../Assets/diffBackgroundScreen.png";
+import { useState } from "react";
 
 function DifficultySelection() {
   const navigate = useNavigate();
   const [hoveredDifficulty, setHoveredDifficulty] = useState(null);
-  const [clickSound, setClickSound] = useState(null);
-  const [hoverSound, setHoverSound] = useState(null);
-
-  useEffect(() => {
-    const click = new Audio(
-      "https://assets.mixkit.co/sfx/preview/mixkit-select-click-1109.mp3"
-    );
-    const hover = new Audio(
-      "https://assets.mixkit.co/sfx/preview/mixkit-game-ball-tap-2073.mp3"
-    );
-    setClickSound(click);
-    setHoverSound(hover);
-
-    return () => {
-      click.pause();
-      hover.pause();
-    };
-  }, []);
-
-  const playClick = () => {
-    if (clickSound) {
-      clickSound.currentTime = 0;
-      clickSound.play();
-    }
-  };
-
-  const playHover = () => {
-    if (hoverSound) {
-      hoverSound.currentTime = 0;
-      hoverSound.play();
-    }
-  };
 
   function handleSelectDifficulty(difficulty) {
-    playClick();
     navigate(`/game/solo/${difficulty}`);
   }
 
@@ -68,8 +36,10 @@ function DifficultySelection() {
   ];
 
   return (
-    <div className="relative min-h-screen w-full bg-gradient-to-b from-orange-400 to-red-600 font-game flex flex-col items-center justify-center px-4 py-10">
-      {/* Back Button */}
+    <div
+      className="relative min-h-screen w-full bg-cover bg-center font-game flex flex-col items-center justify-center px-4 py-10"
+      style={{ backgroundImage: `url(${diffBackgroudScreen})` }}
+    >
       <motion.button
         onClick={() => navigate(-1)}
         className="absolute top-6 left-6 bg-gradient-to-r from-orange-600 to-red-600 text-white px-6 py-3 rounded-full shadow-lg flex items-center"
@@ -80,7 +50,6 @@ function DifficultySelection() {
         <span>Back to Modes</span>
       </motion.button>
 
-      {/* Title */}
       <motion.div
         className="text-center mb-10"
         initial={{ opacity: 0, y: -30 }}
@@ -96,7 +65,6 @@ function DifficultySelection() {
         </p>
       </motion.div>
 
-      {/* Difficulty Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl w-full">
         {difficulties.map((difficulty) => (
           <motion.div
@@ -108,13 +76,8 @@ function DifficultySelection() {
                 ? "scale-105 z-20"
                 : "scale-100"
             }`}
-            onHoverStart={() => {
-              setHoveredDifficulty(difficulty.id);
-              playHover();
-            }}
-            onHoverEnd={() => {
-              setHoveredDifficulty(null);
-            }}
+            onMouseEnter={() => setHoveredDifficulty(difficulty.id)}
+            onMouseLeave={() => setHoveredDifficulty(null)}
             onClick={() => handleSelectDifficulty(difficulty.id)}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
