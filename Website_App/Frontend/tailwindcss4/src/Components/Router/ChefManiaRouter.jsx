@@ -12,7 +12,7 @@ function ChefManiaRouter() {
         <Route path="/" element={<LaunchHomePage />} />
         <Route path="/game" element={<ChefManiaGame />} />
         <Route path="/game/modes" element={<GameScreen />} />
-        <Route path="/game/instuctions" element={<Instructions />} />
+        <Route path="/game/instructions" element={<Instructions />} />
         <Route path="/game/solo/:difficulty" element={<SoloBattle />} />
         <Route
           path="/game/difficultySelection"
