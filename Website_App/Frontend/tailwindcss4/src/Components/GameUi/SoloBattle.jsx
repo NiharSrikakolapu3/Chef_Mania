@@ -21,6 +21,9 @@ import {
 import { gameCardsLists } from "../LaunchPageUI/GameCards";
 import { useNavigate, useParams } from "react-router-dom";
 
+import { motion } from "framer-motion";
+// import ParticlesBackground from "./ParticlesBackground";
+
 export default function SoloBattle() {
   const [error, setError] = useState(null);
   const [board, setBoard] = useState([]);
@@ -278,17 +281,38 @@ export default function SoloBattle() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-black to-gray-900 text-white p-6">
       {!gameReady ? (
-        <div className="flex flex-col items-center justify-center h-screen">
-          <h1 className="text-4xl tracking-widest font-bold mb-6 text-yellow-300">
+        <div className="flex flex-col items-center justify-center h-screen z-20 relative">
+          <h1 className="text-4xl md:text-5xl font-bold mb-8 text-transparent bg-clip-text bg-gradient-to-r from bg-yellow-300 via-orange-400 to-red-500">
             Getting Game Ready...
           </h1>
-          <div className="w-80 h-4 bg-gray-200 rounded-full overflow-hidden border border-yellow-400">
-            <div
-              style={{ width: `${progress}%` }}
-              className="h-full bg-gradient-to-r from-yellow-500 via-orange-500 to-red-600 transition-all duration-200"
-            ></div>
+          <div className="w-full max-w-md h-4 bg-gray-800 rounded-full overflow-hidden border border-yellow-500/50">
+            <motion.div
+              className="h-full bg-gradient-to-r from-yellow-500 via-orange-500 to-red-600"
+              initial={{ width: 0 }}
+              animate={{ width: `${progress}%` }}
+              transition={{ duration: 0.3, ease: "easeOut" }}
+            />
           </div>
-          <p className="mt-3 text-lg text-amber-200 font-medium">{progress}%</p>
+
+          <motion.p
+            className="mt-6 text-lg text-amber-200 font-medium"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.2 }}
+          >
+            {progress}% Complete
+          </motion.p>
+
+          <motion.div
+            className="mt-10 flex space-x-4"
+            initial={{ y: 20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <div className="w-4 h-4 rounded-full bg-yellow-500 animate-pulse"></div>
+            <div className="w-4 h-4 rounded-full bg-orange-500 animate-pulse delay-150"></div>
+            <div className="w-4 h-4 rounded-full bg-red-500 animate-pulse delay-300"></div>
+          </motion.div>
         </div>
       ) : (
         <div className="relative max-w-screen-xl mx-auto space-y-12">
@@ -347,7 +371,7 @@ export default function SoloBattle() {
               Quit Game
             </button>
           </div>
-          
+
           <div className="flex justify-center space-x-6 mb-12">
             {playerCards.map((card, index) => (
               <div
