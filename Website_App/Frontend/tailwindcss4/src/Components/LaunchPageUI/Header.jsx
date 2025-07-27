@@ -43,4 +43,3 @@ function Header() {
 }
 
 export default Header;
-//bg-gradient-to-r from-yellow-400 to-red-500 text-white text-xl font-bold px-8 py-3 rounded-2xl shadow-lg hover:scale-105 hover:from-yellow-300 hover:to-red-400 transition-all duration-300

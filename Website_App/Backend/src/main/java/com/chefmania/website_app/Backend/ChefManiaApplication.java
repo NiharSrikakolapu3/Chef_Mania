@@ -24,6 +24,6 @@ public WebMvcConfigurer corsConfigurer() {
               .allowCredentials(true); // <-- this is crucial
     }
   };
-}
+} 
 
 }
