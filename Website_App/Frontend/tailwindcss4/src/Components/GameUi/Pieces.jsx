@@ -301,10 +301,10 @@ const redChef = (
   </div>
 );
 const studentBlue = (
-  <div className="w-70 h-70">
+  <div className="w-69 h-70 ">
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 -0.5 128 128"
+      viewBox="0 0 128 128"
       shapeRendering="crispEdges"
       className="transform -translate-x-26  -translate-y-15"
     >
@@ -420,7 +420,7 @@ const studentBlue = (
   </div>
 );
 const studentRed = (
-  <div className="w-70 h-70">
+  <div className="w-70 h-70 ">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 -0.5 128 128"

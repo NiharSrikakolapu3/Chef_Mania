@@ -1,5 +1,6 @@
 import { PiecesList } from "../GameUi/Pieces";
 import { useMemo } from "react";
+import { motion } from "framer-motion";
 
 function Board(props) {
   function getPiece(cell, x, y) {
@@ -77,8 +78,6 @@ function Board(props) {
         y: move.y,
       }));
   }, [props.validMoves, props.data]);
-
-  // const flippedRows = [...props.data].reverse();
 
   return (
     <div className="grid grid-cols-5 gap-1 w-189 h-150 bg-black p-1 rounded-lg shadow-lg">

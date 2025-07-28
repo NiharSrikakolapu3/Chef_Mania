@@ -144,7 +144,7 @@ function GameScreen() {
           ))}
         </div>
       </div>
-      <style jsx global>{`
+      <style>{`
         @import url("https://fonts.googleapis.com/css2?family=Bangers&display=swap");
 
         .font-game {

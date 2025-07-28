@@ -21,8 +21,7 @@ import {
 import { gameCardsLists } from "../LaunchPageUI/GameCards";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { motion } from "framer-motion";
-// import ParticlesBackground from "./ParticlesBackground";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function SoloBattle() {
   const [error, setError] = useState(null);
@@ -316,13 +315,22 @@ export default function SoloBattle() {
         </div>
       ) : (
         <div className="relative max-w-screen-xl mx-auto space-y-12">
-          {turnMessage && (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="text-5xl text-center font-extrabold text-yellow-300 tracking-wider bg-black bg-opacity-50 px-6 py-4 rounded-2xl shadow-2xl">
-                {turnMessage}
-              </div>
-            </div>
-          )}
+          <AnimatePresence>
+            {turnMessage && (
+              <motion.div
+                key="turnMessage"
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.8 }}
+                transition={{ duration: 0.4, ease: "easeInOut" }}
+                className="fixed inset-0 flex items-center justify-center z-50"
+              >
+                <div className="text-5xl text-center font-extrabold text-yellow-300 tracking-wider bg-black bg-opacity-50 px-6 py-4 rounded-2xl shadow-2xl">
+                  {turnMessage}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           <div className="flex justify-center space-x-6 mt-8">
             {computerCards.map((card, index) => (
