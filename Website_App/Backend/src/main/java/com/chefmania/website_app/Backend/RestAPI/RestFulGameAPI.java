@@ -28,7 +28,6 @@ import com.chefmania.website_app.Backend.Player;
 @RestController
 @RequestMapping("/api/game")
 public class RestFulGameAPI {
-  private static final Logger logger = LoggerFactory.getLogger(GameController.class);
     private final GameService service;
 
     public RestFulGameAPI(GameService service) {
@@ -77,7 +76,6 @@ public class RestFulGameAPI {
         System.out.println("It Works");
         return service.cardValidMoves(request.getYourCard(), request.getYourPieces(), false);
     }
-
 
     @GetMapping("/gameStatus")
     public boolean gameStatus() {
@@ -131,20 +129,7 @@ public class RestFulGameAPI {
         return service.getGame();  
     }
     
-//    public int helperMethodToCalculateDepth(GameController state) {
-//      int totalPieces = state.getPieces(true).size() + state.getPieces(false).size();
-//      
-//      if(totalPieces>= 8) {
-//        return 2;
-//      }
-//      else if(totalPieces >= 4) {
-//       return 3;
-//      }
-//      else {
-//        return 4;
-//      }
-//      
-//    }
+
 
  
     @DeleteMapping("/reset")

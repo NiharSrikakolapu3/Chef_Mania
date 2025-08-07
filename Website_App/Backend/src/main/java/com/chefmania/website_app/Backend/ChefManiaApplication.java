@@ -21,7 +21,7 @@ public WebMvcConfigurer corsConfigurer() {
       registry.addMapping("/**")
               .allowedOrigins("http://localhost:5173")
               .allowedMethods("*")
-              .allowCredentials(true); // <-- this is crucial
+              .allowCredentials(true);
     }
   };
 } 
