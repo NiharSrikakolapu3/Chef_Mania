@@ -1,3 +1,4 @@
+import AboutUs from "../Components/LaunchPageUI/AboutUs";
 import GameCards from "../Components/LaunchPageUI/GameCards";
 import Header from "../Components/LaunchPageUI/Header";
 import Media from "../Components/LaunchPageUI/Media";
@@ -10,6 +11,7 @@ function LaunchHomePage() {
       <Story />
       <GameCards />
       <Media />
+      <AboutUs />
     </div>
   );
 }

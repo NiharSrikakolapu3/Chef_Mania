@@ -64,8 +64,8 @@ export default function Media() {
 
       <div className="relative z-10 container mx-auto px-4">
         <div className="text-center mb-16">
-          <h2 className="text-5xl font-bold text-white mb-4">Media</h2>
-          <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+          <h2 className="text-5xl font-bold text-orange-500 mb-4">Media</h2>
+          <p className="text-xl text-gray-400 max-w-2xl mx-auto">
             Take a look at Chef Mania in action
           </p>
         </div>
