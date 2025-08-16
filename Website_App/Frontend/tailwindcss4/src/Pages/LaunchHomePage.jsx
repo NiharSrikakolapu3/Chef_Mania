@@ -1,5 +1,6 @@
 import GameCards from "../Components/LaunchPageUI/GameCards";
 import Header from "../Components/LaunchPageUI/Header";
+import Media from "../Components/LaunchPageUI/Media";
 import Story from "../Components/LaunchPageUI/Story";
 
 function LaunchHomePage() {
@@ -8,6 +9,7 @@ function LaunchHomePage() {
       <Header />
       <Story />
       <GameCards />
+      <Media />
     </div>
   );
 }

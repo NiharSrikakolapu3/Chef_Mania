@@ -1,5 +1,6 @@
 import { PiecesList } from "../GameUi/Pieces";
-import { useEffect, useMemo } from "react";
+import { useMemo } from "react";
+import { motion } from "framer-motion";
 
 function Board(props) {
   function getPiece(cell, x, y) {
