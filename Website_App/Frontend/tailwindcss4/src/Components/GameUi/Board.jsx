@@ -1,6 +1,5 @@
 import { PiecesList } from "../GameUi/Pieces";
 import { useMemo } from "react";
-import { motion } from "framer-motion";
 
 function Board(props) {
   function getPiece(cell, x, y) {
@@ -81,7 +80,7 @@ function Board(props) {
 
   return (
     <div className="grid grid-cols-5 gap-1 w-189 h-150 bg-black p-1 rounded-lg shadow-lg">
-      {...props.data.map((row, rowIndex) =>
+      {props.data.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           const actualRow = rowIndex;
 
@@ -99,8 +98,11 @@ function Board(props) {
           return (
             <div
               key={`${actualRow}-${colIndex}`}
-              onClick={() => handleCellClicked(actualRow, colIndex)}
-              className={`bg-blue-300 border flex items-center justify-center relative z-10 cursor-pointer
+              onClick={(e) => {
+                e.stopPropagation();
+                handleCellClicked(actualRow, colIndex);
+              }}
+              className={`bg-blue-300 border flex items-center justify-center relative cursor-pointer
                 ${isSelected ? "ring-4 ring-yellow-400" : ""}
                 ${
                   isValidMove
@@ -111,8 +113,8 @@ function Board(props) {
             >
               {piece && (
                 <div
-                  className="w-5 h-5 object-contain"
-                  style={{ position: "relative", zIndex: 20 }}
+                  className="w-5 h-5 object-contain pointer-events-none"
+                  style={{ position: "relative" }}
                 >
                   {piece.img}
                 </div>

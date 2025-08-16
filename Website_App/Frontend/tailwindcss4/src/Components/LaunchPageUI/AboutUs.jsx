@@ -27,7 +27,7 @@ export default function AboutUs() {
     <section id="AboutUs" className="py-20 bg-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-20">
-          <h2 className="text-5xl font-bold text-white mb-6">About Us</h2>
+          <h2 className="text-5xl font-bold text-orange-500 mb-6">About Us</h2>
         </div>
 
         <div className="max-w-4xl mx-auto">
