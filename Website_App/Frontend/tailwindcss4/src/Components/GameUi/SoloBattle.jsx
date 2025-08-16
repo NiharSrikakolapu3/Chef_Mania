@@ -404,23 +404,6 @@ export default function SoloBattle() {
               </div>
             ))}
           </div>
-
-          <div className="fixed bottom-4 left-4 bg-gray-800 p-4 rounded-lg text-xs max-w-xs">
-            <h3 className="font-bold mb-2">Debug Info:</h3>
-            <div>Selected Card: {selectedCard?.names || "None"}</div>
-            <div>
-              Selected Piece:{" "}
-              {selectedPiece
-                ? `X:${selectedPiece.x}, Y:${selectedPiece.y}`
-                : "None"}
-            </div>
-            <div>Current Turn: {currentTurn}</div>
-            <div>
-              Valid Moves:{" "}
-              {validMoves.length > 0 ? JSON.stringify(validMoves) : "None"}
-            </div>
-            {error && <div className="text-red-400 mt-2">Error: {error}</div>}
-          </div>
         </div>
       )}
 

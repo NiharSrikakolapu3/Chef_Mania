@@ -25,27 +25,15 @@ function Board(props) {
       (move) => move.x === actualRow && move.y === colIndex
     );
 
-    // Deselect if clicking the same piece
-    if (
-      props.selectedPiece &&
-      props.selectedPiece.x === actualRow &&
-      props.selectedPiece.y === colIndex
-    ) {
-      props.setSelectedPiece(null);
-      return;
-    }
-
-    // Select a new piece (non-chef)
-    if (props.selectedPiece === null && clickedPiece?.chef === false) {
+    if (clickedPiece?.chef === false) {
       props.setSelectedPiece({
         piece: clickedPiece,
         x: actualRow,
         y: colIndex,
       });
+      return;
     }
-
-    // Make a move
-    else if (props.selectedPiece) {
+    if (props.selectedPiece && isValidMove) {
       const from = {
         x: props.selectedPiece.x,
         y: props.selectedPiece.y,
@@ -55,12 +43,12 @@ function Board(props) {
         y: colIndex,
       };
 
-      if (props.selectedCard !== null && isValidMove) {
+      if (props.selectedCard !== null) {
         props.makeMove(from, to, props.selectedCard);
         props.setSelectedPiece(null);
       } else {
         alert(
-          "Make sure that you selected a card and moved to a square highlighed by green and that its your turn"
+          "Make sure that you selected a card and moved to a square highlighted by green and that its your turn"
         );
       }
     }
@@ -83,6 +71,7 @@ function Board(props) {
       {props.data.map((row, rowIndex) =>
         row.map((cell, colIndex) => {
           const actualRow = rowIndex;
+          const isBlackTile = (actualRow + colIndex) % 2 === 0;
 
           const isSelected =
             props.selectedPiece &&
@@ -102,13 +91,10 @@ function Board(props) {
                 e.stopPropagation();
                 handleCellClicked(actualRow, colIndex);
               }}
-              className={`bg-blue-300 border flex items-center justify-center relative cursor-pointer
+              className={`flex items-center justify-center relative cursor-pointer
+                ${isBlackTile ? "bg-black" : "bg-white"}
                 ${isSelected ? "ring-4 ring-yellow-400" : ""}
-                ${
-                  isValidMove
-                    ? "border-4 border-green-400"
-                    : "border border-red-400"
-                }
+                ${isValidMove ? "ring-4 ring-green-400" : ""}
               `}
             >
               {piece && (
