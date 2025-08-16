@@ -1,24 +1,38 @@
-import {auth,db} from "./config"
-import {createUserWithEmailAndPassword,signInWithEmailAndPassword,signOut } from "firebase/auth";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+// authFunctions.js
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut } from "firebase/auth";
+import { auth, db } from "./config";
+import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 
-export async function signUp(email,password,name){
+/**
+ * Sign up a new user
+ */
+export const signUp = async (email, password, name) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const uid = userCredential.user.uid;
+    const user = userCredential.user;
+    const uid = user.uid;
 
-    // Create user profile in Firestore
-    await setDoc(doc(db, "users", uid), {
+    console.log("User created:", uid);
+
+    // 2. eate Firestore document for the new user
+    const userDocRef = doc(db, "users", uid);
+    await setDoc(userDocRef, {
       name: name,
-      createdAt: new Date()
+      email: email,
+      createdAt: Timestamp.fromDate(new Date()),
     });
 
-    return { uid, name };
+    console.log("User document created successfully!");
+
+    
+    return { uid, name, email };
+
   } catch (error) {
-    console.error("Sign-up error:", error.message);
+    console.error("Error signing up:", error.code, error.message);
     throw error;
   }
-}
+};
+
 /**
  * Log in an existing user and fetch their profile
  */
@@ -27,7 +41,6 @@ export async function login(email, password) {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const uid = userCredential.user.uid;
 
-    // Get user profile from Firestore
     const docSnap = await getDoc(doc(db, "users", uid));
     if (docSnap.exists()) {
       return { uid, ...docSnap.data() };

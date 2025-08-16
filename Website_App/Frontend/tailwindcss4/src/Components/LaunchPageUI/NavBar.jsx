@@ -1,6 +1,5 @@
 import React from "react";
-import { signUp, login, logout } from "../../firebase/auth";
-
+import { signUp as firebaseSignUp, login, logout } from "../../firebase/auth";
 
 function NavBar() {
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -11,44 +10,43 @@ function NavBar() {
   const [isSignUp, setIsSignUp] = React.useState(false);
   const [error, setError] = React.useState("");
 
-
   const menuItems = [
     { id: "Home", label: "Home" },
     { id: "Story", label: "Story" },
     { id: "GameCard", label: "Game Card" },
     { id: "Media", label: "Media" },
     { id: "AboutUs", label: "About Us" },
-    { id: "Profile", label: "Profile" }
+    { id: "Profile", label: "Profile" },
   ];
-
 
   const handleLogin = async () => {
     try {
       const profile = await login(email, password);
+      console.log("Login result:", profile);
       setCurrentUser(profile);
-      setShowModal(false);
       setError("");
-      alert(`Logged in successfully as ${profile.name}`);
+      setShowModal(false);
+      alert(`Logged in successfully as ${profile?.name || profile?.email}`);
     } catch (err) {
       console.error(err.message);
       setError(err.message);
     }
   };
 
-
   const handleSignUp = async () => {
     try {
-      const profile = await signUp(email, password, name);
+      const profile = await firebaseSignUp(email, password, name);
+      // profile now includes the name from Firestore write
+      console.log("Sign up result:", profile);
       setCurrentUser(profile);
-      setShowModal(false);
       setError("");
+      setShowModal(false); // modal closes immediately
       alert(`Signed up successfully as ${profile.name}`);
     } catch (err) {
       console.error(err.message);
       setError(err.message);
     }
   };
-
 
   const handleLogout = async () => {
     try {
@@ -59,7 +57,6 @@ function NavBar() {
       console.error(err.message);
     }
   };
-
 
   return (
     <>
@@ -79,13 +76,13 @@ function NavBar() {
         </div>
       </nav>
 
-
       {/* Modal for Login / SignUp */}
       {showModal && (
         <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-4">
           <div className="bg-gray-900 p-6 rounded-2xl w-full max-w-sm flex flex-col gap-4 shadow-2xl overflow-y-auto max-h-[90vh]">
-            <h2 className="text-white text-lg font-bold text-center">{isSignUp ? "Sign Up" : "Login"}</h2>
-
+            <h2 className="text-white text-lg font-bold text-center">
+              {isSignUp ? "Sign Up" : "Login"}
+            </h2>
 
             {isSignUp && (
               <input
@@ -96,7 +93,6 @@ function NavBar() {
                 className="px-3 py-2 rounded-md bg-gray-800 text-white w-full"
               />
             )}
-
 
             <input
               type="email"
@@ -113,9 +109,9 @@ function NavBar() {
               className="px-3 py-2 rounded-md bg-gray-800 text-white w-full"
             />
 
-
-            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
-
+            {error && (
+              <p className="text-red-500 text-sm text-center">{error}</p>
+            )}
 
             <button
               onClick={isSignUp ? handleSignUp : handleLogin}
@@ -124,14 +120,14 @@ function NavBar() {
               {isSignUp ? "Sign Up" : "Login"}
             </button>
 
-
             <button
               onClick={() => setIsSignUp(!isSignUp)}
               className="text-sm text-blue-400 hover:underline self-center"
             >
-              {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+              {isSignUp
+                ? "Already have an account? Login"
+                : "Don't have an account? Sign Up"}
             </button>
-
 
             <button
               onClick={() => setShowModal(false)}
@@ -145,7 +141,6 @@ function NavBar() {
     </>
   );
 }
-
 
 function NavItem({ item, currentUser, setShowModal, handleLogout }) {
   if (item.id === "Profile") {
@@ -162,7 +157,6 @@ function NavItem({ item, currentUser, setShowModal, handleLogout }) {
     );
   }
 
-
   return (
     <a
       href={`#${item.id}`}
@@ -172,6 +166,5 @@ function NavItem({ item, currentUser, setShowModal, handleLogout }) {
     </a>
   );
 }
-
 
 export default NavBar;
