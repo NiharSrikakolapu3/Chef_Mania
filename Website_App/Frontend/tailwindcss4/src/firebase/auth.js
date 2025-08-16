@@ -9,12 +9,11 @@ import { doc, setDoc, getDoc, Timestamp } from "firebase/firestore";
 export const signUp = async (email, password, name) => {
   try {
     const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    const uid = user.uid;
+    const uid = userCredential.user.uid;
 
     console.log("User created:", uid);
 
-    // 2. eate Firestore document for the new user
+    // 2. Firestore document for the new user
     const userDocRef = doc(db, "users", uid);
     await setDoc(userDocRef, {
       name: name,
@@ -22,7 +21,6 @@ export const signUp = async (email, password, name) => {
       createdAt: Timestamp.fromDate(new Date()),
     });
 
-    console.log("User document created successfully!");
 
     
     return { uid, name, email };
@@ -65,15 +63,3 @@ export async function logout() {
   }
 }
 
-/**
- * Get the current logged-in user's profile
- */
-export async function getProfile(uid) {
-  try {
-    const docSnap = await getDoc(doc(db, "users", uid));
-    return docSnap.exists() ? docSnap.data() : null;
-  } catch (error) {
-    console.error("Get profile error:", error.message);
-    throw error;
-  }
-}

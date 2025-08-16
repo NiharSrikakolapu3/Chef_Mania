@@ -1,5 +1,5 @@
 import React from "react";
-import { signUp as firebaseSignUp, login, logout } from "../../firebase/auth";
+import { signUp, login, logout } from "../../firebase/auth";
 
 function NavBar() {
   const [currentUser, setCurrentUser] = React.useState(null);
@@ -35,7 +35,7 @@ function NavBar() {
 
   const handleSignUp = async () => {
     try {
-      const profile = await firebaseSignUp(email, password, name);
+      const profile = await signUp(email, password, name);
       // profile now includes the name from Firestore write
       console.log("Sign up result:", profile);
       setCurrentUser(profile);
