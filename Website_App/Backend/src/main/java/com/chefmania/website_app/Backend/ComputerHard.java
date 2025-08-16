@@ -22,7 +22,6 @@ public class ComputerHard extends Computer {
 
     @Override
     public double heuristic(GameController state) {
-        logger.info("HARD DIFF: GOT TO heuristic");
 
         List<Piece> computerPieces = state.getPieces(true);
         List<Piece> playerPieces = state.getPieces(false);
