@@ -1,7 +1,16 @@
 import React from "react";
+import { signUp, login, logout } from "../../firebase/auth";
+
 
 function NavBar() {
-  const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+  const [currentUser, setCurrentUser] = React.useState(null);
+  const [showModal, setShowModal] = React.useState(false);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [isSignUp, setIsSignUp] = React.useState(false);
+  const [error, setError] = React.useState("");
+
 
   const menuItems = [
     { id: "Home", label: "Home" },
@@ -9,76 +18,160 @@ function NavBar() {
     { id: "GameCard", label: "Game Card" },
     { id: "Media", label: "Media" },
     { id: "AboutUs", label: "About Us" },
+    { id: "Profile", label: "Profile" }
   ];
 
+
+  const handleLogin = async () => {
+    try {
+      const profile = await login(email, password);
+      setCurrentUser(profile);
+      setShowModal(false);
+      setError("");
+      alert(`Logged in successfully as ${profile.name}`);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
+    }
+  };
+
+
+  const handleSignUp = async () => {
+    try {
+      const profile = await signUp(email, password, name);
+      setCurrentUser(profile);
+      setShowModal(false);
+      setError("");
+      alert(`Signed up successfully as ${profile.name}`);
+    } catch (err) {
+      console.error(err.message);
+      setError(err.message);
+    }
+  };
+
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+      setCurrentUser(null);
+      alert("Logged out successfully");
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
+
+
   return (
-    <nav className="fixed top-0 z-50 w-full px-4 py-3 backdrop-blur-sm bg-black/20">
-      <div className="max-w-screen-xl mx-auto">
-        <div className="flex justify-between items-center md:hidden">
-          <div className="text-xl font-bold text-white tracking-wider">
-            GAME<span className="text-red-500">MENU</span>
-          </div>
-          <button
-            onClick={() => setIsMenuOpen(!isMenuOpen)}
-            className="p-2 rounded-lg bg-blue-800/50 hover:bg-blue-700/60 transition-all"
-            aria-label="Toggle menu"
-          >
-            <div className="w-6 h-0.5 bg-white mb-1.5 transition-all duration-300"></div>
-            <div className="w-6 h-0.5 bg-white mb-1.5 transition-all duration-300"></div>
-            <div className="w-6 h-0.5 bg-white transition-all duration-300"></div>
-          </button>
-        </div>
-        <div className="hidden md:flex justify-center">
+    <>
+      <nav className="fixed top-0 z-50 w-full px-4 py-3 backdrop-blur-sm bg-black/20">
+        <div className="max-w-screen-xl mx-auto flex justify-center">
           <div className="flex flex-wrap justify-center gap-1 px-4 py-3 bg-black/40 border border-blue-700 rounded-xl shadow-lg backdrop-blur-sm transition-all duration-300 ease-in-out">
             {menuItems.map((item) => (
-              <NavItem key={item.id} item={item} />
-            ))}
-          </div>
-        </div>
-        <div
-          className={`md:hidden fixed top-16 left-0 w-full bg-gray-900/95 backdrop-blur-xl transition-all duration-500 ease-in-out overflow-hidden ${
-            isMenuOpen ? "max-h-96 py-4" : "max-h-0 py-0"
-          }`}
-        >
-          <div className="flex flex-col items-center gap-2 px-4">
-            {menuItems.map((item) => (
-              <a
+              <NavItem
                 key={item.id}
-                href={`#${item.id}`}
-                onClick={() => setIsMenuOpen(false)}
-                className="w-full max-w-xs text-center px-4 py-3 font-bold text-white rounded-lg bg-blue-900/40 hover:bg-blue-800/60 transition-all duration-300"
-              >
-                <span className="relative z-10 text-sm tracking-wide">
-                  {item.label}
-                </span>
-              </a>
+                item={item}
+                currentUser={currentUser}
+                setShowModal={setShowModal}
+                handleLogout={handleLogout}
+              />
             ))}
           </div>
         </div>
-      </div>
-    </nav>
+      </nav>
+
+
+      {/* Modal for Login / SignUp */}
+      {showModal && (
+        <div className="fixed inset-0 z-50 bg-black/70 flex items-center justify-center px-4">
+          <div className="bg-gray-900 p-6 rounded-2xl w-full max-w-sm flex flex-col gap-4 shadow-2xl overflow-y-auto max-h-[90vh]">
+            <h2 className="text-white text-lg font-bold text-center">{isSignUp ? "Sign Up" : "Login"}</h2>
+
+
+            {isSignUp && (
+              <input
+                type="text"
+                placeholder="Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="px-3 py-2 rounded-md bg-gray-800 text-white w-full"
+              />
+            )}
+
+
+            <input
+              type="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="px-3 py-2 rounded-md bg-gray-800 text-white w-full"
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="px-3 py-2 rounded-md bg-gray-800 text-white w-full"
+            />
+
+
+            {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+
+
+            <button
+              onClick={isSignUp ? handleSignUp : handleLogin}
+              className="bg-blue-700 text-white py-2 rounded-md font-bold hover:bg-blue-600 transition-all w-full"
+            >
+              {isSignUp ? "Sign Up" : "Login"}
+            </button>
+
+
+            <button
+              onClick={() => setIsSignUp(!isSignUp)}
+              className="text-sm text-blue-400 hover:underline self-center"
+            >
+              {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+            </button>
+
+
+            <button
+              onClick={() => setShowModal(false)}
+              className="text-sm text-red-500 hover:underline self-center"
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+    </>
   );
 }
-function NavItem({ item }) {
+
+
+function NavItem({ item, currentUser, setShowModal, handleLogout }) {
+  if (item.id === "Profile") {
+    return (
+      <button
+        onClick={() => {
+          if (!currentUser) setShowModal(true);
+          else handleLogout();
+        }}
+        className="relative px-4 py-2 font-bold text-white group transition-all duration-300"
+      >
+        {currentUser ? `Logout (${currentUser.name})` : "Login / Sign Up"}
+      </button>
+    );
+  }
+
+
   return (
     <a
       href={`#${item.id}`}
       className="relative px-4 py-2 font-bold text-white group transition-all duration-300"
     >
       <span className="relative z-10 text-sm tracking-wide">{item.label}</span>
-
-      <div className="absolute inset-0 rounded-xl overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600/0 via-red-500/40 to-blue-600/0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-red-500 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-      </div>
-
-      <div className="absolute bottom-0 left-1/4 w-1/2 h-0.5 bg-red-400 rounded-full opacity-0 group-hover:opacity-100 transition-opacity"></div>
-      <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-blue-600" />
-      <div className="absolute top-0 right-0 w-2 h-2 border-t border-r border-blue-600" />
-      <div className="absolute bottom-0 left-0 w-2 h-2 border-b border-l border-blue-600" />
-      <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-blue-600" />
     </a>
   );
 }
+
 
 export default NavBar;
