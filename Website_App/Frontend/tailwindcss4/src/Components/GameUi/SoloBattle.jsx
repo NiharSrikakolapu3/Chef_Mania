@@ -41,8 +41,19 @@ export default function SoloBattle() {
   const [turnMessage, setTurnMessage] = useState("");
   const [winner, setWinner] = useState(null);
 
-  const navigate = useNavigate();
+  // New state for replay and history
+  const [gameHistory, setGameHistory] = useState([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [isReplayMode, setIsReplayMode] = useState(false);
+  const [showReplayControls, setShowReplayControls] = useState(false);
+  const [isProcessingMove, setIsProcessingMove] = useState(false);
 
+  // State for past games
+  const [pastGames, setPastGames] = useState([]);
+  const [showPastGames, setShowPastGames] = useState(false);
+  const [selectedPastGame, setSelectedPastGame] = useState(null);
+
+  const navigate = useNavigate();
   const { difficulty } = useParams();
 
   function saveGameState() {
@@ -55,6 +66,9 @@ export default function SoloBattle() {
       centerCard,
       currentTurn,
       validMoves,
+      gameHistory,
+      historyIndex,
+      difficulty,
     };
     setItem("soloGame", gameState);
   }
@@ -62,6 +76,94 @@ export default function SoloBattle() {
   function clearGameState() {
     localStorage.removeItem("soloGame");
   }
+
+  function savePastGames() {
+    const pastGames = getItem("pastGames") || [];
+    const currentGame = {
+      board,
+      playerCards,
+      computerCards,
+      centerCard,
+      gameHistory,
+      difficulty,
+      date: new Date().toISOString(),
+      winner: currentState.player?.hasWon ? "Player" : "Computer"
+    };
+    
+    // Keep only the last 5 games
+    const updatedPastGames = [currentGame, ...pastGames].slice(0, 5);
+    setItem("pastGames", updatedPastGames);
+  }
+
+  function loadPastGames() {
+    const savedPastGames = getItem("pastGames") || [];
+    setPastGames(savedPastGames);
+  }
+
+  function addToHistory(state, isPlayerMove = false) {
+    setGameHistory((prev) => {
+      const newHistory = [...prev, {...state, isPlayerMove}];
+      setHistoryIndex(newHistory.length - 1);
+      return newHistory;
+    });
+  }
+
+  function loadFromHistory(index) {
+    const historyState = gameHistory[index];
+    if (!historyState) return;
+
+    setBoard(historyState.board);
+    setSelectedPiece(historyState.selectedPiece);
+    setSelectedCard(historyState.selectedCard);
+    setPlayerCards(historyState.playerCards);
+    setComputerCards(historyState.computerCards);
+    setCenterCard(historyState.centerCard);
+    setCurrentTurn(historyState.currentTurn);
+    setValidMoves(historyState.validMoves || []);
+  }
+
+  function handlePreviousMove() {
+    if (historyIndex > 0) {
+      const newIndex = historyIndex - 1;
+      setHistoryIndex(newIndex);
+      loadFromHistory(newIndex);
+    }
+  }
+
+  function handleNextMove() {
+    if (historyIndex < gameHistory.length - 1) {
+      const newIndex = historyIndex + 1;
+      setHistoryIndex(newIndex);
+      loadFromHistory(newIndex);
+    } else {
+      setIsReplayMode(false);
+      setShowReplayControls(false);
+    }
+  }
+
+  function toggleReplayMode() {
+    if (isReplayMode) {
+      setIsReplayMode(false);
+      setShowReplayControls(false);
+      loadFromHistory(gameHistory.length - 1);
+    } else {
+      setIsReplayMode(true);
+      setShowReplayControls(true);
+      setHistoryIndex(0);
+      loadFromHistory(0);
+    }
+  }
+
+  function loadPastGame(game) {
+    setSelectedPastGame(game);
+    setGameHistory(game.gameHistory);
+    setHistoryIndex(0);
+    setIsReplayMode(true);
+    setShowReplayControls(true);
+    loadFromHistory(0);
+    setShowPastGames(false);
+  }
+
   useEffect(() => {
     if (progress < 100) {
       const timer = setTimeout(() => setProgress((prev) => prev + 5), 200);
@@ -76,7 +178,9 @@ export default function SoloBattle() {
         setComputerCards(saved.computerCards);
         setCenterCard(saved.centerCard);
         setCurrentTurn(saved.currentTurn);
-        setValidMoves(saved.validMoves);
+        setValidMoves(saved.validMoves || []);
+        setGameHistory(saved.gameHistory || []);
+        setHistoryIndex(saved.historyIndex || -1);
         setGameReady(true);
         setProgress(100);
         setTurnMessage(
@@ -88,6 +192,7 @@ export default function SoloBattle() {
       }
     }
   }, [progress, gameReady]);
+
   useEffect(() => {
     if (gameReady) {
       saveGameState();
@@ -101,17 +206,30 @@ export default function SoloBattle() {
     centerCard,
     currentTurn,
     validMoves,
+    gameHistory,
+    historyIndex,
   ]);
 
   useEffect(() => {
-    if (selectedCard && selectedPiece && currentTurn === "Player") {
+    if (winner) {
+      savePastGames();
+    }
+  }, [winner]);
+
+  useEffect(() => {
+    if (
+      selectedCard &&
+      selectedPiece &&
+      currentTurn === "Player" &&
+      !isReplayMode
+    ) {
       if (selectedPiece.x === undefined || selectedPiece.y === undefined) {
         setError("Selected piece has invalid coordinates");
         return;
       }
       fetchValidMoves(selectedCard, selectedPiece);
     }
-  }, [selectedCard, selectedPiece, currentTurn]);
+  }, [selectedCard, selectedPiece, currentTurn, isReplayMode]);
 
   function showTurnSequence(turn) {
     setTurnMessage("Ready...");
@@ -122,9 +240,11 @@ export default function SoloBattle() {
     }, 3000);
     setTimeout(() => setTurnMessage(""), 4500);
   }
+
   function resetGame() {
     clearGameState();
     loadGameData();
+    setWinner(null);
   }
 
   async function loadGameData() {
@@ -147,32 +267,55 @@ export default function SoloBattle() {
         getCurrentTurn(),
       ]);
 
-      setBoard(boardData.data.board);
-      setPlayerCards(playerCardsData.data);
-      setComputerCards(computerCardsData.data);
-      setCenterCard(centerCardData.data);
-      setCurrentTurn(currentTurnData.data);
+      const initialState = {
+        board: boardData.data.board,
+        selectedPiece: null,
+        selectedCard: null,
+        playerCards: playerCardsData.data,
+        computerCards: computerCardsData.data,
+        centerCard: centerCardData.data,
+        currentTurn: currentTurnData.data,
+        validMoves: [],
+        isPlayerMove: false
+      };
+
+      setBoard(initialState.board);
+      setPlayerCards(initialState.playerCards);
+      setComputerCards(initialState.computerCards);
+      setCenterCard(initialState.centerCard);
+      setCurrentTurn(initialState.currentTurn);
       setGameReady(true);
-      showTurnSequence(currentTurnData.data);
+      showTurnSequence(initialState.currentTurn);
+
+      setGameHistory([initialState]);
+      setHistoryIndex(0);
     } catch (error) {
       setError("Failed to initialize game: " + error.message);
     }
   }
 
   async function makeMove(from, to, cardUsed) {
+    if (isReplayMode || isProcessingMove) return;
+
     try {
+      setIsProcessingMove(true);
       if (currentTurn !== "Player") {
         setError("It's not your turn!");
+        setIsProcessingMove(false);
         return;
       }
 
       if (!selectedCard) {
         setError("Please select a card first");
+        setIsProcessingMove(false);
         return;
       }
 
       setError(null);
       await putMovePiece(from, to, cardUsed);
+
+      const playerMoveState = await getCurrentGameState();
+      addToHistory(playerMoveState, true);
 
       await new Promise((resolve) => setTimeout(resolve, 1000));
       await refreshGameState();
@@ -187,13 +330,18 @@ export default function SoloBattle() {
         await getComputerMoveHard();
       }
 
+      const computerMoveState = await getCurrentGameState();
+      addToHistory(computerMoveState, false);
+
       await refreshGameState();
+      setIsProcessingMove(false);
     } catch (error) {
       setError("Move failed: " + error.message);
+      setIsProcessingMove(false);
     }
   }
 
-  async function refreshGameState() {
+  async function getCurrentGameState() {
     const [
       boardData,
       playerCardsData,
@@ -208,24 +356,39 @@ export default function SoloBattle() {
       getCurrentTurn(),
     ]);
 
-    setBoard(boardData.data.board);
-    setPlayerCards(playerCardsData.data);
-    setComputerCards(computerCardsData.data);
-    setCenterCard(centerCardData.data);
-    setCurrentTurn(currentTurnData.data);
+    return {
+      board: boardData.data.board,
+      selectedPiece: null,
+      selectedCard: null,
+      playerCards: playerCardsData.data,
+      computerCards: computerCardsData.data,
+      centerCard: centerCardData.data,
+      currentTurn: currentTurnData.data,
+      validMoves: []
+    };
+  }
+
+  async function refreshGameState() {
+    const newState = await getCurrentGameState();
+
+    setBoard(newState.board);
+    setPlayerCards(newState.playerCards);
+    setComputerCards(newState.computerCards);
+    setCenterCard(newState.centerCard);
+    setCurrentTurn(newState.currentTurn);
     setSelectedPiece(null);
     setSelectedCard(null);
     setValidMoves([]);
 
     setTurnMessage(
-      currentTurnData.data === "Player" ? "Your Turn" : "Computer's Turn"
+      newState.currentTurn === "Player" ? "Your Turn" : "Computer's Turn"
     );
 
     setTimeout(() => setTurnMessage(""), 2500);
 
     const latestState = await getGame();
     setCurrentState(latestState.data);
-    console.log("game state after move: ", latestState);
+
     if (latestState.data.player.hasWon === true) {
       setWinner("Player");
     }
@@ -261,12 +424,13 @@ export default function SoloBattle() {
       setSelectedPiece(null);
       setSelectedCard(null);
       setValidMoves([]);
+      setGameHistory([]);
+      setHistoryIndex(-1);
       setShowQuitModal(false);
       setShowGameOverMessage(true);
       await new Promise((resolve) => setTimeout(resolve, 1000));
       clearGameState();
       navigate("/game/modes");
-      nav;
     } else {
       console.log("something went wrong");
     }
@@ -354,6 +518,7 @@ export default function SoloBattle() {
               makeMove={makeMove}
               validMoves={validMoves}
               setValidMoves={setValidMoves}
+              isReplayMode={isReplayMode}
             />
 
             {centerCard && (
@@ -367,36 +532,143 @@ export default function SoloBattle() {
 
           <div className="fixed top-4 right-4 z-50 flex gap-3">
             <button
-              onClick={() => resetGame()}
-              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300"
+              onClick={() =>
+              {
+                setWinner("Computer Wins due to forefit");
+              }
+              }
+              className="p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300 bg-red-400"
             >
-              Reset Game
+              Forefit
             </button>
+
+            <button
+              onClick={() => toggleReplayMode()}
+              className={`p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300 ${
+                isReplayMode ? "bg-green-600" : "bg-red-400"
+              }`}
+            >
+              {isReplayMode ? "Exit Replay" : "Replay Game"}
+            </button>
+
+            <button
+              onClick={() => {
+                loadPastGames();
+                setShowPastGames(!showPastGames);
+              }}
+              className={`p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300 ${
+                showPastGames ? "bg-green-600" : "bg-red-400"
+              }`}
+            >
+              {showPastGames ? "Hide Past Games" : "View Past Games"}
+            </button>
+
             <button
               onClick={() => setShowQuitModal(true)}
-              className="bg-red-400 p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300"
+              className="p-3 rounded-xl shadow-2xl border-2 text-black border-amber-400 hover:scale-105 transition duration-300 bg-red-400"
             >
               Quit Game
             </button>
           </div>
+
+          {showReplayControls && (
+            <div className="fixed bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-800 bg-opacity-90 p-4 rounded-xl shadow-xl border-2 border-yellow-400 z-50 flex gap-4">
+              <button
+                onClick={handlePreviousMove}
+                disabled={historyIndex <= 0}
+                className={`px-4 py-2 rounded-lg ${
+                  historyIndex <= 0
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } text-white`}
+              >
+                Previous Move
+              </button>
+              <div className="flex items-center text-white px-4">
+                Move {historyIndex + 1} of {gameHistory.length} -{" "}
+                {gameHistory[historyIndex]?.isPlayerMove ? "Player" : "Computer"}
+              </div>
+              <button
+                onClick={handleNextMove}
+                disabled={historyIndex >= gameHistory.length - 1}
+                className={`px-4 py-2 rounded-lg ${
+                  historyIndex >= gameHistory.length - 1
+                    ? "bg-gray-600 cursor-not-allowed"
+                    : "bg-blue-600 hover:bg-blue-700"
+                } text-white`}
+              >
+                Next Move
+              </button>
+            </div>
+          )}
+
+          {showPastGames && (
+            <div className="fixed inset-0 bg-black bg-opacity-80 flex items-center justify-center z-50">
+              <div className="bg-gray-800 p-6 rounded-xl border-2 border-yellow-400 max-w-2xl w-full max-h-[80vh] overflow-y-auto">
+                <h2 className="text-2xl font-bold mb-4 text-yellow-300">Past Games</h2>
+                
+                {pastGames.length === 0 ? (
+                  <p className="text-gray-300">No past games found</p>
+                ) : (
+                  <div className="space-y-4">
+                    {pastGames.map((game, index) => (
+                      <div 
+                        key={index} 
+                        className="bg-gray-700 p-4 rounded-lg border border-gray-600 cursor-pointer hover:bg-gray-600"
+                        onClick={() => loadPastGame(game)}
+                      >
+                        <div className="flex justify-between items-center mb-2">
+                          <span className="font-semibold">
+                            Game {index + 1} - {new Date(game.date).toLocaleString()}
+                          </span>
+                          <span className={`px-2 py-1 rounded text-sm ${
+                            game.winner === "Player" 
+                              ? "bg-green-600" 
+                              : "bg-red-600"
+                          }`}>
+                            {game.winner === "Player" ? "You Won" : "Computer Won"}
+                          </span>
+                        </div>
+                        <div className="grid grid-cols-2 gap-2 text-sm">
+                          <div>
+                            <p>Difficulty: <span className="capitalize">{game.difficulty}</span></p>
+                          </div>
+                          <div>
+                            <p>Turns: {game.gameHistory.length}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                
+                <div className="mt-6 flex justify-end">
+                  <button
+                    onClick={() => setShowPastGames(false)}
+                    className="px-4 py-2 bg-gray-600 hover:bg-gray-700 rounded-lg"
+                  >
+                    Close
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           <div className="flex justify-center space-x-6 mb-12">
             {playerCards.map((card, index) => (
               <div
                 key={index}
                 onClick={() => {
-                  if (currentTurn === "Player") {
+                  if (currentTurn === "Player" && !isReplayMode) {
                     setSelectedCard(card);
                     setError(null);
                   }
                 }}
-                className={`cursor-pointer hover:scale-105 transform transition duration-300
-                    ${
-                      selectedCard?.names === card.names
-                        ? "border-4 border-green-400"
-                        : "border-2 border-blue-500 hover:border-blue-400"
-                    }
-                  `}
+                className={`cursor-pointer hover:scale-105 transform transition duration-300 ${
+                  selectedCard?.names === card.names
+                    ? "border-4 border-green-400"
+                    : "border-2 border-blue-500 hover:border-blue-400"
+                }`}
               >
                 <div className="bg-[#2c2f34] p-3 rounded-xl shadow-lg">
                   {getCard(card.names)}
@@ -447,18 +719,41 @@ export default function SoloBattle() {
             <h1 className="text-5xl font-bold text-green-400 mb-4">
               {winner === "Player" ? "You Win!" : "Computer Wins!"}
             </h1>
-            <button
-              onClick={async () => {
-                clearGameState();
-                setWinner(null);
-                setShowGameOverMessage(true);
-                await new Promise((resolve) => setTimeout(resolve, 1500));
-                navigate("/game/modes");
-              }}
-              className="mt-4 px-6 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
-            >
-              Return to Menu
-            </button>
+
+            <div className="flex flex-col gap-4 items-center">
+              <button
+                onClick={() => {
+                  setWinner(null);
+                  setIsReplayMode(true);
+                  setShowReplayControls(true);
+                  setHistoryIndex(0);
+                  loadFromHistory(0);
+                }}
+                className="px-6 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+              >
+                Replay Game
+              </button>
+
+              <button
+                onClick={() =>resetGame()}
+                className="px-6 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+              >
+                New Game
+              </button>
+
+              <button
+                onClick={async () => {
+                  clearGameState();
+                  setWinner(null);
+                  setShowGameOverMessage(true);
+                  await new Promise((resolve) => setTimeout(resolve, 1500));
+                  navigate("/game/modes");
+                }}
+                className="px-6 py-3 rounded-lg bg-yellow-500 hover:bg-yellow-600 text-black font-semibold"
+              >
+                Return to Menu
+              </button>
+            </div>
           </div>
         </div>
       )}
