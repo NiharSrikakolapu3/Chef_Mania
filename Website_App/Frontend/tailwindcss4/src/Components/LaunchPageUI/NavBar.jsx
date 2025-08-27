@@ -15,7 +15,6 @@ function NavBar() {
     { id: "Story", label: "Story" },
     { id: "GameCard", label: "Game Card" },
     { id: "Media", label: "Media" },
-    { id: "AboutUs", label: "About Us" },
     { id: "Profile", label: "Profile" },
   ];
 
