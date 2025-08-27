@@ -1,5 +1,7 @@
 # Chef Mania
 
+## Website Version
+
 Website Link: ____
 
 ---
@@ -30,8 +32,6 @@ The game features real-time gameplay, comprehensive replay systems, and polished
 - **Throne Victory** – Move your Main Chef to opponent's starting throne  
 
 ---
-
-## Website Version
 
 ### Features
 - **Card-Based Movement System** – 15 unique recipe cards with distinct movement patterns  
