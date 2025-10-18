@@ -16,10 +16,10 @@ public class ChefManiaApplication {
  @Bean
 public WebMvcConfigurer corsConfigurer() {
   return new WebMvcConfigurer() {
-    @Override
+    @Override 
     public void addCorsMappings(CorsRegistry registry) {
       registry.addMapping("/**")
-              .allowedOrigins("http://localhost:5173")
+              .allowedOrigins("https://chefmania1.vercel.app")
               .allowedMethods("*")
               .allowCredentials(true); // <-- this is crucial
     }
