@@ -2,7 +2,7 @@
 
 ## Website Version
 
-Website Link: https://chefmania1.vercel.app/
+Website Link: https://chefmania-lovat.vercel.app/
 
 ---
 
