@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const GameApiClient = axios.create({
-  baseURL: "http://localhost:8080/",
+  baseURL: "chefmania-production.up.railway.app",
   withCredentials: true,
 });
 
