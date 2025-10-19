@@ -19,7 +19,7 @@ public WebMvcConfigurer corsConfigurer() {
     @Override 
     public void addCorsMappings(CorsRegistry registry) {
       registry.addMapping("/**")
-              .allowedOrigins("https://chefmania1.vercel.app")
+              .allowedOrigins("https://chefmania-lovat.vercel.app")
               .allowedMethods("*")
               .allowCredentials(true); // <-- this is crucial
     }
